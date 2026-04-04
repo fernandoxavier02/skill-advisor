@@ -160,6 +160,13 @@ function scoreEntry(promptTokens, entry) {
   return total > 0 ? matches / (total * NAME_WEIGHT) : 0;
 }
 
+// ── Semantic search (pre-computed embeddings) ────────────────────
+
+let semantic = null;
+try {
+  semantic = require(path.resolve(__dirname, '..', 'lib', 'semantic'));
+} catch { /* semantic module not available */ }
+
 // ── Main ─────────────────────────────────────────────────────────
 
 function main() {
@@ -201,13 +208,33 @@ function main() {
   const promptTokens = tokenize(prompt);
   if (promptTokens.length === 0) return;
 
-  // Score entries with early exit after finding 3 above threshold
-  const scored = [];
-  for (const entry of index) {
-    const score = scoreEntry(promptTokens, entry);
-    if (score >= THRESHOLD) {
-      scored.push({ ...entry, score });
-      if (scored.length >= 10) break; // enough candidates
+  // Try semantic search first (pre-computed embeddings, ~15ms)
+  const libDir = path.resolve(__dirname, '..', 'lib');
+  let scored = [];
+
+  if (semantic) {
+    const loaded = semantic.loadEmbeddings(libDir);
+    if (loaded && semantic.isReady()) {
+      const results = semantic.semanticSearch(promptTokens, 10);
+      // Map semantic results back to index entries
+      const indexById = new Map(index.map(e => [e.id, e]));
+      scored = results
+        .map(r => {
+          const entry = indexById.get(r.id);
+          return entry ? { ...entry, score: r.score } : null;
+        })
+        .filter(Boolean);
+    }
+  }
+
+  // Fallback to keyword matching if semantic didn't produce results
+  if (scored.length === 0) {
+    for (const entry of index) {
+      const score = scoreEntry(promptTokens, entry);
+      if (score >= THRESHOLD) {
+        scored.push({ ...entry, score });
+        if (scored.length >= 10) break;
+      }
     }
   }
 

@@ -1,5 +1,7 @@
 node_modules/
 lib/advisor-index-lite.json
 lib/advisor-index-full.json
+lib/advisor-embeddings.json
+lib/advisor-vocab.json
 lib/advisor-telemetry.jsonl
 lib/advisor-config.json
