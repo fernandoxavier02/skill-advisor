@@ -1,0 +1,6 @@
+{
+  "name": "test-plugin",
+  "description": "A test plugin for advisor indexing",
+  "version": "1.0.0",
+  "commands": ["./commands/test-cmd.md"]
+}
