@@ -6,29 +6,7 @@
     "name": "fernandoxavier02",
     "url": "https://github.com/fernandoxavier02"
   },
-  "commands": [
-    "./commands/advisor.md",
-    "./commands/advisor-index.md",
-    "./commands/advisor-config.md"
-  ],
-  "skills": [
-    "./skills/advisor-skill"
-  ],
-  "agents": [
-    "./agents/advisor-router.md"
-  ],
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node ./hooks/advisor-nudge.cjs"
-          }
-        ]
-      }
-    ]
-  },
+  "autoDiscover": true,
   "homepage": "https://github.com/fernandoxavier02/skill-advisor",
   "repository": "https://github.com/fernandoxavier02/skill-advisor",
   "license": "MIT",

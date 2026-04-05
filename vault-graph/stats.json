@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-04-05T06:08:52.947Z",
+  "vault": "C:\\Users\\ferna\\.claude\\.claude\\obsisian\\Skill Advisor Claude code",
+  "totals": {
+    "nodes": 401,
+    "edges": 2803,
+    "aliases": 549,
+    "concept": 45,
+    "skill": 348,
+    "pipeline": 8
+  }
+}
