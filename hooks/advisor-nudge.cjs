@@ -14,16 +14,18 @@
 
 const fs = require('fs');
 const path = require('path');
+const { SEARCH_WEIGHTS: SW, THRESHOLDS: TH } = require('../lib/constants');
+const { tokenize, STOPWORDS, SYNONYMS } = require('../lib/text');
 
 // ── Config ───────────────────────────────────────────────────────
 
-const NAME_WEIGHT = 3;
-const DESC_WEIGHT = 2;
+const NAME_WEIGHT = SW.NAME_WEIGHT;
+const DESC_WEIGHT = SW.DESC_WEIGHT;
 
-const rawThreshold = parseFloat(process.env.ADVISOR_THRESHOLD || '0.20');
-const THRESHOLD = Number.isFinite(rawThreshold) && rawThreshold >= 0 && rawThreshold <= 1 ? rawThreshold : 0.20;
+const rawThreshold = parseFloat(process.env.ADVISOR_THRESHOLD || String(TH.DEFAULT_SCORE));
+const THRESHOLD = Number.isFinite(rawThreshold) && rawThreshold >= 0 && rawThreshold <= 1 ? rawThreshold : TH.DEFAULT_SCORE;
 const ENABLED = (process.env.ADVISOR_ENABLED || 'true').toLowerCase() !== 'false';
-const STALENESS_DAYS = 7;
+const STALENESS_DAYS = TH.STALENESS_DAYS;
 
 // ── Path resolution ──────────────────────────────────────────────
 
@@ -40,106 +42,6 @@ function getIndexLitePath() {
       return pluginLib;
     }
   }
-}
-
-// ── Stopwords (PT-BR + EN) ───────────────────────────────────────
-
-const STOPWORDS = new Set([
-  'a', 'o', 'e', 'de', 'do', 'da', 'em', 'um', 'uma', 'para', 'com', 'no', 'na',
-  'que', 'se', 'por', 'ao', 'os', 'as', 'dos', 'das', 'eu', 'me', 'meu', 'minha',
-  'the', 'an', 'is', 'it', 'to', 'in', 'of', 'and', 'or', 'for', 'on', 'at',
-  'i', 'my', 'we', 'you', 'this', 'that', 'with', 'be', 'have', 'do', 'can',
-  'esse', 'essa', 'este', 'esta', 'isso', 'aqui', 'como', 'mais', 'muito', 'tem',
-  'ser', 'ter', 'fazer', 'vai', 'vou', 'quero', 'preciso', 'pode', 'favor',
-]);
-
-// ── Synonym bridge (PT-BR → EN + domain terms) ──────────────────
-
-const SYNONYMS = new Map([
-  // PT-BR → EN direct translations
-  ['auditar', ['audit', 'review']],
-  ['auditoria', ['audit', 'review']],
-  ['seguranca', ['security', 'safe']],
-  ['revisar', ['review', 'audit']],
-  ['revisao', ['review']],
-  ['codigo', ['code']],
-  ['corrigir', ['fix', 'debug']],
-  ['correcao', ['fix', 'bug']],
-  ['bug', ['bug', 'debug', 'fix']],
-  ['erro', ['error', 'debug', 'bug']],
-  ['investigar', ['investigate', 'debug']],
-  ['depurar', ['debug', 'investigate']],
-  ['depuracao', ['debug']],
-  ['deploy', ['deploy', 'ship']],
-  ['implantar', ['deploy', 'ship']],
-  ['implantacao', ['deploy']],
-  ['producao', ['production', 'deploy']],
-  ['testar', ['test', 'qa']],
-  ['teste', ['test', 'qa']],
-  ['testes', ['test', 'qa']],
-  ['qualidade', ['quality', 'review']],
-  ['banco', ['database', 'db', 'sql']],
-  ['dados', ['data', 'database']],
-  ['documentar', ['document', 'docs']],
-  ['documentacao', ['documentation', 'docs']],
-  ['criar', ['create', 'build', 'scaffold']],
-  ['construir', ['build', 'create']],
-  ['feature', ['feature', 'implement']],
-  ['funcionalidade', ['feature', 'implement']],
-  ['planejar', ['plan', 'design']],
-  ['design', ['design', 'plan']],
-  ['arquitetura', ['architecture', 'design']],
-  ['performance', ['performance', 'optimize']],
-  ['otimizar', ['optimize', 'performance']],
-  ['lento', ['slow', 'performance']],
-  ['rapido', ['fast', 'performance']],
-  ['frontend', ['frontend', 'ui', 'css', 'react']],
-  ['backend', ['backend', 'api', 'server']],
-  ['api', ['api', 'endpoint']],
-  ['commit', ['commit', 'git']],
-  ['push', ['push', 'ship', 'deploy']],
-  ['pr', ['pr', 'pull', 'review']],
-  ['merge', ['merge', 'ship']],
-  ['skill', ['skill']],
-  ['plugin', ['plugin']],
-  ['mcp', ['mcp']],
-  ['prompt', ['prompt']],
-  ['refatorar', ['refactor', 'restructure', 'simplify', 'code']],
-  ['refactoring', ['refactor', 'simplify']],
-  ['refatoracao', ['refactor', 'simplify']],
-  ['modulo', ['module', 'service', 'component']],
-  ['simplificar', ['simplify', 'refactor']],
-  ['limpar', ['clean', 'refactor', 'simplify']],
-  ['migrar', ['migrate', 'migration']],
-  ['migracao', ['migration']],
-  ['login', ['auth', 'login', 'authentication']],
-  ['autenticacao', ['auth', 'authentication']],
-  ['dashboard', ['dashboard', 'ui', 'frontend']],
-]);
-
-// ── Tokenizer ────────────────────────────────────────────────────
-
-function tokenize(text) {
-  if (!text || typeof text !== 'string') return [];
-  const raw = text
-    .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s-]/g, ' ')
-    .split(/[\s-]+/)
-    .filter(w => w.length > 1 && !STOPWORDS.has(w));
-
-  // Expand synonyms: each PT-BR token also adds its EN equivalents
-  const expanded = [];
-  for (const token of raw) {
-    expanded.push(token);
-    const syns = SYNONYMS.get(token);
-    if (syns) {
-      for (const s of syns) {
-        if (!expanded.includes(s)) expanded.push(s);
-      }
-    }
-  }
-  return expanded;
 }
 
 // ── Scoring ──────────────────────────────────────────────────────
@@ -215,7 +117,7 @@ function main() {
   if (semantic) {
     const loaded = semantic.loadEmbeddings(libDir);
     if (loaded && semantic.isReady()) {
-      const results = semantic.semanticSearch(promptTokens, 10);
+      const results = semantic.semanticSearch(promptTokens, SW.MAX_SEMANTIC_RESULTS);
       // Map semantic results back to index entries
       const indexById = new Map(index.map(e => [e.id, e]));
       scored = results
@@ -241,7 +143,7 @@ function main() {
   if (scored.length === 0) return;
 
   scored.sort((a, b) => b.score - a.score);
-  const top = scored.slice(0, 3);
+  const top = scored.slice(0, SW.MAX_DISPLAY_RESULTS);
 
   // Sanitize output (strip ANSI/control chars from entry data)
   const matches = top
