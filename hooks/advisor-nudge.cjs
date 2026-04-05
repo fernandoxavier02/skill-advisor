@@ -24,7 +24,7 @@ const DESC_WEIGHT = SW.DESC_WEIGHT;
 
 const rawThreshold = parseFloat(process.env.ADVISOR_THRESHOLD || String(TH.DEFAULT_SCORE));
 const THRESHOLD = Number.isFinite(rawThreshold) && rawThreshold >= 0 && rawThreshold <= 1 ? rawThreshold : TH.DEFAULT_SCORE;
-const ENABLED = (process.env.ADVISOR_ENABLED || 'true').toLowerCase() !== 'false';
+const ENABLED = (process.env.ADVISOR_ENABLED || '').toLowerCase();
 const STALENESS_DAYS = TH.STALENESS_DAYS;
 
 // ── Path resolution ──────────────────────────────────────────────
@@ -72,7 +72,18 @@ try {
 // ── Main ─────────────────────────────────────────────────────────
 
 function main() {
-  if (!ENABLED) return;
+  // Env var override: explicit true/false takes precedence
+  if (ENABLED === 'false') return;
+  if (ENABLED !== 'true') {
+    // No env override — read config file (disabled by default)
+    try {
+      const configPath = path.resolve(__dirname, '..', 'lib', 'advisor-config.json');
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      if (config.enabled !== true) return;
+    } catch {
+      return; // missing or malformed config = disabled
+    }
+  }
 
   const prompt = process.env.CLAUDE_USER_PROMPT || '';
   if (prompt.trim().startsWith('/')) return;

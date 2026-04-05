@@ -25,7 +25,7 @@ ADVISOR_LIB=$(find "$HOME/.claude/plugins/cache" -path "*/skill-advisor/*/lib" -
 [ -z "$ADVISOR_LIB" ] && ADVISOR_LIB="$(dirname "$(dirname "$0")")/lib"
 CONFIG_FILE="$ADVISOR_LIB/advisor-config.json"
 echo "CONFIG: $CONFIG_FILE"
-[ -f "$CONFIG_FILE" ] && cat "$CONFIG_FILE" || echo '{"enabled": true, "threshold": 0.35}'
+[ -f "$CONFIG_FILE" ] && cat "$CONFIG_FILE" || echo '{"enabled": false, "threshold": 0.35}'
 ```
 
 ### 2. Handle action
@@ -33,7 +33,7 @@ echo "CONFIG: $CONFIG_FILE"
 **disable:**
 Read the current config first, then toggle only the `enabled` field:
 ```bash
-CURRENT=$(cat "$CONFIG_FILE" 2>/dev/null || echo '{"enabled": true, "threshold": 0.35}')
+CURRENT=$(cat "$CONFIG_FILE" 2>/dev/null || echo '{"enabled": false, "threshold": 0.35}')
 # Parse threshold from current config and preserve it
 THRESH=$(echo "$CURRENT" | grep -o '"threshold":[^,}]*' | grep -o '[0-9.]*')
 [ -z "$THRESH" ] && THRESH="0.35"
@@ -44,7 +44,7 @@ echo "Advisor hook DESABILITADO. Rode /advisor-config enable para reativar."
 **enable:**
 Same pattern — preserve existing threshold:
 ```bash
-CURRENT=$(cat "$CONFIG_FILE" 2>/dev/null || echo '{"enabled": true, "threshold": 0.35}')
+CURRENT=$(cat "$CONFIG_FILE" 2>/dev/null || echo '{"enabled": false, "threshold": 0.35}')
 THRESH=$(echo "$CURRENT" | grep -o '"threshold":[^,}]*' | grep -o '[0-9.]*')
 [ -z "$THRESH" ] && THRESH="0.35"
 echo "{\"enabled\": true, \"threshold\": $THRESH}" > "$CONFIG_FILE"
