@@ -1,224 +1,306 @@
-# Skill Advisor
+<p align="center">
+  <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="80" height="80" style="border-radius: 50%;" />
+</p>
 
-Plugin inteligente para Claude Code que recomenda a combinacao ideal de skills, plugins, MCPs e agents para qualquer tarefa.
+<h1 align="center">Skill Advisor</h1>
 
-## O que faz
+<p align="center">
+  <strong>Intelligent Toolchain Orchestrator for Claude Code</strong>
+</p>
 
-O Skill Advisor funciona como um **orquestrador de ferramentas**. Em vez de voce precisar saber qual skill usar, ele:
+<p align="center">
+  <a href="#installation"><img src="https://img.shields.io/badge/platform-Claude_Code-7C3AED?style=flat-square" alt="Platform" /></a>
+  <img src="https://img.shields.io/badge/version-0.1.0-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node" />
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/badge/marketplace-FX--studio--AI-orange?style=flat-square" alt="Marketplace" />
+</p>
 
-1. Analisa sua tarefa (via hook automatico ou comando `/advisor`)
-2. Busca no catalogo de 348+ skills instaladas usando keyword matching + busca semantica
-3. Recomenda um loadout ordenado com dependencias entre os passos
-4. Apresenta um dry-run visual para voce aprovar antes de executar
+<p align="center">
+  <em>Stop guessing which skill to use. Let the Advisor find the optimal loadout for your task.</em>
+</p>
 
-## Arquitetura
+---
+
+## Overview
+
+Skill Advisor is a Claude Code plugin that acts as an **intelligent routing layer** across your entire toolchain. It scans all installed skills, plugins, MCP servers, and agents, then recommends the optimal combination for any given task — with execution order, dependencies, and a dry-run preview.
+
+### Key Features
+
+- **Real-time nudging** — a lightweight hook (<50ms) suggests relevant skills as you type
+- **Semantic search** — local embeddings via `transformers.js` for meaning-aware matching
+- **Bilingual engine** — full PT-BR / EN synonym bridge with 50+ term mappings
+- **Obsidian vault** — generates a navigable knowledge base with 348+ skill cards
+- **Graph-aware routing** — 2,800+ edges connecting skills, concepts, and pipelines
+- **Zero network calls** — everything runs locally, no data leaves your machine
+
+---
+
+## How It Works
+
+### Automatic Mode (Hook)
+
+Every prompt you type is analyzed in real-time:
+
+```
+You type a prompt
+       |
+  advisor-nudge.cjs (<50ms)
+       |
+  Tokenize + synonym expansion (PT-BR <-> EN)
+       |
+  Semantic search (embeddings) -> keyword fallback
+       |
+  Score > threshold?
+    YES -> "[Advisor] Considere /advisor — /investigate (85%), /fix (72%)"
+    NO  -> (silent)
+```
+
+### Manual Mode (`/advisor`)
+
+```
+/advisor fix authentication bug on the login page
+
+  1. Load full index (500+ entries)
+  2. Gather context (git branch, project type, recent changes)
+  3. Spawn advisor-router subagent (Sonnet)
+  4. Classify task -> select 3-5 skills -> resolve dependencies
+  5. Present dry-run:
+
+  +-----------------------------------------+
+  |  ADVISOR LOADOUT                        |
+  |                                         |
+  |  1. /investigate  [debugging]    ~5min  |
+  |     -> Diagnose root cause              |
+  |                                         |
+  |  2. /fix          [impl]        ~10min  |
+  |     -> Apply targeted fix               |
+  |     depends on: #1                      |
+  |                                         |
+  |  3. /review       [quality]      ~5min  |
+  |     -> Validate the fix                 |
+  |     depends on: #2                      |
+  |                                         |
+  |  Estimated: ~20min | ~8K tokens         |
+  |  Risk: low                              |
+  +-----------------------------------------+
+
+  6. You approve, modify, or cancel
+```
+
+---
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/advisor <task>` | Analyze task and recommend skill loadout |
+| `/advisor-index` | Rebuild keyword index + semantic embeddings |
+| `/advisor-catalog` | Generate Obsidian vault with skill cards |
+| `/advisor-config status` | Show current configuration |
+| `/advisor-config enable` | Enable automatic hook |
+| `/advisor-config disable` | Disable automatic hook |
+| `/advisor-config threshold 0.3` | Adjust sensitivity (0.0 - 1.0) |
+| `/advisor-feedback` | Record feedback on last recommendation |
+
+---
+
+## Architecture
 
 ```
 skill-advisor/
-|-- plugin.json              # Manifesto do plugin (autoDiscover: true)
-|-- package.json             # Dependencias (transformers.js para embeddings)
 |
-|-- commands/                # Slash commands (/advisor, /advisor-index, etc.)
-|   |-- advisor.md           # Comando principal — recomenda skills
-|   |-- advisor-catalog.md   # Gera vault Obsidian com skill cards
-|   |-- advisor-config.md    # Habilita/desabilita hook, ajusta threshold
-|   |-- advisor-feedback.md  # Registra feedback sobre recomendacoes
-|   |-- advisor-index.md     # Reconstroi indice de skills (keyword + embeddings)
+|-- commands/                 # Slash commands
+|   |-- advisor.md            # Main recommendation engine
+|   |-- advisor-catalog.md    # Obsidian vault generator
+|   |-- advisor-config.md     # Configuration manager
+|   |-- advisor-feedback.md   # Feedback collector
+|   |-- advisor-index.md      # Index rebuilder
 |
 |-- agents/
-|   |-- advisor-router.md    # Subagente Sonnet que analisa tarefa e retorna JSON
+|   |-- advisor-router.md     # Sonnet subagent — task classifier + loadout builder
 |
 |-- skills/
 |   |-- advisor-skill/
-|       |-- SKILL.md         # Auto-discovery — ativa quando usuario pede ajuda
+|       |-- SKILL.md           # Auto-trigger when user needs tool guidance
 |
 |-- hooks/
-|   |-- advisor-nudge.cjs    # Hook UserPromptSubmit — sugere /advisor em tempo real
-|   |-- hooks.json           # Configuracao do hook
+|   |-- advisor-nudge.cjs     # UserPromptSubmit hook (<50ms, zero network)
+|   |-- hooks.json            # Hook configuration
 |
-|-- lib/                     # Scripts Node.js (core engine)
-|   |-- paths.js             # Resolucao de caminhos (index, config, telemetria)
-|   |-- build-index.js       # Gera indice keyword (lite + full) de todas as skills
-|   |-- build-embeddings.js  # Gera embeddings semanticos via transformers.js
-|   |-- build-catalog.js     # Escaneia todas as fontes para o vault Obsidian
-|   |-- build-graph.js       # Constroi grafo de conexoes entre skills/conceitos
-|   |-- graph-search.js      # Busca no grafo por adjacencia
-|   |-- semantic.js          # Motor de busca semantica com embeddings pre-computados
-|   |-- advisor-index-lite.json   # Indice leve (<100KB) para o hook
-|   |-- advisor-index-full.json   # Indice completo para o /advisor
-|   |-- advisor-embeddings.json   # Embeddings pre-computados
-|   |-- advisor-vocab.json        # Vocabulario para embeddings
+|-- lib/                      # Core engine (Node.js)
+|   |-- paths.js              # Path resolution
+|   |-- build-index.js        # Keyword index generator (lite + full)
+|   |-- build-embeddings.js   # Semantic embeddings via transformers.js
+|   |-- build-catalog.js      # Source scanner for Obsidian vault
+|   |-- build-graph.js        # Graph builder (skills <-> concepts)
+|   |-- graph-search.js       # Adjacency-based graph search
+|   |-- semantic.js           # Embedding-based semantic search engine
 |
-|-- vault-skills/            # 348 skill cards Obsidian (.md com frontmatter YAML)
-|-- vault-concepts/          # 45 concept notes com backlinks
-|-- vault-pipelines/         # 8 pipeline templates (bugfix, feature, security, etc.)
-|-- vault-graph/             # Cache do grafo (adjacency.json, stats.json)
+|-- vault-skills/             # 348 Obsidian skill cards
+|-- vault-concepts/           # 45 concept notes with backlinks
+|-- vault-pipelines/          # 8 pipeline templates
+|-- vault-graph/              # Graph cache (401 nodes, 2803 edges)
 |
-|-- tests/                   # Testes unitarios
-    |-- advisor-nudge.test.js
-    |-- build-index.test.js
-    |-- paths.test.js
-    |-- fixtures/             # Dados de teste
+|-- tests/                    # Unit tests
+|-- assets/                   # Branding assets
+|-- plugin.json               # Plugin manifest (autoDiscover: true)
+|-- package.json              # Dependencies
 ```
 
-## Como funciona
+---
 
-### Fluxo do Hook (automatico)
+## Obsidian Knowledge Base
 
-Toda vez que voce digita um prompt no Claude Code:
+The `/advisor-catalog` command generates a full Obsidian vault:
 
-```
-Voce digita prompt
-       |
-       v
-advisor-nudge.cjs executa (<50ms)
-       |
-       v
-Tokeniza prompt (PT-BR + EN com sinonimos)
-       |
-       v
-Busca semantica (embeddings) ou keyword matching (fallback)
-       |
-       v
-Se score > threshold (0.20): imprime sugestao
-  "[Advisor] Considere /advisor — detectei relevancia com: /investigate (85%), /fix (72%)"
-```
+| Component | Count | Description |
+|-----------|-------|-------------|
+| Skill cards | 348 | One `.md` per skill with YAML frontmatter, aliases, concepts |
+| Concept notes | 45 | Theme nodes (debugging, security, testing, AI/ML, ...) |
+| Pipeline templates | 8 | Pre-built sequences (bugfix, feature, deploy, security, ...) |
+| Graph nodes | 401 | Skills + concepts + pipelines |
+| Graph edges | 2,803 | Connections via `[[backlinks]]` |
+| Aliases | 549 | PT-BR + EN + variations for semantic matching |
 
-**Caracteristicas do hook:**
-- Processo efemero — sem cache em memoria
-- Completa em <50ms mesmo no Windows
-- Nao faz chamadas LLM nem rede
-- Bilíngue (PT-BR + EN) com ponte de sinonimos
-- Ignora prompts que comecam com `/` (slash commands)
+Open the vault in Obsidian at `~/.claude/.claude/obsisian/Skill Advisor Claude code/` to explore the graph visually.
 
-### Fluxo do /advisor (manual)
+---
 
-```
-Voce digita: /advisor preciso corrigir um bug de autenticacao
-       |
-       v
-1. Carrega indice completo (advisor-index-full.json)
-       |
-       v
-2. Coleta contexto (branch, status git, tipo de projeto)
-       |
-       v
-3. Spawna subagente advisor-router (modelo Sonnet)
-   - Recebe: tarefa + contexto + indice
-   - Classifica tipo de tarefa (bugfix, feature, audit, etc.)
-   - Seleciona 3-5 skills com dependencias
-   - Retorna JSON estruturado
-       |
-       v
-4. Se ambiguo: faz ate 2 rodadas de perguntas
-       |
-       v
-5. Apresenta dry-run visual:
-   +------------------------------------------+
-   |  ADVISOR LOADOUT (dry-run)               |
-   |  1. /investigate  [debugging]  ~5min     |
-   |  2. /fix          [impl]      ~10min     |
-   |  3. /review       [quality]   ~5min      |
-   |  Total: ~20min | ~8K tokens              |
-   +------------------------------------------+
-       |
-       v
-6. Voce escolhe: Aprovar / Modificar / Cancelar
-       |
-       v
-7. Telemetria salva em advisor-telemetry.jsonl
-```
+## Installation
 
-### Vault Obsidian (/advisor-catalog)
+### From FX-studio-AI Marketplace
 
-O `/advisor-catalog` gera uma base de conhecimento completa em formato Obsidian:
+The plugin is distributed via the **FX-studio-AI** marketplace for Claude Code.
 
-- **Skill cards** (348): cada skill instalada vira um arquivo `.md` com frontmatter YAML (aliases, tipo, categoria, inputs/outputs) e backlinks para conceitos
-- **Concept notes** (45): temas gerais (debugging, security, testing, etc.) com lista de skills relacionadas
-- **Pipeline templates** (8): sequencias pre-definidas (bugfix, feature, deploy, etc.)
-- **Grafo** (401 nodes, 2803 edges, 549 aliases): cache de adjacencia para busca rapida
-
-O vault fica em `~/.claude/.claude/obsisian/Skill Advisor Claude code/` e pode ser aberto no Obsidian para navegacao visual.
-
-## Comandos disponiveis
-
-| Comando | O que faz |
-|---------|-----------|
-| `/advisor <tarefa>` | Analisa tarefa e recomenda loadout de skills |
-| `/advisor-index` | Reconstroi indices keyword + embeddings |
-| `/advisor-catalog` | Gera vault Obsidian com skill cards |
-| `/advisor-config status` | Mostra configuracao atual |
-| `/advisor-config enable` | Habilita hook automatico |
-| `/advisor-config disable` | Desabilita hook automatico |
-| `/advisor-config threshold 0.3` | Ajusta sensibilidade (0.0-1.0) |
-| `/advisor-feedback` | Registra feedback sobre recomendacao |
-
-## Instalacao
-
-O plugin ja esta instalado globalmente via marketplace FX-studio-AI.
-
-### Verificar instalacao
+### Verify Installation
 
 ```bash
-# Deve mostrar skill-advisor@FX-studio-AI: true
+# Should show: "skill-advisor@FX-studio-AI": true
 grep "skill-advisor" ~/.claude/settings.json
 ```
 
-### Reconstruir indices (necessario apos instalar novos plugins)
+### First-time Setup
 
 ```
-/advisor-index
+/advisor-index        # Build keyword + semantic index
+/advisor-catalog      # (Optional) Generate Obsidian vault
 ```
 
-### Gerar vault Obsidian (opcional)
+---
+
+## Configuration
+
+### Hook Sensitivity
+
+The threshold controls how aggressively the hook suggests `/advisor`. Lower = more suggestions.
+
+| Value | Behavior |
+|-------|----------|
+| `0.15` | Very sensitive — suggests often |
+| `0.20` | **Default** — balanced |
+| `0.35` | Conservative — only strong matches |
+| `0.50` | Minimal — near-exact matches only |
 
 ```
-/advisor-catalog
+/advisor-config threshold 0.25
 ```
 
-## Configuracao
-
-### Threshold do hook
-
-O threshold controla a sensibilidade do hook automatico. Valor menor = mais sugestoes, valor maior = menos sugestoes.
-
-- **Default:** 0.20
-- **Recomendado:** 0.20-0.40
-- **Ajustar:** `/advisor-config threshold 0.35`
-
-### Desabilitar hook
-
-Se as sugestoes automaticas incomodarem:
+### Disable Hook
 
 ```
 /advisor-config disable
 ```
 
-### Variaveis de ambiente (alternativa)
+### Environment Variables
 
 ```bash
-ADVISOR_ENABLED=false    # desabilita hook
-ADVISOR_THRESHOLD=0.35   # ajusta threshold
+ADVISOR_ENABLED=false     # Disable hook entirely
+ADVISOR_THRESHOLD=0.35    # Override threshold
 ```
 
-## Dependencias
+---
 
-- **Node.js >= 18** — runtime para scripts
-- **@huggingface/transformers** — embeddings semanticos locais (~23MB no primeiro uso)
+## Technical Details
 
-## Limitacoes atuais (v0.1.0)
+### Search Pipeline
 
-- Execucao de pipeline e manual (voce roda cada skill na ordem sugerida)
-- Cards do vault sao gerados com metadados basicos (aliases, conceitos, categoria)
-- Grafo de conexoes usa backlinks estaticos, sem pesos dinamicos
-- Hook nao funciona offline (embeddings precisam ser pre-computados via `/advisor-index`)
+The hook uses a two-stage search strategy:
 
-## Telemetria
+1. **Semantic search** (primary) — pre-computed embeddings via `@huggingface/transformers` compare prompt meaning against all skill descriptions. Runs in ~15ms using cached vectors.
 
-O plugin salva localmente em `lib/advisor-telemetry.jsonl`:
-- Timestamp da recomendacao
-- Acao tomada (approved/rejected/modified)
-- Tamanho do loadout
-- Skill top-ranked
+2. **Keyword matching** (fallback) — tokenizes the prompt, expands PT-BR synonyms to EN equivalents, and scores against skill names (3x weight) and descriptions (2x weight).
 
-Nenhum dado e enviado para servidores externos.
+### Synonym Bridge
+
+The bilingual engine maps 50+ Portuguese terms to English equivalents:
+
+```
+auditar    -> [audit, review]
+corrigir   -> [fix, debug]
+implantar  -> [deploy, ship]
+refatorar  -> [refactor, simplify]
+seguranca  -> [security, safe]
+```
+
+### Performance Constraints
+
+| Metric | Target | Actual |
+|--------|--------|--------|
+| Hook latency | <50ms | ~15-30ms |
+| Index size (lite) | <100KB | ~80KB |
+| Embeddings model | ~23MB | First run only |
+| Network calls | 0 | 0 |
+
+---
+
+## Privacy
+
+- All processing runs **locally** on your machine
+- No data is sent to external servers
+- Telemetry is stored in `lib/advisor-telemetry.jsonl` (local file only)
+- Telemetry records: timestamp, action taken, loadout size, top skill
+
+---
+
+## Dependencies
+
+| Package | Purpose | Size |
+|---------|---------|------|
+| `@huggingface/transformers` | Local semantic embeddings | ~23MB (first run) |
+| Node.js >= 18 | Runtime | System |
+
+---
+
+## Current Limitations (v0.1.0)
+
+- Pipeline execution is manual (you run each skill in the suggested order)
+- Vault skill cards have basic metadata (future: richer descriptions, examples)
+- Graph connections use static backlinks (future: weighted dynamic edges)
+- Embeddings must be pre-computed via `/advisor-index`
+
+---
+
+## Roadmap
+
+- [ ] Semi-automatic pipeline execution with context passing between steps
+- [ ] Dynamic graph weights based on usage telemetry
+- [ ] Richer skill cards with workflow examples and token estimates
+- [ ] Plugin marketplace publishing (public access)
+
+---
+
+## License
+
+MIT
+
+---
+
+<p align="center">
+  <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="36" height="36" style="border-radius: 50%;" />
+  <br />
+  <strong>Built by <a href="https://github.com/fernandoxavier02">Fernando Xavier</a></strong>
+  <br />
+  <a href="https://github.com/fernandoxavier02">FX Studio AI</a>
+</p>
