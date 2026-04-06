@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="120" height="120" style="border-radius: 50%;" />
+  <img src="assets/logo.png" alt="FX Studio AI" width="120" height="120" style="border-radius: 50%;" />
 </p>
 
 <h1 align="center">Skill Advisor</h1>
@@ -324,7 +324,7 @@ MIT
 ---
 
 <p align="center">
-  <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="48" height="48" style="border-radius: 50%;" />
+  <img src="assets/logo.png" alt="FX Studio AI" width="48" height="48" style="border-radius: 50%;" />
   <br />
   <strong>Built by <a href="https://github.com/fernandoxavier02">Fernando Xavier</a></strong>
   <br />
