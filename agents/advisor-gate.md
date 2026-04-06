@@ -198,6 +198,8 @@ User picks one, invoke it. Set `moment2_decision: "alternative"`.
 ### Moment 2 Option 4 (Sugerir)
 Increment `moment2_sugerir`. If limit reached (1), tell user and remove option.
 Same brainstorming flow as Moment 1 Option 4, but focused on spec generation approach.
+After brainstorming concludes and the spec generation approach is selected, invoke the chosen skill.
+Set `moment2_decision: "custom"`.
 
 ---
 
