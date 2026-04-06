@@ -6,7 +6,7 @@
     "name": "fernandoxavier02",
     "url": "https://github.com/fernandoxavier02"
   },
-  "autoDiscover": false,
+  "autoDiscover": true,
   "homepage": "https://github.com/fernandoxavier02/skill-advisor",
   "repository": "https://github.com/fernandoxavier02/skill-advisor",
   "license": "MIT",
