@@ -1,0 +1,63 @@
+{
+  "nodes": {
+    "concept:debugging": {
+      "type": "concept",
+      "name": "debugging",
+      "aliases": ["debug", "fix", "error", "troubleshoot"],
+      "edges": ["skill:investigate", "skill:fix"]
+    },
+    "concept:deployment": {
+      "type": "concept",
+      "name": "deployment",
+      "aliases": ["deploy", "ship", "release", "publish"],
+      "edges": ["skill:deploy"]
+    },
+    "skill:investigate": {
+      "type": "skill",
+      "name": "investigate",
+      "aliases": ["debug", "trace"],
+      "edges": ["skill:fix"],
+      "invocation": "/investigate",
+      "category": "debugging"
+    },
+    "skill:fix": {
+      "type": "skill",
+      "name": "fix",
+      "aliases": ["fix", "repair"],
+      "edges": ["skill:investigate"],
+      "invocation": "/fix",
+      "category": "debugging"
+    },
+    "skill:deploy": {
+      "type": "skill",
+      "name": "deploy",
+      "aliases": ["deploy", "ship"],
+      "edges": [],
+      "invocation": "/deploy",
+      "category": "deployment"
+    },
+    "skill:review": {
+      "type": "skill",
+      "name": "review",
+      "aliases": ["review", "audit"],
+      "edges": [],
+      "invocation": "/review",
+      "category": "quality"
+    }
+  },
+  "alias_index": {
+    "debug": "concept:debugging",
+    "fix": "concept:debugging",
+    "error": "concept:debugging",
+    "troubleshoot": "concept:debugging",
+    "trace": "skill:investigate",
+    "deploy": "concept:deployment",
+    "ship": "concept:deployment",
+    "release": "concept:deployment",
+    "publish": "concept:deployment",
+    "repair": "skill:fix",
+    "review": "skill:review",
+    "audit": "skill:review",
+    "investigate": "skill:investigate"
+  }
+}
