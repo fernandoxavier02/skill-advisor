@@ -44,6 +44,15 @@ Use the Agent tool to spawn the `advisor-router` subagent with:
 
 The subagent will return a structured recommendation.
 
+### 3b. Validate loadout phases
+
+After receiving the router's recommendation, verify the loadout includes mandatory phases:
+
+1. **Position 1 MUST be a clarification skill** (brainstorming, sdd:brainstorm, grill-me, or reflect). If missing, prepend brainstorming as position 1 and shift all other positions +1.
+2. **Position 2 MUST be a planning skill** (writing-plans or sdd:plan). If missing, insert writing-plans as position 2 and shift implementation positions +1.
+
+If you had to add missing phases, inform the user: "Adicionei etapas de clarificacao e planejamento que o router omitiu. O loadout agora segue a sequencia: clarificacao → planejamento → implementacao."
+
 ### 4. Handle clarification
 
 If the router returns `clarification_needed: true`, present the clarification questions directly in your response text as a numbered list and wait for the user's reply. Then re-invoke the router with the refined context. Maximum 2 clarification rounds.
@@ -117,6 +126,9 @@ After brainstorming, validate skill names against the index. Remove any not foun
 Re-spawn `advisor-router` with: "Convert this brainstorming into structured loadout: {summary}. Only use indexed skills."
 Use router's output as the loadout. Proceed to Moment 2 with `decision: "custom"`.
 
+⛔ **STOP — Moment 2 is MANDATORY. Do NOT proceed to Step 7 without completing Moment 2 below.**
+If you are about to skip Moment 2 and jump to execution, STOP. Go back and present the Moment 2 menu.
+
 #### Moment 2: Spec Generation
 
 Determine recommended planning skill based on loadout size:
@@ -163,6 +175,11 @@ Show installed planning skills (max 3). User picks one. Invoke it. Set `moment2_
 Same brainstorming flow as Moment 1, focused on spec approach. Set `moment2_decision: "custom"`.
 
 ### 7. Execute pipeline
+
+⛔ **PRE-CHECK: Before executing, verify BOTH conditions:**
+1. Moment 1 was completed (decision is NOT "Nao")
+2. Moment 2 was completed (moment2_decision has a value: "approve", "skip", "alternative", or "custom")
+If Moment 2 was NOT completed, STOP and go back to present the Moment 2 menu.
 
 This step only runs if the user approved in Step 6 (Moment 1 was not "Nao").
 

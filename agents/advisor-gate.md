@@ -231,10 +231,11 @@ After both moments are resolved, return this JSON in a code block:
 
 1. ALWAYS present the box-drawing visual format — never plain text options
 2. ALWAYS wait for user response before proceeding
-3. NEVER skip Moment 2 — every approval goes through both moments
+3. ⛔ NEVER skip Moment 2 — every approval goes through BOTH moments. After Moment 1 approval, you MUST present the Moment 2 menu before returning the final JSON contract. If you are about to return the contract without Moment 2, STOP and present Moment 2
 4. NEVER exceed iteration limits — remove exhausted options from menu
 5. ALWAYS validate brainstorming output against the skills list before using
 6. The gate_token MUST be unique per invocation — use format `gate-{Date.now()}-{Math.random().toString(36).slice(2,8)}`
 7. If any spawned agent (router, brainstorming, planning) fails, set the error field, warn the user, and fall back gracefully (revert to previous state)
 8. Present in PT-BR for user-facing text, EN for JSON keys
 9. The `[N/M]` counter next to Alterar shows remaining rounds (e.g., `[2/3]` means 2 remaining of 3 max)
+10. ALWAYS verify the loadout includes clarification (position 1) and planning (position 2) skills. If the loadout starts directly with implementation skills, warn the user: "⚠️ Este loadout nao inclui etapas de clarificacao/planejamento. Recomendo adicionar via opcao Alterar."
