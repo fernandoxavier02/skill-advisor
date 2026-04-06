@@ -71,6 +71,19 @@ describe('validateGateOutput', () => {
     assert.equal(result.valid, false);
   });
 
+  it('rejects non-string spec_path', () => {
+    const bad = { ...validOutput, spec_path: 42 };
+    const result = validateGateOutput(bad);
+    assert.equal(result.valid, false);
+    assert.ok(result.errors.some(e => e.includes('spec_path')));
+  });
+
+  it('accepts null spec_path', () => {
+    const ok = { ...validOutput, spec_path: null };
+    const result = validateGateOutput(ok);
+    assert.equal(result.valid, true);
+  });
+
   it('rejects missing iterations', () => {
     const bad = { ...validOutput, iterations: undefined };
     const result = validateGateOutput(bad);
