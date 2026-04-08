@@ -3,10 +3,9 @@
   "description": "Intelligent toolchain orchestrator for Claude Code — recommends skills, plugins, MCPs, and agents for any task with dependency-aware ordering",
   "version": "0.1.0",
   "author": {
-    "name": "fernandoxavier02",
-    "url": "https://github.com/fernandoxavier02"
+    "name": "FX Studio AI",
+    "email": "noreply@fxstudio.ai"
   },
-  "autoDiscover": true,
   "homepage": "https://github.com/fernandoxavier02/skill-advisor",
   "repository": "https://github.com/fernandoxavier02/skill-advisor",
   "license": "MIT",

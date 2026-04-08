@@ -113,7 +113,8 @@ function main() {
   try {
     index = JSON.parse(raw);
   } catch {
-    return; // corrupt JSON — silent exit
+    console.log('[Advisor] Index corrompido. Rode /advisor-index para regenerar.');
+    return;
   }
 
   if (!Array.isArray(index) || index.length === 0) return;
@@ -156,12 +157,15 @@ function main() {
   scored.sort((a, b) => b.score - a.score);
   const top = scored.slice(0, SW.MAX_DISPLAY_RESULTS);
 
-  // Sanitize output (strip ANSI/control chars from entry data)
+  // Sanitize output: allowlist for invocation field (prevents prompt injection from third-party plugins)
   const matches = top
     .map(e => {
-      const inv = String(e.invocation || '').replace(/[\x00-\x1f\x1b]/g, '');
+      const raw = String(e.invocation || '');
+      const inv = raw.replace(/[^a-zA-Z0-9:/_-]/g, '').slice(0, 60);
+      if (!inv) return null;
       return `${inv} (${(e.score * 100).toFixed(0)}%)`;
     })
+    .filter(Boolean)
     .join(', ');
 
   console.log(`[Advisor] Considere /advisor — detectei relevancia com: ${matches}`);
