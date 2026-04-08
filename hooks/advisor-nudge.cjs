@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { debugLog } = require(path.resolve(__dirname, '..', 'lib', 'errors'));
 const { SEARCH_WEIGHTS: SW, THRESHOLDS: TH } = require('../lib/constants');
 const { tokenize, STOPWORDS, SYNONYMS } = require('../lib/text');
 
@@ -34,11 +35,13 @@ function getIndexLitePath() {
   try {
     fs.accessSync(pluginLib, fs.constants.R_OK);
     return pluginLib;
-  } catch {
+  } catch (err) {
+    debugLog('FS_READ', 'accessSync failed for plugin lib path', { path: pluginLib, cause: err.message });
     try {
       const { getIndexPath } = require(path.resolve(__dirname, '..', 'lib', 'paths'));
       return getIndexPath('lite');
-    } catch {
+    } catch (err2) {
+      debugLog('MODULE_LOAD', 'Failed to load paths module', { cause: err2.message });
       return pluginLib;
     }
   }
@@ -67,7 +70,9 @@ function scoreEntry(promptTokens, entry) {
 let semantic = null;
 try {
   semantic = require(path.resolve(__dirname, '..', 'lib', 'semantic'));
-} catch { /* semantic module not available */ }
+} catch (err) {
+  debugLog('MODULE_LOAD', 'Semantic module not available', { cause: err.message });
+}
 
 // ── Main ─────────────────────────────────────────────────────────
 
@@ -80,7 +85,8 @@ function main() {
       const configPath = path.resolve(__dirname, '..', 'lib', 'advisor-config.json');
       const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
       if (config.enabled !== true) return;
-    } catch {
+    } catch (err) {
+      debugLog('FS_READ', 'Config file missing or malformed — hook disabled', { cause: err.message });
       return; // missing or malformed config = disabled
     }
   }

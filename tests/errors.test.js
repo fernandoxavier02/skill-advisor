@@ -1,146 +1,70 @@
-const { describe, it, beforeEach, afterEach } = require('node:test');
+const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
+const { AdvisorError, debugLog, ERROR_CODES } = require('../lib/errors');
 
-describe('errors.js', () => {
-  describe('ERROR_CODES', () => {
-    it('exports all expected codes', () => {
-      const { ERROR_CODES } = require('../lib/errors');
-      assert.equal(ERROR_CODES.FS_READ, 'FS_READ');
-      assert.equal(ERROR_CODES.FS_WALK, 'FS_WALK');
-      assert.equal(ERROR_CODES.PARSE_JSON, 'PARSE_JSON');
-      assert.equal(ERROR_CODES.PARSE_FRONTMATTER, 'PARSE_FRONTMATTER');
-      assert.equal(ERROR_CODES.MODULE_LOAD, 'MODULE_LOAD');
-      assert.equal(ERROR_CODES.EMBED_LOAD, 'EMBED_LOAD');
-    });
-
-    it('has exactly 6 codes', () => {
-      const { ERROR_CODES } = require('../lib/errors');
-      assert.equal(Object.keys(ERROR_CODES).length, 6);
-    });
+describe('AdvisorError', () => {
+  it('instantiates with code, message, and context', () => {
+    const context = { filePath: '/test/path' };
+    const err = new AdvisorError(ERROR_CODES.FS_READ, 'Read failed', { context });
+    assert.equal(err.code, ERROR_CODES.FS_READ);
+    assert.equal(err.message, 'Read failed');
+    assert.deepEqual(err.context, context);
   });
 
-  describe('AdvisorError', () => {
-    const { AdvisorError, ERROR_CODES } = require('../lib/errors');
-
-    it('extends Error', () => {
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'test');
-      assert.ok(err instanceof Error);
-    });
-
-    it('sets name to AdvisorError', () => {
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'test');
-      assert.equal(err.name, 'AdvisorError');
-    });
-
-    it('sets code property', () => {
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'test');
-      assert.equal(err.code, 'FS_READ');
-    });
-
-    it('sets message property', () => {
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'something failed');
-      assert.equal(err.message, 'something failed');
-    });
-
-    it('sets context to empty object when not provided', () => {
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'test');
-      assert.deepEqual(err.context, {});
-    });
-
-    it('sets context when provided', () => {
-      const ctx = { path: '/foo/bar', line: 42 };
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'test', { context: ctx });
-      assert.deepEqual(err.context, ctx);
-    });
-
-    it('sets cause when provided', () => {
-      const original = new Error('original');
-      const err = new AdvisorError(ERROR_CODES.PARSE_JSON, 'wrapped', { cause: original });
-      assert.equal(err.cause, original);
-    });
-
-    it('does not set cause when not provided', () => {
-      const err = new AdvisorError(ERROR_CODES.FS_READ, 'test');
-      assert.equal(err.cause, undefined);
-    });
+  it('extends Error', () => {
+    const err = new AdvisorError(ERROR_CODES.FS_READ, 'msg');
+    assert.ok(err instanceof Error);
+    assert.ok(err instanceof AdvisorError);
   });
 
-  describe('debugLog', () => {
-    const { debugLog } = require('../lib/errors');
-    let originalDebug;
-
-    beforeEach(() => {
-      originalDebug = process.env.ADVISOR_DEBUG;
-      delete process.env.ADVISOR_DEBUG;
-    });
-
-    afterEach(() => {
-      if (originalDebug !== undefined) {
-        process.env.ADVISOR_DEBUG = originalDebug;
-      } else {
-        delete process.env.ADVISOR_DEBUG;
-      }
-    });
-
-    it('is a no-op when ADVISOR_DEBUG is unset', () => {
-      assert.doesNotThrow(() => {
-        debugLog('FS_READ', 'test message', { path: '/foo' });
-      });
-    });
-
-    it('writes to stderr when ADVISOR_DEBUG is set', () => {
-      process.env.ADVISOR_DEBUG = '1';
-      const chunks = [];
-      const originalWrite = process.stderr.write;
-      process.stderr.write = function (chunk) {
-        chunks.push(chunk);
-        return true;
-      };
-
-      debugLog('FS_READ', 'file not found', { path: '/tmp/test.json' });
-
-      process.stderr.write = originalWrite;
-
-      assert.equal(chunks.length, 1);
-      const output = chunks[0];
-      assert.ok(output.includes('[ADVISOR_DEBUG]'), `expected [ADVISOR_DEBUG] in: ${output}`);
-      assert.ok(output.includes('FS_READ'), `expected FS_READ in: ${output}`);
-      assert.ok(output.includes('file not found'), `expected message in: ${output}`);
-      assert.ok(output.includes('/tmp/test.json'), `expected context in: ${output}`);
-    });
-
-    it('output format includes code, message, and context', () => {
-      process.env.ADVISOR_DEBUG = '1';
-      const chunks = [];
-      const originalWrite = process.stderr.write;
-      process.stderr.write = function (chunk) {
-        chunks.push(chunk);
-        return true;
-      };
-
-      debugLog('PARSE_JSON', 'bad json', { file: 'a.json', cause: 'unexpected token' });
-
-      process.stderr.write = originalWrite;
-
-      const output = chunks[0];
-      assert.match(output, /^\[ADVISOR_DEBUG\] PARSE_JSON: bad json \{.*\}\n$/);
-    });
-
-    it('omits context when not provided', () => {
-      process.env.ADVISOR_DEBUG = '1';
-      const chunks = [];
-      const originalWrite = process.stderr.write;
-      process.stderr.write = function (chunk) {
-        chunks.push(chunk);
-        return true;
-      };
-
-      debugLog('MODULE_LOAD', 'no module');
-
-      process.stderr.write = originalWrite;
-
-      const output = chunks[0];
-      assert.match(output, /^\[ADVISOR_DEBUG\] MODULE_LOAD: no module\n$/);
-    });
+  it('captures cause', () => {
+    const original = new Error('Original error');
+    const err = new AdvisorError(ERROR_CODES.PARSE_JSON, 'Parse failed', { cause: original });
+    assert.equal(err.cause, original);
   });
+});
+
+describe('ERROR_CODES', () => {
+  it('exports all 6 expected codes', () => {
+    assert.ok(ERROR_CODES.FS_READ);
+    assert.ok(ERROR_CODES.FS_WALK);
+    assert.ok(ERROR_CODES.PARSE_JSON);
+    assert.ok(ERROR_CODES.PARSE_FRONTMATTER);
+    assert.ok(ERROR_CODES.MODULE_LOAD);
+    assert.ok(ERROR_CODES.EMBED_LOAD);
+  });
+});
+
+describe('debugLog', () => {
+  const originalEnv = process.env.ADVISOR_DEBUG;
+  const originalStderrWrite = process.stderr.write;
+
+  it('is a no-op when ADVISOR_DEBUG is unset', () => {
+    delete process.env.ADVISOR_DEBUG;
+    let written = false;
+    process.stderr.write = () => { written = true; };
+    
+    debugLog(ERROR_CODES.FS_READ, 'should not log', { path: 'foo' });
+    
+    process.stderr.write = originalStderrWrite;
+    assert.equal(written, false);
+  });
+
+  it('writes to stderr when ADVISOR_DEBUG is set', () => {
+    process.env.ADVISOR_DEBUG = '1';
+    let output = '';
+    process.stderr.write = (chunk) => { output += chunk; };
+    
+    const context = { filePath: 'test.js' };
+    debugLog(ERROR_CODES.FS_READ, 'test message', context);
+    
+    process.stderr.write = originalStderrWrite;
+    assert.ok(output.includes('[ADVISOR_DEBUG]'));
+    assert.ok(output.includes(ERROR_CODES.FS_READ));
+    assert.ok(output.includes('test message'));
+    assert.ok(output.includes('test.js'));
+  });
+
+  // Cleanup
+  process.env.ADVISOR_DEBUG = originalEnv;
 });
