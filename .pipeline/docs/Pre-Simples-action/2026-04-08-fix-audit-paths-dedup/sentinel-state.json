@@ -1,0 +1,10 @@
+{
+  "pipeline_version": "3.1",
+  "session": "2026-04-08-fix-audit-paths-dedup",
+  "complexity": "SIMPLES",
+  "current_phase": "0",
+  "expected_next": "task-orchestrator",
+  "orchestrator_decision": null,
+  "gate_decisions": [],
+  "created_at": "2026-04-08T12:00:00"
+}

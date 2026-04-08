@@ -1,0 +1,1 @@
+{"gate":"TDD_APPROVAL","hardness":"HARD","phase":2,"decision":"APPROVED","decided_by":"user","timestamp":"2026-04-08T00:01:00","detail":"User confirmed pipeline with threshold decision A (revert to 0.20). Test scenarios: npm test suite as regression baseline.","confidence_impact":0.0}

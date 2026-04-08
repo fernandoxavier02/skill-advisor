@@ -1,0 +1,3 @@
+{"gate":"INFO_GATE_BLOCKED","hardness":"HARD","phase":0,"decision":"RESOLVED","decided_by":"auto","timestamp":"2026-04-08T12:00:00","detail":"No gaps - both bugs verified against code in conversation","confidence_impact":0.0}
+{"gate":"TDD_APPROVAL","hardness":"HARD","phase":1,"decision":"APPROVED","decided_by":"user","timestamp":"2026-04-08T12:01:00","detail":"User confirmed pipeline proposal with npm test regression baseline","confidence_impact":0.0}
+{"gate":"ADVERSARIAL_GATE","hardness":"SOFT","phase":2,"decision":"SKIPPED","decided_by":"user","timestamp":"2026-04-08T12:05:00","detail":"User skipped adversarial review - SIMPLES bugfix, minimal changes","confidence_impact":-0.10}
