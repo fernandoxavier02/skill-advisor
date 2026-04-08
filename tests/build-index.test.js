@@ -118,23 +118,32 @@ describe('scanSkills', () => {
 });
 
 describe('dedup', () => {
-  it('removes duplicate entries by type:name', () => {
+  it('removes duplicate entries by id', () => {
     const entries = [
       { type: 'skill', name: 'foo', id: 'a:foo' },
-      { type: 'skill', name: 'foo', id: 'b:foo' },
+      { type: 'skill', name: 'foo', id: 'a:foo' },
       { type: 'skill', name: 'bar', id: 'c:bar' },
     ];
     const result = dedup(entries);
     assert.equal(result.length, 2);
   });
 
-  it('keeps first occurrence', () => {
+  it('preserves skills with same name from different sources', () => {
     const entries = [
-      { type: 'skill', name: 'foo', id: 'first' },
-      { type: 'skill', name: 'foo', id: 'second' },
+      { type: 'skill', name: 'fix', id: 'plugin:superpowers:fix' },
+      { type: 'skill', name: 'fix', id: 'plugin:tdd:fix' },
     ];
     const result = dedup(entries);
-    assert.equal(result[0].id, 'first');
+    assert.equal(result.length, 2);
+  });
+
+  it('keeps first occurrence for same id', () => {
+    const entries = [
+      { type: 'skill', name: 'foo', id: 'same-id' },
+      { type: 'skill', name: 'foo-v2', id: 'same-id' },
+    ];
+    const result = dedup(entries);
+    assert.equal(result[0].name, 'foo');
   });
 
   it('handles empty array', () => {
