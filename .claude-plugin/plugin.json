@@ -4,9 +4,8 @@
   "version": "0.1.0",
   "author": {
     "name": "FX Studio AI",
-    "url": "https://github.com/fernandoxavier02"
+    "email": "noreply@fxstudio.ai"
   },
-  "autoDiscover": true,
   "homepage": "https://github.com/fernandoxavier02/skill-advisor",
   "repository": "https://github.com/fernandoxavier02/skill-advisor",
   "license": "MIT",
