@@ -33,3 +33,8 @@ Deferred items from v2.0 planning pipeline.
 - **Commands bash to cross-platform**: .md commands use find, date -u, mkdir -p
   - Blocked by: nothing, but low priority
   - Context: Claude Code translates bash internally; risk increases as commands get more complex
+
+- **F5 Vault Enrichment**: extend build-catalog.js with v2 metadata
+  - Blocked by: F1 maturity (needs affinity data to enrich cards)
+  - Context: add input/output contracts, execution time estimates, composition edges, user ratings to vault cards
+  - Effort: M (catalog schema changes, validateSkillCardV2 update)
