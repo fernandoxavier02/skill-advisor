@@ -14,9 +14,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { debugLog } = require(path.resolve(__dirname, '..', 'lib', 'errors'));
-const { SEARCH_WEIGHTS: SW, THRESHOLDS: TH } = require('../lib/constants');
+const { SEARCH_WEIGHTS: SW, THRESHOLDS: TH, FUSION_WEIGHTS: FW, DISCOVERY_PARAMS } = require('../lib/constants');
 const { tokenize, STOPWORDS, SYNONYMS } = require('../lib/text');
+
+// ── V2 paths (D1/D2) ────────────────────────────────────────────
+const HOME = os.homedir() || process.env.HOME || process.env.USERPROFILE || '/tmp';
+const ADVISOR_CACHE = path.join(HOME, '.claude', 'advisor', 'cache');
 
 // ── Config ───────────────────────────────────────────────────────
 
@@ -74,6 +79,20 @@ try {
   debugLog('MODULE_LOAD', 'Semantic module not available', { cause: err.message });
 }
 
+let graphMod = null;
+try {
+  graphMod = require(path.resolve(__dirname, '..', 'lib', 'graph-search'));
+} catch (err) {
+  debugLog('MODULE_LOAD', 'Graph search module not available', { cause: err.message });
+}
+
+let contextMod = null;
+try {
+  contextMod = require(path.resolve(__dirname, '..', 'lib', 'context'));
+} catch (err) {
+  debugLog('MODULE_LOAD', 'Context module not available', { cause: err.message });
+}
+
 // ── Main ─────────────────────────────────────────────────────────
 
 function main() {
@@ -128,38 +147,135 @@ function main() {
   const promptTokens = tokenize(prompt);
   if (promptTokens.length === 0) return;
 
-  // Try semantic search first (pre-computed embeddings, ~15ms)
+  // ── Signal Fusion (F0): combine semantic + keyword + graph ───
   const libDir = path.resolve(__dirname, '..', 'lib');
-  let scored = [];
+  const indexById = new Map(index.map(e => [e.id, e]));
 
+  // Collect per-skill scores from each signal layer
+  const semanticScores = new Map(); // id → score
+  const keywordScores = new Map();
+  const graphScores = new Map();
+
+  // Layer 1: Semantic search (pre-computed embeddings)
   if (semantic) {
     const loaded = semantic.loadEmbeddings(libDir);
     if (loaded && semantic.isReady()) {
       const results = semantic.semanticSearch(promptTokens, SW.MAX_SEMANTIC_RESULTS);
-      // Map semantic results back to index entries
-      const indexById = new Map(index.map(e => [e.id, e]));
-      scored = results
-        .map(r => {
-          const entry = indexById.get(r.id);
-          return entry ? { ...entry, score: r.score } : null;
-        })
-        .filter(Boolean);
+      for (const r of results) {
+        if (indexById.has(r.id)) semanticScores.set(r.id, r.score);
+      }
     }
   }
 
-  // Fallback to keyword matching if semantic didn't produce results
-  if (scored.length === 0) {
-    for (const entry of index) {
-      const score = scoreEntry(promptTokens, entry);
-      if (score >= THRESHOLD) {
-        scored.push({ ...entry, score });
-        if (scored.length >= 10) break;
+  // Layer 2: Keyword matching (always available, cap at 20 to limit iteration)
+  let kwCount = 0;
+  for (const entry of index) {
+    const score = scoreEntry(promptTokens, entry);
+    if (score >= THRESHOLD) {
+      keywordScores.set(entry.id, score);
+      if (++kwCount >= 20) break;
+    }
+  }
+
+  // Layer 3: Graph search (optional — only if vault graph loaded)
+  // Graph node IDs use "skill:" prefix while index uses "global:", "project:", etc.
+  // Build a reverse lookup: bare name → index id
+  const nameToIndexId = new Map();
+  for (const [id] of indexById) {
+    const colonIdx = id.indexOf(':');
+    if (colonIdx >= 0) nameToIndexId.set(id.slice(colonIdx + 1), id);
+  }
+
+  if (graphMod) {
+    try {
+      const graphDir = path.resolve(__dirname, '..', 'vault-graph');
+      const graph = graphMod.loadGraph(graphDir);
+      const results = graphMod.graphSearch(promptTokens, graph, SW.MAX_SEMANTIC_RESULTS);
+      for (const r of results) {
+        if (!r.nodeId.startsWith('skill:')) continue;
+        const bareName = r.nodeId.slice(6); // strip "skill:" prefix
+        const indexId = nameToIndexId.get(bareName);
+        if (indexId) {
+          // Clamp to 1.0 — graph scores can exceed 1.0 with convergence+category boosts
+          graphScores.set(indexId, Math.min(r.score, 1.0));
+        }
       }
+    } catch (err) {
+      debugLog('GRAPH_LOAD', 'Graph not available for fusion', { cause: err.message });
+    }
+  }
+
+  // Fuse scores: weighted average of available signals
+  const allIds = new Set([...semanticScores.keys(), ...keywordScores.keys(), ...graphScores.keys()]);
+  let scored = [];
+
+  for (const id of allIds) {
+    const entry = indexById.get(id);
+    if (!entry) continue;
+
+    const sem = semanticScores.get(id) || 0;
+    const kw = keywordScores.get(id) || 0;
+    const gr = graphScores.get(id) || 0;
+
+    // Weighted average with only non-zero signals contributing
+    let totalWeight = 0;
+    let totalScore = 0;
+    if (sem > 0) { totalScore += sem * FW.SEMANTIC; totalWeight += FW.SEMANTIC; }
+    if (kw > 0) { totalScore += kw * FW.KEYWORD; totalWeight += FW.KEYWORD; }
+    if (gr > 0) { totalScore += gr * FW.GRAPH; totalWeight += FW.GRAPH; }
+
+    const fusedScore = totalWeight > 0 ? totalScore / totalWeight : 0;
+    if (fusedScore >= THRESHOLD) {
+      scored.push({ ...entry, score: fusedScore });
     }
   }
 
   if (scored.length === 0) return;
 
+  // ── V2: Load hook-data bundle (D3) ──────────────────────────────
+  let hookData = null;
+  try {
+    const bundlePath = path.join(ADVISOR_CACHE, 'advisor-hook-data.json');
+    hookData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
+  } catch {
+    debugLog('FS_READ', 'Hook data bundle not found, v2 features disabled');
+  }
+
+  // ── V2: Affinity boost ──────────────────────────────────────────
+  if (hookData && Array.isArray(hookData.affinity)) {
+    const affinityMap = new Map();
+    for (const a of hookData.affinity) {
+      affinityMap.set(a.skillId, a.affinityScore);
+    }
+    // Strip namespace prefix from scored entries to match affinity skillIds
+    for (const entry of scored) {
+      const colonIdx = entry.id ? entry.id.indexOf(':') : -1;
+      const bareName = colonIdx >= 0 ? entry.id.slice(colonIdx + 1) : entry.name;
+      const affinity = affinityMap.get(bareName) || affinityMap.get(entry.name);
+      if (affinity) {
+        entry.score = Math.min(1.0, entry.score + affinity * 0.2); // +20% of affinity
+      }
+    }
+  }
+
+  // ── V2: Context boost (F2 — branch category) ───────────────────
+  if (contextMod) {
+    try {
+      const branchName = process.env.ADVISOR_BRANCH || '';
+      const branchCategory = contextMod.getBranchCategory(branchName);
+      if (branchCategory) {
+        for (const entry of scored) {
+          if (entry.category === branchCategory) {
+            entry.score = Math.min(1.0, entry.score + 0.1); // +10% category match
+          }
+        }
+      }
+    } catch (err) {
+      debugLog('CONTEXT', 'Branch context boost failed', { cause: err.message });
+    }
+  }
+
+  // Re-sort after boosts
   scored.sort((a, b) => b.score - a.score);
   const top = scored.slice(0, SW.MAX_DISPLAY_RESULTS);
 
@@ -175,6 +291,50 @@ function main() {
     .join(', ');
 
   console.log(`[Advisor] Considere /advisor — detectei relevancia com: ${matches}`);
+
+  // ── V2: Discovery nudge (F1.4) ─────────────────────────────────
+  // Hook is read-only (D4). lastNudgeTs is written by /advisor command.
+  // Cooldown is approximate: nudge appears → user runs /advisor → command writes timestamp.
+  if (hookData && Array.isArray(hookData.discovery) && hookData.discovery.length > 0) {
+    try {
+      const seenPath = path.join(ADVISOR_CACHE, 'advisor-discovery-seen.json');
+      let seen = {};
+      try { seen = JSON.parse(fs.readFileSync(seenPath, 'utf8')); } catch { /* first run — no seen file */ }
+
+      const lastNudge = seen.lastNudgeTs ? new Date(seen.lastNudgeTs).getTime() : 0;
+      if (Date.now() - lastNudge > DISCOVERY_PARAMS.NUDGE_COOLDOWN_MS) {
+        const seenSkills = (seen.seen && typeof seen.seen === 'object') ? seen.seen : {};
+        for (const candidate of hookData.discovery) {
+          if (seenSkills[candidate.skillId]) continue;
+          const inv = String(candidate.invocation || '').replace(/[^a-zA-Z0-9:/_-]/g, '').slice(0, 60);
+          if (inv) {
+            console.log(`[Advisor] Voce sabia? ${inv} tem alta relevancia mas nunca foi usado. Experimente!`);
+          }
+          break; // max 1 discovery nudge per invocation
+        }
+      }
+    } catch (err) {
+      debugLog('DISCOVERY', 'Discovery nudge failed', { cause: err.message });
+    }
+  }
+
+  // ── V2: Replay hint (F3.2) ─────────────────────────────────────
+  if (hookData && Array.isArray(hookData.replay) && hookData.replay.length > 0) {
+    // Build set of bare names from top results for structured comparison
+    const topBareNames = new Set(top.map(e => {
+      const ci = e.id ? e.id.indexOf(':') : -1;
+      return ci >= 0 ? e.id.slice(ci + 1) : e.name;
+    }));
+
+    for (const candidate of hookData.replay) {
+      const firstSkill = candidate.sequence[0];
+      if (topBareNames.has(firstSkill)) {
+        const seqStr = candidate.sequence.join(' \u2192 ');
+        console.log(`[Advisor] Pipeline anterior: ${seqStr} (usado ${candidate.count}x). Rode /advisor para replay.`);
+        break;
+      }
+    }
+  }
 }
 
 if (require.main === module) {

@@ -1,0 +1,5 @@
+{"ts":"2026-04-01T10:00:00Z","session_id":"sess-001","helpful_skill":"investigate","unhelpful_skill":"none","resolved":"sim","rating":5,"pipeline_size":3}
+{"ts":"2026-04-02T14:30:00Z","session_id":"sess-002","helpful_skill":"review","unhelpful_skill":"brainstorm","resolved":"parcialmente","rating":3,"pipeline_size":4}
+{"ts":"2026-04-03T09:15:00Z","session_id":"sess-003","helpful_skill":"ship","unhelpful_skill":"none","resolved":"sim","rating":4,"pipeline_size":2}
+{"ts":"2026-04-05T16:00:00Z","session_id":"sess-004","helpful_skill":"investigate","unhelpful_skill":"none","resolved":"sim","rating":5,"pipeline_size":3}
+{"ts":"2026-04-07T11:45:00Z","session_id":"sess-005","helpful_skill":"qa","unhelpful_skill":"cso","resolved":"nao","rating":2,"pipeline_size":5}

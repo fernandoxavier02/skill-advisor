@@ -1,0 +1,6 @@
+{"ts":"2026-04-01T10:00:00Z","session_id":"sess-001","helpful_skill":"investigate","unhelpful_skill":"none","resolved":"sim","rating":5,"pipeline_size":3}
+this is not valid json
+{"ts":"2026-04-02T14:30:00Z","session_id":"sess-002","helpful_skill":"review","unhelpful_skill":"none","resolved":"sim","rating":4,"pipeline_size":2}
+
+{"broken json": true, missing closing
+{"ts":"2026-04-03T09:15:00Z","session_id":"sess-003","helpful_skill":"ship","unhelpful_skill":"none","resolved":"sim","rating":5,"pipeline_size":1}

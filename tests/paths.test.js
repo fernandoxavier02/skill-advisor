@@ -2,7 +2,11 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('path');
 const os = require('os');
-const { PLUGIN_DIR, SKILL_DIR, getIndexPath, getLibDir, getTelemetryPath, getConfigPath } = require('../lib/paths');
+const {
+  PLUGIN_DIR, SKILL_DIR, ADVISOR_DATA_DIR, ADVISOR_CACHE_DIR,
+  getIndexPath, getLibDir, getTelemetryPath, getConfigPath,
+  getAdvisorDataDir, getAdvisorCacheDir, getAdvisorDataPath, getAdvisorCachePath,
+} = require('../lib/paths');
 
 describe('paths', () => {
   it('PLUGIN_DIR points to ~/.claude/plugins/cache', () => {
@@ -36,5 +40,41 @@ describe('paths', () => {
   it('getConfigPath returns a .json file', () => {
     const p = getConfigPath();
     assert.ok(p.endsWith('.json'));
+  });
+
+  it('ADVISOR_DATA_DIR points to ~/.claude/advisor', () => {
+    assert.equal(ADVISOR_DATA_DIR, path.join(os.homedir(), '.claude', 'advisor'));
+  });
+
+  it('ADVISOR_CACHE_DIR points to ~/.claude/advisor/cache', () => {
+    assert.equal(ADVISOR_CACHE_DIR, path.join(os.homedir(), '.claude', 'advisor', 'cache'));
+  });
+
+  it('getAdvisorDataDir returns ADVISOR_DATA_DIR', () => {
+    assert.equal(getAdvisorDataDir(), ADVISOR_DATA_DIR);
+  });
+
+  it('getAdvisorCacheDir returns ADVISOR_CACHE_DIR', () => {
+    assert.equal(getAdvisorCacheDir(), ADVISOR_CACHE_DIR);
+  });
+
+  it('getAdvisorDataPath joins filename with data dir', () => {
+    const p = getAdvisorDataPath('feedback.jsonl');
+    assert.equal(p, path.join(os.homedir(), '.claude', 'advisor', 'feedback.jsonl'));
+  });
+
+  it('getAdvisorCachePath joins filename with cache dir', () => {
+    const p = getAdvisorCachePath('advisor-affinity.json');
+    assert.equal(p, path.join(os.homedir(), '.claude', 'advisor', 'cache', 'advisor-affinity.json'));
+  });
+
+  it('getAdvisorDataPath strips directory traversal', () => {
+    const p = getAdvisorDataPath('../../.bashrc');
+    assert.equal(p, path.join(os.homedir(), '.claude', 'advisor', '.bashrc'));
+  });
+
+  it('getAdvisorCachePath strips directory traversal', () => {
+    const p = getAdvisorCachePath('../../../etc/passwd');
+    assert.equal(p, path.join(os.homedir(), '.claude', 'advisor', 'cache', 'passwd'));
   });
 });

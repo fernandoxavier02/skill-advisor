@@ -2,7 +2,7 @@
   "name": "skill-advisor",
   "description": "Intelligent toolchain orchestrator for Claude Code — recommends skills, plugins, MCPs, and agents for any task with dependency-aware ordering",
   "version": "0.1.0",
-  "autoDiscover": true,
+  "autoDiscover": false,
   "author": {
     "name": "FX Studio AI",
     "email": "noreply@fxstudio.ai"
