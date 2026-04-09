@@ -1,153 +1,198 @@
 <p align="center">
-  <img src="assets/logo.png" alt="FX Studio AI" width="120" height="120" style="border-radius: 50%;" />
+  <img src="assets/logo.png" alt="Skill Advisor" width="120" height="120" style="border-radius: 50%;" />
 </p>
 
 <h1 align="center">Skill Advisor</h1>
 
 <p align="center">
-  <strong>Intelligent Cross-Plugin Orchestration for Claude Code</strong>
-</p>
-
-<p align="center">
-  <a href="https://fxstudioai.com"><img src="https://img.shields.io/badge/FX_Studio_AI-fxstudioai.com-FF6B35?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNS0xMC01LTEwIDV6TTIgMTJsMTAgNSAxMC01Ii8+PC9zdmc+" alt="FX Studio AI" /></a>
+  <strong>The AI that learns which AI tools to use</strong>
 </p>
 
 <p align="center">
   <a href="#installation"><img src="https://img.shields.io/badge/platform-Claude_Code-7C3AED?style=flat-square" alt="Platform" /></a>
-  <img src="https://img.shields.io/badge/version-0.1.0-blue?style=flat-square" alt="Version" />
-  <img src="https://img.shields.io/badge/skills_indexed-301-brightgreen?style=flat-square" alt="Skills Indexed" />
-  <img src="https://img.shields.io/badge/graph_edges-2803-orange?style=flat-square" alt="Graph Edges" />
-  <img src="https://img.shields.io/badge/semantic_search-enabled-blueviolet?style=flat-square" alt="Semantic Search" />
+  <img src="https://img.shields.io/badge/version-2.0.0-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/skills_indexed-344-brightgreen?style=flat-square" alt="Skills Indexed" />
+  <img src="https://img.shields.io/badge/tests-424_passing-brightgreen?style=flat-square" alt="Tests" />
   <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
 </p>
 
 <p align="center">
-  <em>Stop guessing which skill to use. The Advisor finds the optimal loadout for any task.</em>
+  You have 200+ skills installed. You use 10. Skill Advisor finds the other 190.
 </p>
 
 ---
 
-## The Problem
+## What it does
 
-You have 200+ skills, plugins, MCPs, and agents installed. For any given task, you need to know:
+Skill Advisor is a **Claude Code plugin** that watches how you work, learns what tools help, and recommends the right combination for any task.
 
-- **Which** skills to use
-- **In what order** to run them
-- **How they connect** (what output feeds the next input)
-- **Which combinations** work best across different plugins
+```
+You type:  "quero corrigir um bug no login"
 
-Skill Advisor solves this by maintaining a **semantic knowledge graph** of your entire toolchain and recommending optimal skill compositions in real-time.
+Advisor:   [Advisor] Considere /advisor -- detectei relevancia com:
+           /investigate (87%), /fix (74%), /review (68%)
+
+           [Advisor] Voce sabia? /cso tem alta relevancia mas nunca
+           foi usado. Experimente!
+
+           [Advisor] Pipeline anterior: investigate -> fix -> review
+           (usado 5x). Rode /advisor para replay.
+```
+
+Three lines. Zero configuration. It knew your branch is `fix/`, found your debugging tools, suggested one you never tried, and remembered your usual sequence.
 
 ---
 
-## How It Works
+## How it works
 
-```mermaid
-graph TB
-    A[User types /advisor task] --> B[Graph Search]
-    B --> C{Semantic + Keyword + BFS}
-    C --> D[Top 15-20 Skills]
-    D --> E[advisor-router Agent]
-    E --> F[Loadout with Dependencies]
-    F --> G[Visual Dry-Run]
-    G --> H{User Decision}
-    H -->|Execute| I[Semi-Auto Pipeline]
-    H -->|Modify| F
-    H -->|Manual| J[Ordered Skill List]
-
-    subgraph "Semantic Knowledge Graph"
-        K[348 Skill Cards]
-        L[45 Concepts]
-        M[8 Pipeline Templates]
-        N[2803 Edges]
-        K --- N
-        L --- N
-        M --- N
-    end
-
-    B --> K
-
-    style A fill:#7C3AED,color:#fff
-    style E fill:#FF6B35,color:#fff
-    style G fill:#10B981,color:#fff
+```
+                         YOUR PROMPT
+                             |
+                    +--------v--------+
+                    |  advisor-nudge  |  <50ms, runs on every prompt
+                    |    (hook)       |
+                    +--------+--------+
+                             |
+              +--------------+--------------+
+              |              |              |
+        +-----v-----+  +----v----+  +------v------+
+        |  Semantic  |  | Keyword |  |   Graph     |
+        |  Search    |  | Match   |  |   BFS       |
+        | (50% wt)   |  | (30% wt)|  |  (20% wt)  |
+        +-----+------+  +----+----+  +------+------+
+              |              |              |
+              +--------------+--------------+
+                             |
+                    +--------v--------+
+                    |  Signal Fusion  |  weighted average
+                    +--------+--------+
+                             |
+              +--------------+--------------+
+              |              |              |
+        +-----v-----+  +----v----+  +------v------+
+        | Affinity   |  | Context |  | Discovery   |
+        | Boost      |  | Boost   |  | Nudge       |
+        | (from      |  | (branch |  | (unused     |
+        |  history)  |  |  type)  |  |  skills)    |
+        +-----+------+  +----+----+  +------+------+
+              |              |              |
+              +--------------+--------------+
+                             |
+                    +--------v--------+
+                    |   OUTPUT        |
+                    | skill matches + |
+                    | discovery nudge |
+                    | + replay hint   |
+                    +-----------------+
 ```
 
-### Three-Layer Search Pipeline
-
-| Layer | Method | Speed | Purpose |
-|-------|--------|-------|---------|
-| **1. Semantic** | Cosine similarity on 384-dim embeddings (MiniLM-L6) | ~15ms | Meaning-aware matching |
-| **2. Graph** | BFS traversal with convergence + category boosts | ~5ms | Cross-plugin discovery via edges |
-| **3. Keyword** | PT-BR/EN synonym expansion + weighted scoring | ~3ms | Fallback for cold start |
-
-All three layers run **locally with zero network calls**. The search pipeline degrades gracefully: if embeddings aren't available, graph search takes over; if the graph is empty, keyword matching handles it.
+**Three search layers** find relevant skills. **Three boost layers** personalize the results. All local, all <50ms.
 
 ---
 
-## Features
+## Key Features
 
-### Cross-Plugin Composition
+### It learns from you (v2.0)
 
-The advisor doesn't follow one plugin's workflow. It **mixes skills from any installed plugin** to build the optimal pipeline:
+Every time you run `/advisor-feedback`, the system records what worked and what didn't. Over time:
 
-```
-Example: "Build a payment feature with Stripe on Supabase"
+- Skills you rate highly get boosted
+- Skills you mark as unhelpful get demoted
+- Skill sequences you repeat become replay suggestions
+- Skills you've never tried but match your patterns get surfaced
 
-  Phase 1: /sdd:brainstorm        (context-engineering-kit)
-  Phase 2: /investigate            (superpowers)
-  Phase 3: /office-hours           (gstack) 
-  Phase 4: /sdd:plan              (context-engineering-kit)
-  Phase 5: /pipeline:executor      (pipeline-orchestrator)
-  Phase 6: /reflexion:critique     (context-engineering-kit)
-```
+### It understands context
 
-### Bilingual Engine (PT-BR / EN)
+| Signal | What it does |
+|--------|-------------|
+| Branch name | `fix/` boosts debugging skills, `feat/` boosts implementation |
+| Execution history | Skills you use often rank higher |
+| Skill combos | `investigate -> fix -> review` repeated 3x? It remembers |
+| Unused skills | High relevance + never used = discovery nudge |
 
-50+ synonym mappings bridge Portuguese and English seamlessly:
+### It detects duplicates
 
-```
-"auditar seguranca" → audit, review, security, safe
-"corrigir bug no login" → fix, debug, bug, auth, login, authentication
-```
-
-### Obsidian Knowledge Base
-
-The advisor maintains an Obsidian vault as its brain:
-
-| Component | Count | Purpose |
-|-----------|-------|---------|
-| Skill cards | 348 | Rich metadata per skill (I/O, workflow, composition) |
-| Concept notes | 45 | Theme nodes linking skills across domains |
-| Pipeline templates | 8 | Pre-built sequences for common workflows |
-| Graph nodes | 401 | Skills + concepts + pipelines |
-| Graph edges | 2,803 | Explicit (wikilinks) + semantic connections |
-| Aliases | 549 | PT-BR + EN + variations for matching |
-
-### Real-Time Nudging (opt-in)
-
-A lightweight hook (<50ms) analyzes your prompts and suggests `/advisor` when relevant:
+When you run `/advisor-index`, it finds near-identical skills across plugins:
 
 ```
-[Advisor] Considere /advisor — detectei relevancia com: /investigate (85%), /fix (72%)
+global:Hook Development          plugin:plugin-dev:hook-development    99.7%
+global:MCP Integration           plugin:plugin-dev:mcp-integration     99.8%
 ```
 
-Disabled by default. Enable with `/advisor-config enable`.
+Helps you clean up redundant installations.
+
+### Bilingual (PT-BR / EN)
+
+50+ synonym mappings bridge Portuguese and English:
+
+```
+"auditar seguranca"          -> audit, review, security
+"corrigir bug no login"      -> fix, debug, bug, auth, login
+```
+
+---
+
+## Installation
+
+### Option 1: GitHub (recommended)
+
+```bash
+# Clone the repo
+git clone https://github.com/fernandoxavier02/skill-advisor.git
+
+# Copy to Claude Code plugins directory
+mkdir -p ~/.claude/plugins/local/
+cp -r skill-advisor ~/.claude/plugins/local/
+
+# Install build dependency (one-time, for semantic embeddings)
+cd ~/.claude/plugins/local/skill-advisor
+npm install
+```
+
+Then restart Claude Code or run `/reload-plugins`.
+
+### Option 2: Manual install
+
+1. Download from [Releases](https://github.com/fernandoxavier02/skill-advisor/releases)
+2. Extract to `~/.claude/plugins/local/skill-advisor/`
+3. Run `npm install` in that directory
+4. Restart Claude Code
+
+### First-time setup
+
+After installation, run these two commands in Claude Code:
+
+```
+/advisor-index      # Scans all your skills/plugins/MCPs, builds the search index
+                    # First run takes ~2 min (downloads 23MB embedding model)
+
+/advisor-catalog    # (Optional) Builds the Obsidian vault knowledge graph
+```
+
+### Verify it works
+
+```
+/advisor-config status    # Should show: enabled: false, indexed: true
+
+/advisor fix a bug        # Should return a loadout with debugging skills
+```
 
 ---
 
 ## Commands
 
-| Command | Description |
+| Command | What it does |
 |---------|-------------|
-| `/advisor <task>` | Analyze task and recommend optimal skill loadout |
-| `/advisor-index` | Rebuild keyword index + semantic embeddings |
-| `/advisor-catalog` | Generate/rebuild Obsidian vault knowledge base |
-| `/advisor-config status` | Show current configuration |
-| `/advisor-config enable` | Enable automatic hook suggestions |
-| `/advisor-config disable` | Disable automatic hook |
-| `/advisor-config threshold 0.3` | Adjust hook sensitivity (0.0 - 1.0) |
-| `/advisor-feedback` | Record feedback on last recommendation |
+| `/advisor <task>` | Recommend the best skill combination for a task |
+| `/advisor --template bugfix` | Load a saved workflow template |
+| `/advisor-index` | Rebuild search index + semantic embeddings + v2 data pipeline |
+| `/advisor-catalog` | Generate Obsidian vault knowledge graph |
+| `/advisor-stats` | Show usage analytics + skill heat map (7d/30d/90d) |
+| `/advisor-feedback` | Record what worked/didn't after a pipeline |
+| `/advisor-config enable` | Turn on automatic prompt suggestions |
+| `/advisor-config disable` | Turn off suggestions |
+| `/advisor-config threshold 0.3` | Adjust suggestion sensitivity (0.0 - 1.0) |
 
 ---
 
@@ -155,106 +200,110 @@ Disabled by default. Enable with `/advisor-config enable`.
 
 ```
 skill-advisor/
-├── agents/
-│   └── advisor-router.md         # Sonnet subagent — task classifier + loadout builder
-│
-├── commands/
-│   ├── advisor.md                # Main recommendation engine
-│   ├── advisor-catalog.md        # Obsidian vault generator
-│   ├── advisor-config.md         # Configuration manager
-│   ├── advisor-feedback.md       # Feedback collector
-│   └── advisor-index.md          # Index rebuilder
-│
-├── hooks/
-│   ├── advisor-nudge.cjs         # UserPromptSubmit hook (<50ms, zero network)
-│   └── hooks.json                # Hook registration
-│
-├── skills/
-│   └── advisor-skill/
-│       └── SKILL.md              # Auto-trigger skill
-│
-├── lib/                          # Core engine
-│   ├── frontmatter.js            # Unified YAML parser (prototype pollution safe)
-│   ├── constants.js              # Centralized tunable parameters (Object.freeze)
-│   ├── text.js                   # Tokenizer + PT-BR/EN synonym bridge
-│   ├── errors.js                 # Structured error handling (AdvisorError + debugLog)
-│   ├── schemas.js                # 8 JSDoc data schemas with validators
-│   ├── build-index.js            # Multi-source scanner → two-tier index
-│   ├── build-embeddings.js       # 384-dim vectors via transformers.js
-│   ├── semantic.js               # Cosine similarity search (pre-computed, no model at runtime)
-│   ├── build-graph.js            # Obsidian vault → adjacency graph
-│   ├── graph-search.js           # BFS traversal + scoring + alias matching
-│   ├── build-catalog.js          # Plugin/skill source scanner for vault generation
-│   └── paths.js                  # Path resolution for all artifacts
-│
-├── vault-skills/                 # 348 Obsidian skill cards
-├── vault-concepts/               # 45 concept notes with backlinks
-├── vault-pipelines/              # 8 pipeline templates
-├── vault-graph/                  # adjacency.json + stats.json
-│
-├── tests/                        # 287 tests, 0 failures
-│   ├── frontmatter.test.js
-│   ├── constants.test.js
-│   ├── text.test.js
-│   ├── errors.test.js
-│   ├── schemas.test.js
-│   ├── graph-search.test.js
-│   ├── semantic.test.js
-│   ├── build-catalog.test.js
-│   ├── build-index.test.js
-│   ├── advisor-nudge.test.js
-│   ├── paths.test.js
-│   └── fixtures/                 # Deterministic test data
-│
-└── plugin.json                   # Plugin manifest
+|
++-- hooks/
+|   +-- advisor-nudge.cjs          # Real-time hook (<50ms, zero network)
+|
++-- commands/                       # 6 slash commands
+|   +-- advisor.md                  # Main recommendation engine
+|   +-- advisor-index.md            # Index + v2 build pipeline
+|   +-- advisor-catalog.md          # Obsidian vault generator
+|   +-- advisor-stats.md            # Analytics + heat map
+|   +-- advisor-feedback.md         # Feedback collector
+|   +-- advisor-config.md           # Configuration
+|
++-- agents/
+|   +-- advisor-router.md           # Sonnet subagent for task classification
+|
++-- lib/                            # 21 modules
+|   +-- paths.js                    # Path resolution (D1: ~/.claude/advisor/)
+|   +-- constants.js                # Frozen config (8 categories, fusion weights)
+|   +-- text.js                     # Tokenizer + PT-BR/EN synonyms
+|   +-- jsonl.js                    # Defensive JSONL reader/writer
+|   +-- frontmatter.js              # YAML frontmatter parser
+|   +-- errors.js                   # Structured error handling
+|   +-- schemas.js                  # Data schema validators
+|   +-- semantic.js                 # Cosine similarity search
+|   +-- graph-search.js             # BFS traversal + scoring
+|   +-- context.js                  # Branch -> category mapping
+|   +-- build-index.js              # Skill/plugin/MCP scanner
+|   +-- build-embeddings.js         # 384-dim vectors (transformers.js)
+|   +-- build-graph.js              # Vault -> adjacency graph
+|   +-- build-catalog.js            # Plugin source scanner
+|   +-- build-affinity.js           # Feedback + telemetry -> scores
+|   +-- build-combos.js             # Sequence pattern discovery
+|   +-- build-discovery.js          # Unused skill candidates
+|   +-- build-replay.js             # Replay candidates
+|   +-- build-collisions.js         # Duplicate skill detection
+|   +-- build-hook-data.js          # Bundle for hook consumption
+|   +-- advisor-stats.js            # Analytics computation
+|
++-- vault-skills/                   # 348 Obsidian skill cards
++-- vault-concepts/                 # 45 concept nodes
++-- vault-pipelines/                # 8 pipeline templates
++-- vault-graph/                    # adjacency.json (401 nodes, 2803 edges)
+|
++-- tests/                          # 424 tests, 0 failures
+|   +-- fixtures/                   # Deterministic test data
+|
++-- ~/.claude/advisor/              # User data (survives reinstalls)
+    +-- feedback.jsonl              # User feedback
+    +-- telemetry.jsonl             # Session telemetry
+    +-- cache/                      # Pre-computed data
+        +-- advisor-affinity.json
+        +-- advisor-combos.json
+        +-- advisor-discovery.json
+        +-- advisor-collisions.json
+        +-- advisor-hook-data.json
+        +-- advisor-replay-candidate.json
 ```
 
----
+### Data flow
 
-## Installation
-
-### From FX Studio AI Marketplace
-
-The plugin is distributed via the **FX Studio AI** marketplace for Claude Code.
-
-### Verify Installation
-
-```bash
-grep "skill-advisor" ~/.claude/settings.json
-# Expected: "skill-advisor@FX-studio-AI": true
 ```
+  SOURCES                    BUILD PIPELINE              RUNTIME
+  (your plugins)             (on /advisor-index)         (on every prompt)
 
-### First-Time Setup
-
-```bash
-/advisor-index          # Build keyword + semantic index (~2 min first run)
-/advisor-catalog        # (Optional) Generate Obsidian vault
+  ~/.claude/skills/    -+
+  ~/.claude/plugins/    |-> build-index ---------> advisor-index-lite.json -+
+  .mcp.json files      |                                                   |
+                       -+-> build-embeddings ----> advisor-embeddings.json -+
+                                                                           |
+                            build-collisions ----> advisor-collisions.json |
+                                                                           |
+  feedback.jsonl --------> build-affinity -------> advisor-affinity.json --+
+  telemetry.jsonl -------> build-combos ---------> advisor-combos.json    |
+                        +-> build-discovery -----> advisor-discovery.json -+
+                        +-> build-replay --------> advisor-replay.json   -+
+                                                                          |
+                            build-hook-data ------> advisor-hook-data.json
+                                                          |
+                                                          v
+                                                   advisor-nudge.cjs
+                                                   (hook, <50ms)
 ```
 
 ---
 
 ## Configuration
 
-### Hook Sensitivity
+### Hook sensitivity
 
-| Value | Behavior |
-|-------|----------|
-| `0.15` | Very sensitive — suggests often |
-| `0.20` | Default — balanced |
-| `0.35` | Conservative — only strong matches |
-| `0.50` | Minimal — near-exact matches only |
+| Threshold | Behavior |
+|-----------|----------|
+| `0.15` | Very sensitive -- suggests often |
+| `0.20` | **Default** -- balanced |
+| `0.35` | Conservative -- strong matches only |
+| `0.50` | Minimal -- near-exact matches only |
 
-```
-/advisor-config threshold 0.25
-```
+### Environment variables
 
-### Environment Variables
-
-```bash
-ADVISOR_ENABLED=true       # Override config to enable hook
-ADVISOR_THRESHOLD=0.35     # Override threshold
-ADVISOR_DEBUG=true         # Enable debug logging to stderr
-```
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `ADVISOR_ENABLED` | (config file) | Override hook on/off |
+| `ADVISOR_THRESHOLD` | `0.20` | Override suggestion threshold |
+| `ADVISOR_BRANCH` | (auto) | Override branch name for context |
+| `ADVISOR_DEBUG` | off | Enable debug logging to stderr |
 
 ---
 
@@ -262,56 +311,48 @@ ADVISOR_DEBUG=true         # Enable debug logging to stderr
 
 | Metric | Target | Actual |
 |--------|--------|--------|
-| Hook latency | <50ms | ~15-30ms |
-| Lite index size | <100KB | 85.6KB |
+| Hook latency | <50ms | ~20-35ms |
+| Lite index size | <100KB | 96.9KB |
 | Semantic search | <20ms | ~15ms |
 | Graph BFS | <10ms | ~5ms |
-| Network calls | 0 | 0 |
-| Test suite | 287 tests | 287 pass, 0 fail |
+| Network calls at runtime | 0 | 0 |
+| Runtime dependencies | 0 | 0 |
+| Tests | -- | 424 pass, 0 fail |
 
 ---
 
 ## Privacy
 
-- All processing runs **locally** on your machine
-- **Zero network calls** at runtime
-- Embeddings model downloaded once (~23MB), cached locally
-- Telemetry is local-only (`lib/advisor-telemetry.jsonl`)
-
----
-
-## Roadmap (v2.0)
-
-Skill Advisor v2.0 evolves from a recommendation engine into a **full orchestration platform**:
-
-- [ ] **6 specialized agents** — router, clarifier, planner, executor, monitor, documenter
-- [ ] **Pluggable embedding adapter** — local MiniLM default, any OpenAI-compatible endpoint
-- [ ] **Enriched vault cards** — workflow details, I/O contracts, composition edges
-- [ ] **Semantic edge materialization** — strong edges at build-time, weak at query-time
-- [ ] **Orchestrated execution** — `--auto` (continuous) or `--gated` (per-phase approval)
-- [ ] **Living pipeline specs** — document generated before, updated during, report after
-- [ ] **Execution memory** — JSONL + vault notes feedback loop that improves recommendations
-
-Full design spec: [`.specs/plans/skill-advisor-v2-orchestration-platform.design.md`](.specs/plans/skill-advisor-v2-orchestration-platform.design.md)
+- **Everything runs locally.** No network calls at runtime, ever.
+- Embedding model downloaded once (~23MB), cached locally.
+- Your feedback and telemetry stay in `~/.claude/advisor/` on your machine.
+- No data leaves your computer.
 
 ---
 
 ## Dependencies
 
-| Package | Purpose | Size |
-|---------|---------|------|
-| `@huggingface/transformers` | Local semantic embeddings | ~23MB (first run) |
-| Node.js >= 18 | Runtime | System |
+| Package | When | Purpose |
+|---------|------|---------|
+| `@huggingface/transformers` | Build-time only | Generate 384-dim embeddings |
+| Node.js >= 18 | Runtime | Built-in test runner, ES features |
 
-No other dependencies. Pure Node.js.
+Zero runtime dependencies. The hook and all commands run on pure Node.js.
 
 ---
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Run tests (`npm test`) — all 287 must pass
+```bash
+git clone https://github.com/fernandoxavier02/skill-advisor.git
+cd skill-advisor
+npm install
+npm test                    # 424 tests must pass
+```
+
+1. Create a feature branch (`git checkout -b feat/my-feature`)
+2. Write tests first (TDD -- `node --test`)
+3. Run `npm test` -- all 424+ must pass
 4. Commit with conventional messages
 5. Open a Pull Request
 
@@ -324,9 +365,7 @@ MIT
 ---
 
 <p align="center">
-  <img src="assets/logo.png" alt="FX Studio AI" width="48" height="48" style="border-radius: 50%;" />
-  <br />
   <strong>Built by <a href="https://github.com/fernandoxavier02">Fernando Xavier</a></strong>
   <br />
-  <a href="https://fxstudioai.com">FX Studio AI</a> — Intelligent AI Tooling
+  <a href="https://fxstudioai.com">FX Studio AI</a>
 </p>
