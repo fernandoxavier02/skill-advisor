@@ -7,7 +7,31 @@ description: Analyze the current task and recommend the optimal combination of s
 
 Analyze the user's task and recommend the best combination of tools.
 
+Supports `--template <name>` flag (F7) to load a saved workflow template.
+
 ## Steps
+
+### 0. Check for --template flag (F7)
+
+If the user's input contains `--template <name>`:
+
+```bash
+ADVISOR_CACHE="$HOME/.claude/advisor/cache"
+WORKFLOWS_FILE="$ADVISOR_CACHE/advisor-workflows.json"
+if [ -f "$WORKFLOWS_FILE" ]; then
+  echo "WORKFLOWS_FOUND"
+  cat "$WORKFLOWS_FILE"
+else
+  echo "NO_WORKFLOWS"
+fi
+```
+
+If `WORKFLOWS_FOUND` and the template name exists in the JSON:
+- Load the template's skill list directly as the loadout
+- Skip steps 2-4 (no routing needed) and go directly to step 5 (dry-run)
+- Mark as `decision: "template"` in telemetry
+
+If the template name is not found: tell the user "Template 'NAME' nao encontrado. Templates disponiveis: LIST. Rode /advisor sem --template para recomendacao automatica."
 
 ### 1. Load the full index
 
@@ -67,10 +91,14 @@ Format the router's recommendation as a visual dry-run:
 │                                         │
 │  1. /skill-name  [category]  ~Xmin      │
 │     → what it does                      │
+│     score: 0.85 (semantic:0.9 kw:0.7    │
+│            graph:0.6 affinity:+0.1      │
+│            context:+0.1)                │
 │     depends on: (none or #N)            │
 │                                         │
 │  2. /next-skill  [category]  ~Xmin      │
 │     → what it does                      │
+│     score: 0.72 (semantic:0.8 kw:0.5)   │
 │     depends on: #1                      │
 │                                         │
 │  Excluded: /skill (reason)              │
@@ -79,6 +107,12 @@ Format the router's recommendation as a visual dry-run:
 │  Risk: low/medium/high                  │
 └─────────────────────────────────────────┘
 ```
+
+**F1.3 Score Explainer:** For each skill in the loadout, show the score breakdown:
+- Contributing search layers (semantic, keyword, graph) with individual scores
+- Affinity boost (if any, from execution history)
+- Context boost (if any, from branch category match)
+- Top matched terms (from keyword layer)
 
 ### 6. User Approval Gate (MANDATORY — inline execution)
 
