@@ -372,6 +372,91 @@
         "skill:docs-write-concisely"
       ]
     },
+    "concept:automation": {
+      "type": "concept",
+      "name": "automation",
+      "aliases": [
+        "automation",
+        "automacao",
+        "automatizacao",
+        "ci-cd",
+        "workflow-automation"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:advisor-gate",
+        "skill:agents",
+        "skill:cc-agent",
+        "skill:cc-context",
+        "skill:cc-hooks",
+        "skill:cc-mcp",
+        "skill:cc-prompt",
+        "skill:cc-security",
+        "skill:cc-setup",
+        "skill:cc-skill",
+        "skill:cc",
+        "skill:customaize-agent-create-agent",
+        "skill:customaize-agent-create-command",
+        "skill:customaize-agent-create-hook",
+        "skill:customaize-agent-create-skill",
+        "skill:customaize-agent-create-workflow-command",
+        "skill:ddd-setup-code-formating",
+        "skill:example-workflow",
+        "skill:figma",
+        "skill:fpf-actualize",
+        "skill:fpf-reset",
+        "skill:get-qodo-rules",
+        "skill:git-attach-review-to-pr",
+        "skill:git-create-worktree",
+        "skill:git-load-issues",
+        "skill:git-merge-worktree",
+        "skill:git-worktrees",
+        "skill:github",
+        "skill:gstack-openclaw-retro",
+        "skill:huggingface-tool-builder",
+        "skill:mcp-build-mcp",
+        "skill:mcp-setup-arxiv-mcp",
+        "skill:mcp-setup-serena-mcp",
+        "skill:open-gstack-browser",
+        "skill:pair-agent",
+        "skill:qodo-get-rules",
+        "skill:reflexion-memorize",
+        "skill:remotion-best-practices",
+        "skill:sadd-do-and-judge",
+        "skill:sadd-do-in-parallel",
+        "skill:sadd-judge",
+        "skill:sadd-launch-sub-agent",
+        "skill:sadd-subagent-driven-development",
+        "skill:tdd-write-tests",
+        "skill:test-command"
+      ]
+    },
+    "concept:bug-fixing": {
+      "type": "concept",
+      "name": "bug-fixing",
+      "aliases": [
+        "bug-fixing",
+        "correcao-de-bugs",
+        "fix-bugs",
+        "resolver-bugs",
+        "bug-fix",
+        "hotfix",
+        "corrigir-erro",
+        "fix-error",
+        "debug-fix",
+        "patch-bug"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:gstack-openclaw-investigate",
+        "skill:tdd-fix-tests",
+        "skill:kaizen-why",
+        "skill:kaizen-cause-and-effect",
+        "skill:kaizen-root-cause-tracing",
+        "skill:reflexion-reflect",
+        "skill:systematic-debugging"
+      ]
+    },
     "concept:clarity-patterns": {
       "type": "concept",
       "name": "clarity-patterns",
@@ -606,7 +691,8 @@
         "skill:vue-expert",
         "skill:webapp-testing",
         "skill:websocket-engineer",
-        "skill:xlsx"
+        "skill:xlsx",
+        "concept:kiro-complexity"
       ]
     },
     "concept:decision-lifecycle": {
@@ -1259,14 +1345,30 @@
       "aliases": [
         "frontend-frameworks",
         "frameworks-frontend",
-        "frontend frameworks"
+        "react",
+        "vue",
+        "angular",
+        "svelte",
+        "nextjs",
+        "frontend",
+        "front-end",
+        "ui-frameworks",
+        "web-frameworks",
+        "spa",
+        "single-page-app",
+        "componentes-ui",
+        "react-hooks",
+        "jsx",
+        "tsx"
       ],
       "domain": [],
       "edges": [
-        "skill:algorithmic-art",
-        "skill:brainstorm",
-        "skill:execute-plan",
-        "skill:write-plan"
+        "skill:frontend-design",
+        "skill:design-html",
+        "skill:design-review",
+        "skill:design-consultation",
+        "skill:playground",
+        "skill:remotion-best-practices"
       ]
     },
     "concept:governance-actions": {
@@ -1323,6 +1425,30 @@
         "skill:fpf-decay"
       ]
     },
+    "concept:kiro-complexity": {
+      "type": "concept",
+      "name": "kiro-complexity",
+      "aliases": [
+        "complexidade-kiro",
+        "kiro-complexity",
+        "simples-media-complexa",
+        "pipeline-complexity",
+        "classificacao-complexidade"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:document-release",
+        "skill:grill-me",
+        "skill:plan-eng-review",
+        "skill:plan-ceo-review",
+        "skill:executing-plans",
+        "skill:writing-plans",
+        "skill:autoplan",
+        "skill:sdd-plan",
+        "pipeline:analysis-context-pipeline",
+        "concept:debugging"
+      ]
+    },
     "concept:knowledge-base-maintenance": {
       "type": "concept",
       "name": "knowledge-base-maintenance",
@@ -1347,6 +1473,150 @@
       "domain": [],
       "edges": [
         "skill:fpf-query"
+      ]
+    },
+    "concept:observability": {
+      "type": "concept",
+      "name": "observability",
+      "aliases": [
+        "observability",
+        "observabilidade",
+        "monitoring",
+        "monitoramento",
+        "logging",
+        "tracing"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:cc-audit",
+        "skill:cc-context",
+        "skill:cc-hooks",
+        "skill:customaize-agent-agent-evaluation",
+        "skill:firebase-cli",
+        "skill:firebase",
+        "skill:fpf-actualize",
+        "skill:fpf-decay",
+        "skill:fpf-status",
+        "skill:gstack-openclaw-investigate",
+        "skill:gstack-openclaw-retro",
+        "skill:kaizen-analyse",
+        "skill:kaizen-root-cause-tracing",
+        "skill:mcp-setup-codemap-cli",
+        "skill:search-conversations"
+      ]
+    },
+    "concept:planning": {
+      "type": "concept",
+      "name": "planning",
+      "aliases": [
+        "planning",
+        "planejamento",
+        "planejar",
+        "design-planning",
+        "spec-planning"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:rhema v1 launch closeout",
+        "skill:advisor-gate",
+        "skill:cc-agent",
+        "skill:cc-prompt",
+        "skill:cc-skill",
+        "skill:code-architect",
+        "skill:customaize-agent-create-workflow-command",
+        "skill:customaize-agent-thought-based-reasoning",
+        "skill:example-workflow",
+        "skill:fpf-decay",
+        "skill:fpf-query",
+        "skill:fpf-status",
+        "skill:git-load-issues",
+        "skill:gstack-openclaw-ceo-review",
+        "skill:gstack-openclaw-office-hours",
+        "skill:gstack-openclaw-retro",
+        "skill:kaizen-analyse-problem",
+        "skill:kaizen-plan-do-check-act",
+        "skill:remembering-conversations",
+        "skill:sadd-judge-with-debate",
+        "skill:sadd-tree-of-thoughts",
+        "skill:sdd-add-task",
+        "skill:sdd-create-ideas",
+        "skill:sdd-plan",
+        "skill:search-conversations",
+        "skill:writing-clearly-and-concisely"
+      ]
+    },
+    "concept:quality": {
+      "type": "concept",
+      "name": "quality",
+      "aliases": [
+        "quality",
+        "qualidade",
+        "code-quality",
+        "qualidade-de-codigo",
+        "qa",
+        "garantia-qualidade"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:rhema v1 launch closeout",
+        "skill:advisor-gate",
+        "skill:cc-audit",
+        "skill:cc-context",
+        "skill:cc-prompt",
+        "skill:cc-security",
+        "skill:code-architect",
+        "skill:code-review-review-pr",
+        "skill:customaize-agent-agent-evaluation",
+        "skill:customaize-agent-apply-anthropic-skill-best-practices",
+        "skill:customaize-agent-create-agent",
+        "skill:customaize-agent-create-hook",
+        "skill:customaize-agent-prompt-engineering",
+        "skill:customaize-agent-test-skill",
+        "skill:customaize-agent-thought-based-reasoning",
+        "skill:ddd-setup-code-formating",
+        "skill:docs-write-concisely",
+        "skill:figma",
+        "skill:fpf-actualize",
+        "skill:fpf-decay",
+        "skill:fpf-query",
+        "skill:fpf-reset",
+        "skill:get-qodo-rules",
+        "skill:git-attach-review-to-pr",
+        "skill:git-commit",
+        "skill:git-compare-worktrees",
+        "skill:git-merge-worktree",
+        "skill:gstack-openclaw-ceo-review",
+        "skill:gstack-openclaw-investigate",
+        "skill:gstack-openclaw-office-hours",
+        "skill:gstack-openclaw-retro",
+        "skill:kaizen-analyse-problem",
+        "skill:kaizen-analyse",
+        "skill:kaizen-kaizen",
+        "skill:kaizen-plan-do-check-act",
+        "skill:qodo-get-rules",
+        "skill:qodo-pr-resolver",
+        "skill:reflexion-critique",
+        "skill:reflexion-memorize",
+        "skill:remotion-best-practices",
+        "skill:sadd-do-and-judge",
+        "skill:sadd-do-competitively",
+        "skill:sadd-do-in-parallel",
+        "skill:sadd-judge-with-debate",
+        "skill:sadd-judge",
+        "skill:sadd-launch-sub-agent",
+        "skill:sadd-subagent-driven-development",
+        "skill:sadd-tree-of-thoughts",
+        "skill:sdd-add-task",
+        "skill:sdd-create-ideas",
+        "skill:sdd-implement",
+        "skill:sdd-plan",
+        "skill:stripe-best-practices",
+        "skill:tdd-test-driven-development",
+        "skill:tdd-write-tests",
+        "skill:tech-stack-add-typescript-best-practices",
+        "skill:test-agent",
+        "skill:test-command",
+        "skill:writing-clearly-and-concisely"
       ]
     },
     "concept:refresh-priorities": {
@@ -1688,6 +1958,28 @@
         "skill:writing-skills"
       ]
     },
+    "concept:tooling": {
+      "type": "concept",
+      "name": "tooling",
+      "aliases": [
+        "tooling",
+        "ferramentas",
+        "developer-tools",
+        "dev-tools",
+        "ferramentas-dev"
+      ],
+      "domain": [],
+      "edges": [
+        "skill:agents",
+        "skill:cc-expert-router",
+        "skill:cc",
+        "skill:git-create-worktree",
+        "skill:git-worktrees",
+        "skill:github",
+        "skill:mcp-setup-serena-mcp",
+        "skill:open-gstack-browser"
+      ]
+    },
     "concept:trust-calculus": {
       "type": "concept",
       "name": "trust-calculus",
@@ -1935,6 +2227,40 @@
         "skill:xlsx"
       ]
     },
+    "skill:rhema v1 launch closeout": {
+      "type": "skill",
+      "name": "rhema v1 launch closeout",
+      "aliases": [
+        "Rhema V1 Launch Closeout",
+        "rhema-v1-closeout",
+        "rhema-v1-launch",
+        "fechamento-lancamento-v1",
+        "rhema-gaps",
+        "v1-master-plan"
+      ],
+      "invocation": "/Rhema V1 Launch Closeout",
+      "category": "implementation",
+      "inputs": [
+        "\"RHEMA_V1_MASTER_PLAN.md Section 15 gap list\"",
+        "\"codebase file paths\"",
+        "\"type contracts\""
+      ],
+      "outputs": [
+        "\"gap implementation code\"",
+        "\"updated type contracts\"",
+        "\"file-level fixes for 8 identified gaps\""
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "concept:deployment",
+        "skill:sdd-implement",
+        "skill:tdd-fix-tests",
+        "skill:git-create-pr"
+      ]
+    },
     "skill:a11y-debugging": {
       "type": "skill",
       "name": "a11y-debugging",
@@ -2080,6 +2406,39 @@
         "concept:ai-ml",
         "concept:version-control",
         "concept:extensibility"
+      ]
+    },
+    "skill:advisor-gate": {
+      "type": "skill",
+      "name": "advisor-gate",
+      "aliases": [
+        "advisor-gate",
+        "gate-advisor",
+        "portao-advisor",
+        "skill-gate",
+        "advisor-approval",
+        "aprovacao-advisor",
+        "loadout-gate"
+      ],
+      "invocation": "/advisor-gate",
+      "category": "planning",
+      "inputs": [
+        "\"advisor loadout proposal\"",
+        "\"skill list with rationale\""
+      ],
+      "outputs": [
+        "\"user approval decision (Sim/Nao/Alterar/Sugerir)\"",
+        "\"approved skill loadout\"",
+        "\"gate enforcement log\""
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:planning",
+        "concept:quality",
+        "concept:automation",
+        "skill:advisor-router",
+        "skill:advisor-catalog",
+        "skill:advisor-auto"
       ]
     },
     "skill:advisor-index": {
@@ -2237,49 +2596,53 @@
       "name": "agent-development",
       "aliases": [
         "agent-development",
-        "agent-development"
+        "create-agent",
+        "subagent",
+        "desenvolvimento-agente"
       ],
       "invocation": "/agent-development",
-      "category": "quality",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "agent requirements",
+        "persona definition"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "agent code",
+        "configuration"
       ],
-      "estimated_tokens": "medium",
-      "edges": [
-        "concept:security",
-        "concept:testing",
-        "concept:design",
-        "concept:ai-ml"
-      ]
+      "estimated_tokens": "large",
+      "edges": []
     },
     "skill:agents": {
       "type": "skill",
       "name": "agents",
       "aliases": [
         "AGENTS",
-        "agents"
+        "agentes",
+        "huggingface-agents",
+        "agentes-huggingface",
+        "hf-agents"
       ],
       "invocation": "/AGENTS",
-      "category": "documentation",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "task description",
+        "HuggingFace model references",
+        "agent configuration"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "agent execution results",
+        "model inference outputs",
+        "HuggingFace pipeline results"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:automation",
+        "concept:architecture",
+        "concept:tooling",
+        "skill:huggingface-datasets",
+        "skill:huggingface-gradio",
+        "skill:prompt-engineer"
       ]
     },
     "skill:ai-architect": {
@@ -2412,24 +2775,24 @@
       "name": "analisar-obz",
       "aliases": [
         "analisar-obz",
-        "analisar-obz"
+        "obz-analysis",
+        "analise-obz",
+        "ler-planilha-obz"
       ],
       "invocation": "/analisar-obz",
-      "category": "planning",
+      "category": "data",
       "inputs": [
-        "codebase",
-        "user-request"
+        "OBZ file"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "analysis results",
+        "diagnostics"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture",
-        "concept:extensibility"
+        "skill:gerar-proposta-bpo",
+        "skill:mapear-slide",
+        "skill:investigate"
       ]
     },
     "skill:analyzer": {
@@ -2977,6 +3340,388 @@
         "concept:version-control"
       ]
     },
+    "skill:cc-agent": {
+      "type": "skill",
+      "name": "cc-agent",
+      "aliases": [
+        "cc-agent",
+        "agente-claude-code",
+        "claude-code-agent",
+        "configurar-agente",
+        "agent-design",
+        "agent-configuration"
+      ],
+      "invocation": "/cc-agent",
+      "category": "implementation",
+      "inputs": [
+        "agent requirements description",
+        "target use case",
+        "worktree configuration needs",
+        "headless mode preferences"
+      ],
+      "outputs": [
+        "agent configuration files",
+        "subagent definitions",
+        "team orchestration setup",
+        "worktree configurations"
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:architecture",
+        "concept:automation",
+        "concept:planning",
+        "skill:cc-hooks",
+        "skill:cc-setup",
+        "skill:customaize-agent-create-agent"
+      ]
+    },
+    "skill:cc-audit": {
+      "type": "skill",
+      "name": "cc-audit",
+      "aliases": [
+        "cc-audit",
+        "auditoria-cc",
+        "claude-code-audit",
+        "audit-context",
+        "auditoria-contexto",
+        "cc-toolkit-audit"
+      ],
+      "invocation": "/cc-audit",
+      "category": "quality",
+      "inputs": [
+        "\"project root directory\"",
+        "\"CLAUDE.md and context files\"",
+        "\".claude/ directory structure\""
+      ],
+      "outputs": [
+        "\"consistency report across context files\"",
+        "\"completeness assessment\"",
+        "\"quality score with actionable recommendations\"",
+        "\"list of conflicts and gaps\""
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:quality",
+        "concept:documentation",
+        "skill:observability",
+        "skill:revise-claude-md",
+        "skill:cc-skill",
+        "skill:cc-mcp"
+      ]
+    },
+    "skill:cc-context": {
+      "type": "skill",
+      "name": "cc-context",
+      "aliases": [
+        "cc-context",
+        "claude-code-context",
+        "contexto-claude-code",
+        "context-diagnostics",
+        "compaction-fix",
+        "context-window",
+        "gerenciamento-contexto"
+      ],
+      "invocation": "/cc-context",
+      "category": "utility",
+      "inputs": [
+        "\"Claude Code project path\"",
+        "\"symptoms (compaction issues",
+        "missing rules",
+        "stale memory)\""
+      ],
+      "outputs": [
+        "\"context diagnosis report\"",
+        "\"fix recommendations\"",
+        "\"updated context files\"",
+        "\"compaction strategy\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:automation",
+        "concept:quality",
+        "concept:architecture",
+        "skill:observability",
+        "skill:cc-prompt",
+        "skill:customaize-agent-create-rule",
+        "skill:reflexion-reflect"
+      ]
+    },
+    "skill:cc-expert-router": {
+      "type": "skill",
+      "name": "cc-expert-router",
+      "aliases": [
+        "cc-expert-router",
+        "roteador-especialista-cc",
+        "claude-code-expert",
+        "especialista-claude-code",
+        "cc-help",
+        "ajuda-claude-code"
+      ],
+      "invocation": "/cc-expert-router",
+      "category": "utility",
+      "inputs": [
+        "question about Claude Code setup",
+        "hooks",
+        "MCP",
+        "permissions",
+        "agents",
+        "skills",
+        "prompts",
+        "or context"
+      ],
+      "outputs": [
+        "expert answer about Claude Code internals",
+        "configuration guidance",
+        "best practices"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:tooling",
+        "concept:architecture",
+        "concept:security",
+        "skill:cc",
+        "skill:cc-security",
+        "skill:customaize-agent-create-skill"
+      ]
+    },
+    "skill:cc-hooks": {
+      "type": "skill",
+      "name": "cc-hooks",
+      "aliases": [
+        "cc-hooks",
+        "hooks-claude-code",
+        "claude-code-hooks",
+        "criar-hook",
+        "configurar-hooks",
+        "hook-debug"
+      ],
+      "invocation": "/cc-hooks",
+      "category": "implementation",
+      "inputs": [
+        "hook type (PreToolUse/PostToolUse/SessionStart/Stop/Notification)",
+        "trigger conditions",
+        "hook logic requirements"
+      ],
+      "outputs": [
+        "hook configuration files",
+        "hook scripts (JS/shell)",
+        "debugging output",
+        "optimized hook chains"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:automation",
+        "skill:observability",
+        "concept:security",
+        "skill:cc-agent",
+        "skill:cc-setup",
+        "skill:customaize-agent-create-hook"
+      ]
+    },
+    "skill:cc-mcp": {
+      "type": "skill",
+      "name": "cc-mcp",
+      "aliases": [
+        "cc-mcp",
+        "mcp-config",
+        "configurar-mcp",
+        "mcp-setup",
+        "cc-toolkit-mcp",
+        "mcp-diagnostico"
+      ],
+      "invocation": "/cc-mcp",
+      "category": "utility",
+      "inputs": [
+        "\"MCP server name or URL\"",
+        "\"current .claude/settings.json\"",
+        "\"desired MCP capabilities\""
+      ],
+      "outputs": [
+        "\"configured MCP server entry in settings\"",
+        "\"diagnostic report for MCP issues\"",
+        "\"optimized MCP configuration\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:automation",
+        "concept:architecture",
+        "concept:debugging",
+        "skill:cc-audit",
+        "skill:mcp-builder",
+        "skill:cc-skill"
+      ]
+    },
+    "skill:cc-prompt": {
+      "type": "skill",
+      "name": "cc-prompt",
+      "aliases": [
+        "cc-prompt",
+        "claude-code-prompt",
+        "otimizar-prompt",
+        "prompt-optimization",
+        "claude-api-config",
+        "configuracao-prompt"
+      ],
+      "invocation": "/cc-prompt",
+      "category": "utility",
+      "inputs": [
+        "\"current prompt or instruction text\"",
+        "\"target use case (tool use",
+        "vision",
+        "thinking",
+        "caching)\"",
+        "\"model preference\""
+      ],
+      "outputs": [
+        "\"optimized prompt\"",
+        "\"API configuration recommendations\"",
+        "\"model selection guidance\"",
+        "\"prompt caching strategy\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:quality",
+        "concept:automation",
+        "concept:architecture",
+        "concept:planning",
+        "skill:cc-context",
+        "skill:customaize-agent-test-prompt",
+        "skill:customaize-agent-context-engineering"
+      ]
+    },
+    "skill:cc-security": {
+      "type": "skill",
+      "name": "cc-security",
+      "aliases": [
+        "cc-security",
+        "seguranca-cc",
+        "claude-code-security",
+        "seguranca-claude-code",
+        "cc-permissions",
+        "permissoes-cc"
+      ],
+      "invocation": "/cc-security",
+      "category": "quality",
+      "inputs": [
+        "current Claude Code permissions config",
+        "security requirements",
+        "sandbox mode preferences"
+      ],
+      "outputs": [
+        "configured permissions settings",
+        "allow/deny rules",
+        "security audit report",
+        "sandbox configuration"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:security",
+        "concept:quality",
+        "concept:automation",
+        "skill:cc-expert-router",
+        "skill:security-auditor",
+        "skill:cc"
+      ]
+    },
+    "skill:cc-setup": {
+      "type": "skill",
+      "name": "cc-setup",
+      "aliases": [
+        "cc-setup",
+        "setup-claude-code",
+        "instalar-claude-code",
+        "configurar-claude-code",
+        "claude-code-setup",
+        "claude-code-install"
+      ],
+      "invocation": "/cc-setup",
+      "category": "utility",
+      "inputs": [
+        "target environment (CLI/desktop/VS Code/JetBrains)",
+        "current OS",
+        "existing configuration"
+      ],
+      "outputs": [
+        "installed Claude Code CLI",
+        "configured IDE integration",
+        "troubleshooting report",
+        "environment validation"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:deployment",
+        "concept:debugging",
+        "concept:automation",
+        "skill:cc-agent",
+        "skill:cc-hooks",
+        "skill:plugin-settings"
+      ]
+    },
+    "skill:cc-skill": {
+      "type": "skill",
+      "name": "cc-skill",
+      "aliases": [
+        "cc-skill",
+        "criar-skill",
+        "create-skill-cc",
+        "cc-toolkit-skill",
+        "skill-creator-cc",
+        "criar-comando"
+      ],
+      "invocation": "/cc-skill",
+      "category": "utility",
+      "inputs": [
+        "\"skill name and description\"",
+        "\"desired behavior and workflow\"",
+        "\"target project context\""
+      ],
+      "outputs": [
+        "\"skill markdown file in .claude/commands/\"",
+        "\"validated skill structure\"",
+        "\"skill metadata and invocation instructions\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:automation",
+        "concept:documentation",
+        "concept:planning",
+        "skill:cc-audit",
+        "skill:customaize-agent-create-skill",
+        "skill:skill-reviewer"
+      ]
+    },
+    "skill:cc": {
+      "type": "skill",
+      "name": "cc",
+      "aliases": [
+        "cc",
+        "cc-toolkit",
+        "claude-code-toolkit",
+        "kit-claude-code",
+        "ferramenta-claude-code",
+        "swiss-army-knife"
+      ],
+      "invocation": "/cc",
+      "category": "utility",
+      "inputs": [
+        "user query about Claude Code capabilities",
+        "help request"
+      ],
+      "outputs": [
+        "routed skill invocation",
+        "interactive triage menu",
+        "skill recommendation"
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:tooling",
+        "concept:automation",
+        "concept:documentation",
+        "skill:cc-expert-router",
+        "skill:cc-security",
+        "skill:help"
+      ]
+    },
     "skill:chaos-engineer": {
       "type": "skill",
       "name": "chaos-engineer",
@@ -3202,6 +3947,39 @@
         "concept:ai-ml"
       ]
     },
+    "skill:code-architect": {
+      "type": "skill",
+      "name": "code-architect",
+      "aliases": [
+        "code-architect",
+        "arquiteto-de-codigo",
+        "feature-architect",
+        "architecture-designer-code",
+        "design-feature"
+      ],
+      "invocation": "/code-architect",
+      "category": "planning",
+      "inputs": [
+        "\"feature requirements or user story\"",
+        "\"existing codebase\"",
+        "\"project conventions and patterns\""
+      ],
+      "outputs": [
+        "\"architecture design document\"",
+        "\"implementation plan with file mappings\"",
+        "\"component interaction diagrams\"",
+        "\"convention-aligned code structure\""
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:architecture",
+        "concept:planning",
+        "concept:quality",
+        "skill:write-plan",
+        "skill:execute-plan",
+        "skill:gstack-openclaw-ceo-review"
+      ]
+    },
     "skill:code-documenter": {
       "type": "skill",
       "name": "code-documenter",
@@ -3282,24 +4060,33 @@
       "name": "code-review-review-pr",
       "aliases": [
         "code-review:review-pr",
-        "code-review-review-pr"
+        "review-pr",
+        "revisao-pr",
+        "revisao-pull-request",
+        "revisar-pr",
+        "pr-review"
       ],
       "invocation": "/code-review:review-pr",
       "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "pull request URL or number",
+        "repository context",
+        "review criteria"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "comprehensive PR review report",
+        "line-specific comments",
+        "approval/change-request recommendation"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
+        "concept:quality",
         "concept:security",
-        "concept:version-control",
-        "concept:code-quality",
-        "concept:architecture"
+        "concept:testing",
+        "concept:architecture",
+        "skill:git-attach-review-to-pr",
+        "skill:code-review-review-local-changes",
+        "skill:tdd-test-driven-development"
       ]
     },
     "skill:code-reviewer": {
@@ -3382,25 +4169,22 @@
       "name": "command-development",
       "aliases": [
         "command-development",
-        "command-development"
+        "create-command",
+        "custom-command",
+        "desenvolvimento-comando"
       ],
       "invocation": "/command-development",
       "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "command requirements",
+        "use cases"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "command code",
+        "configuration"
       ],
       "estimated_tokens": "medium",
-      "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:extensibility"
-      ]
+      "edges": []
     },
     "skill:comparator": {
       "type": "skill",
@@ -3656,50 +4440,68 @@
       "type": "skill",
       "name": "customaize-agent-agent-evaluation",
       "aliases": [
-        "customaize-agent:agent-evaluation",
-        "customaize-agent-agent-evaluation"
+        "customaize-agent-agent-evaluation",
+        "avaliacao-agente",
+        "agent-evaluation",
+        "avaliar-agente",
+        "evaluate-agent",
+        "prompt-evaluation",
+        "customaize-agent:agent-evaluation"
       ],
       "invocation": "/customaize-agent:agent-evaluation",
       "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "Claude Code command/skill/agent definition",
+        "test cases",
+        "context engineering patterns",
+        "expected outputs"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "effectiveness evaluation report",
+        "context utilization analysis",
+        "improvement recommendations",
+        "validation results"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
+        "concept:quality",
         "concept:testing",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:observability",
+        "skill:customaize-agent-create-command",
+        "skill:customaize-agent-create-skill",
+        "skill:customaize-agent-test-skill"
       ]
     },
     "skill:customaize-agent-apply-anthropic-skill-best-practices": {
       "type": "skill",
       "name": "customaize-agent-apply-anthropic-skill-best-practices",
       "aliases": [
-        "customaize-agent:apply-anthropic-skill-best-practices",
-        "customaize-agent-apply-anthropic-skill-best-practices"
+        "customaize-agent-apply-anthropic-skill-best-practices",
+        "apply-anthropic-best-practices",
+        "boas-praticas-anthropic",
+        "anthropic-skill-guide",
+        "melhores-praticas-skill-anthropic"
       ],
       "invocation": "/customaize-agent:apply-anthropic-skill-best-practices",
-      "category": "quality",
+      "category": "documentation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"skill file or skill draft\"",
+        "\"desired skill behavior\"",
+        "\"Anthropic best practices reference\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"skill file aligned with Anthropic official best practices\"",
+        "\"recommendations for complex skill patterns\"",
+        "\"validated skill structure\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:security",
-        "concept:testing",
-        "concept:design",
-        "concept:ai-ml"
+        "concept:documentation",
+        "concept:quality",
+        "concept:architecture",
+        "skill:cc-skill",
+        "skill:customaize-agent-create-skill",
+        "skill:skill-reviewer"
       ]
     },
     "skill:customaize-agent-context-engineering": {
@@ -3732,74 +4534,104 @@
       "name": "customaize-agent-create-agent",
       "aliases": [
         "customaize-agent:create-agent",
-        "customaize-agent-create-agent"
+        "create-agent",
+        "criar-agente",
+        "criador-de-agente",
+        "agent-creator",
+        "criacao-de-agente"
       ],
       "invocation": "/customaize-agent:create-agent",
-      "category": "documentation",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "agent purpose description",
+        "triggering conditions",
+        "desired capabilities",
+        "validation requirements"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "agent definition file",
+        "system prompt",
+        "triggering conditions config",
+        "validation rules"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:architecture",
+        "concept:automation",
+        "concept:quality",
+        "skill:customaize-agent-create-skill",
+        "skill:customaize-agent-test-skill",
+        "skill:customaize-agent-create-hook"
       ]
     },
     "skill:customaize-agent-create-command": {
       "type": "skill",
       "name": "customaize-agent-create-command",
       "aliases": [
-        "customaize-agent:create-command",
-        "customaize-agent-create-command"
+        "customaize-agent-create-command",
+        "criar-comando",
+        "create-command",
+        "novo-comando",
+        "command-creation",
+        "customaize-agent:create-command"
       ],
       "invocation": "/customaize-agent:create-command",
-      "category": "quality",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "command purpose description",
+        "target MCP tools",
+        "input/output requirements",
+        "execution pattern"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "command markdown file",
+        "proper command structure",
+        "MCP tool integration",
+        "usage examples"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:automation",
+        "concept:architecture",
+        "concept:documentation",
+        "skill:customaize-agent-agent-evaluation",
+        "skill:customaize-agent-create-workflow-command",
+        "skill:customaize-agent-test-prompt"
       ]
     },
     "skill:customaize-agent-create-hook": {
       "type": "skill",
       "name": "customaize-agent-create-hook",
       "aliases": [
-        "customaize-agent:create-hook",
-        "customaize-agent-create-hook"
+        "customaize-agent-create-hook",
+        "criar-hook",
+        "create-git-hook",
+        "create-hook",
+        "hook-inteligente",
+        "criar-hook-git"
       ],
       "invocation": "/customaize-agent:create-hook",
-      "category": "debugging",
+      "category": "automation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"project directory\"",
+        "\"desired hook behavior\"",
+        "\"hook type (pre-commit",
+        "post-commit",
+        "etc.)\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"configured git hook file\"",
+        "\"hook test results\"",
+        "\"project-specific hook suggestions\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:debugging",
-        "concept:security",
+        "concept:automation",
+        "concept:quality",
         "concept:testing",
-        "concept:design"
+        "skill:git-commit",
+        "skill:tdd-write-tests",
+        "skill:customaize-agent-create-rule"
       ]
     },
     "skill:customaize-agent-create-rule": {
@@ -3832,74 +4664,106 @@
       "name": "customaize-agent-create-skill",
       "aliases": [
         "customaize-agent:create-skill",
-        "customaize-agent-create-skill"
+        "create-skill",
+        "criar-skill",
+        "criador-de-skill",
+        "skill-creator-guide",
+        "criacao-de-skill"
       ],
       "invocation": "/customaize-agent:create-skill",
-      "category": "deployment",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "skill purpose description",
+        "input/output requirements",
+        "workflow steps",
+        "existing skill examples"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "skill definition markdown file",
+        "invocation configuration",
+        "input/output schema",
+        "workflow instructions"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:security",
-        "concept:testing",
-        "concept:deployment",
-        "concept:design"
+        "concept:automation",
+        "concept:architecture",
+        "concept:documentation",
+        "skill:customaize-agent-test-skill",
+        "skill:customaize-agent-create-agent",
+        "skill:skill-development"
       ]
     },
     "skill:customaize-agent-create-workflow-command": {
       "type": "skill",
       "name": "customaize-agent-create-workflow-command",
       "aliases": [
-        "customaize-agent:create-workflow-command",
-        "customaize-agent-create-workflow-command"
+        "customaize-agent-create-workflow-command",
+        "criar-workflow",
+        "create-workflow",
+        "workflow-command",
+        "comando-workflow",
+        "orquestrar-agentes",
+        "customaize-agent:create-workflow-command"
       ],
       "invocation": "/customaize-agent:create-workflow-command",
-      "category": "planning",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "workflow steps description",
+        "sub-agent definitions",
+        "file-based task prompts",
+        "orchestration requirements"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "workflow command file",
+        "sub-agent task prompt files",
+        "orchestration configuration",
+        "execution flow definition"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:ai-ml",
-        "concept:version-control",
+        "concept:automation",
         "concept:architecture",
-        "concept:extensibility"
+        "concept:planning",
+        "skill:customaize-agent-create-command",
+        "skill:cc-agent",
+        "skill:sadd-do-in-steps"
       ]
     },
     "skill:customaize-agent-prompt-engineering": {
       "type": "skill",
       "name": "customaize-agent-prompt-engineering",
       "aliases": [
-        "customaize-agent:prompt-engineering",
-        "customaize-agent-prompt-engineering"
+        "customaize-agent-prompt-engineering",
+        "engenharia-de-prompt",
+        "prompt-engineering",
+        "prompt-craft",
+        "otimizar-prompt",
+        "engenharia-prompt"
       ],
       "invocation": "/customaize-agent:prompt-engineering",
-      "category": "debugging",
+      "category": "documentation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"target prompt or skill file\"",
+        "\"desired LLM behavior\"",
+        "\"context about the use case (commands",
+        "hooks",
+        "skills",
+        "sub-agents)\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"optimized prompt with clear structure\"",
+        "\"prompt engineering recommendations\"",
+        "\"validated prompt for LLM interactions\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:debugging",
-        "concept:security",
-        "concept:deployment",
-        "concept:design"
+        "concept:documentation",
+        "concept:quality",
+        "concept:architecture",
+        "skill:customaize-agent-create-skill",
+        "skill:customaize-agent-create-agent",
+        "skill:customaize-agent-apply-anthropic-skill-best-practices"
       ]
     },
     "skill:customaize-agent-test-prompt": {
@@ -3932,49 +4796,67 @@
       "name": "customaize-agent-test-skill",
       "aliases": [
         "customaize-agent:test-skill",
-        "customaize-agent-test-skill"
+        "test-skill",
+        "testar-skill",
+        "teste-de-skill",
+        "skill-tester",
+        "verificar-skill"
       ],
       "invocation": "/customaize-agent:test-skill",
-      "category": "deployment",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "skill definition file",
+        "test scenarios",
+        "edge cases to verify"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "test results report",
+        "rationalization resistance assessment",
+        "failure scenarios",
+        "improvement recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
         "concept:testing",
-        "concept:deployment",
-        "concept:design",
-        "concept:ai-ml"
+        "concept:quality",
+        "concept:debugging",
+        "skill:customaize-agent-create-skill",
+        "skill:customaize-agent-create-agent",
+        "skill:qa"
       ]
     },
     "skill:customaize-agent-thought-based-reasoning": {
       "type": "skill",
       "name": "customaize-agent-thought-based-reasoning",
       "aliases": [
-        "customaize-agent:thought-based-reasoning",
-        "customaize-agent-thought-based-reasoning"
+        "customaize-agent-thought-based-reasoning",
+        "raciocinio-passo-a-passo",
+        "thought-reasoning",
+        "raciocinio-logico",
+        "step-by-step-reasoning",
+        "chain-of-thought",
+        "customaize-agent:thought-based-reasoning"
       ],
       "invocation": "/customaize-agent:thought-based-reasoning",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "complex reasoning task description",
+        "problem constraints",
+        "multi-step logic requirements"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "step-by-step reasoning chain",
+        "intermediate conclusions",
+        "final answer with justification"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sadd-tree-of-thoughts",
+        "skill:reflexion-reflect",
+        "skill:sdd-brainstorm"
       ]
     },
     "skill:database-optimizer": {
@@ -4006,24 +4888,33 @@
       "type": "skill",
       "name": "ddd-setup-code-formating",
       "aliases": [
-        "ddd:setup-code-formating",
-        "ddd-setup-code-formating"
+        "ddd-setup-code-formating",
+        "setup-code-formatting",
+        "configurar-formatacao",
+        "code-formatting",
+        "formatacao-codigo",
+        "ddd-formatting"
       ],
       "invocation": "/ddd:setup-code-formating",
-      "category": "planning",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"project root directory\"",
+        "\"preferred code style (if any)\"",
+        "\"existing CLAUDE.md\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"code formatting rules in CLAUDE.md\"",
+        "\"style guidelines configuration\"",
+        "\"formatter tool recommendations\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:architecture"
+        "concept:quality",
+        "concept:documentation",
+        "concept:automation",
+        "skill:customaize-agent-create-hook",
+        "skill:revise-claude-md",
+        "skill:conventions"
       ]
     },
     "skill:debug-optimize-lcp": {
@@ -4455,30 +5346,32 @@
       "type": "skill",
       "name": "docs-write-concisely",
       "aliases": [
+        "docs:write-concisely",
         "write-concisely",
-        "documentação concisa",
-        "technical writing clarity"
+        "escrever-concisamente",
+        "escrita-concisa",
+        "redacao-clara",
+        "concise-writing"
       ],
       "invocation": "/docs:write-concisely",
       "category": "documentation",
       "inputs": [
-        "documentation draft",
-        "target audience",
-        "style guide"
+        "documentation text",
+        "writing target audience",
+        "document type"
       ],
       "outputs": [
-        "refined documentation",
-        "clarity improvements",
-        "professional writing"
+        "rewritten concise documentation",
+        "writing improvement suggestions",
+        "clarity score"
       ],
-      "estimated_tokens": "small",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:technical-writing",
-        "concept:audience-adaptation",
-        "concept:clarity-patterns",
-        "concept:editing",
+        "concept:documentation",
+        "concept:quality",
         "skill:docs-update-docs",
-        "skill:design-consultation"
+        "skill:tech-writer",
+        "skill:doc-coauthoring"
       ]
     },
     "skill:document-release": {
@@ -4704,6 +5597,37 @@
         "concept:ai-ml",
         "concept:version-control",
         "concept:architecture"
+      ]
+    },
+    "skill:example-workflow": {
+      "type": "skill",
+      "name": "example-workflow",
+      "aliases": [
+        "example-workflow",
+        "fluxo-exemplo",
+        "workflow-example",
+        "demo-workflow",
+        "exemplo-fluxo",
+        "plugin-workflow-demo"
+      ],
+      "invocation": "/example-workflow",
+      "category": "documentation",
+      "inputs": [
+        "\"demonstration context\""
+      ],
+      "outputs": [
+        "\"multi-step workflow demonstration\"",
+        "\"plugin feature showcase\"",
+        "\"workflow pattern examples\""
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:documentation",
+        "concept:automation",
+        "concept:planning",
+        "skill:cc-skill",
+        "skill:create-plugin",
+        "skill:customaize-agent-create-workflow-command"
       ]
     },
     "skill:execute-plan": {
@@ -5006,6 +5930,40 @@
         "concept:version-control"
       ]
     },
+    "skill:figma": {
+      "type": "skill",
+      "name": "figma",
+      "aliases": [
+        "figma",
+        "figma-mcp",
+        "figma-server",
+        "design-figma",
+        "integracao-figma",
+        "figma-integration"
+      ],
+      "invocation": "/figma",
+      "category": "implementation",
+      "inputs": [
+        "\"Figma file URL or file key\"",
+        "\"node ID (optional)\"",
+        "\"design intent or implementation target\""
+      ],
+      "outputs": [
+        "\"design context and code reference\"",
+        "\"screenshots\"",
+        "\"component metadata\"",
+        "\"code connect mappings\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:architecture",
+        "concept:quality",
+        "concept:automation",
+        "skill:sdd-brainstorm",
+        "skill:react-expert",
+        "skill:elite-frontend-ux"
+      ]
+    },
     "skill:find-similar": {
       "type": "skill",
       "name": "find-similar",
@@ -5081,6 +6039,76 @@
         "concept:ai-ml"
       ]
     },
+    "skill:firebase-cli": {
+      "type": "skill",
+      "name": "firebase-cli",
+      "aliases": [
+        "firebase-cli",
+        "firebase-mcp",
+        "firebase",
+        "cli-firebase",
+        "firebase-tools",
+        "firebase-deploy"
+      ],
+      "invocation": "/firebase-cli",
+      "category": "deployment",
+      "inputs": [
+        "\"Firebase project ID\"",
+        "\"deployment target (hosting",
+        "functions",
+        "rules)\"",
+        "\"Firebase configuration files\""
+      ],
+      "outputs": [
+        "\"deployment results\"",
+        "\"Firebase resource management\"",
+        "\"project configuration queries\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:deployment",
+        "concept:architecture",
+        "skill:observability",
+        "skill:deploy",
+        "skill:cc-mcp",
+        "skill:monitoring-expert"
+      ]
+    },
+    "skill:firebase": {
+      "type": "skill",
+      "name": "firebase",
+      "aliases": [
+        "firebase",
+        "firebase-mcp",
+        "servidor-firebase",
+        "firebase-server",
+        "firebase-tools"
+      ],
+      "invocation": "/firebase",
+      "category": "deployment",
+      "inputs": [
+        "Firebase project ID",
+        "Firebase CLI commands",
+        "Firestore queries",
+        "Cloud Functions configuration"
+      ],
+      "outputs": [
+        "Firebase operation results",
+        "Firestore data",
+        "deployment status",
+        "Cloud Functions logs"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:deployment",
+        "concept:architecture",
+        "concept:security",
+        "skill:observability",
+        "skill:deploy",
+        "skill:database-optimizer",
+        "skill:monitoring-expert"
+      ]
+    },
     "skill:flutter-expert": {
       "type": "skill",
       "name": "flutter-expert",
@@ -5110,31 +6138,34 @@
       "type": "skill",
       "name": "fpf-actualize",
       "aliases": [
-        "fpf:actualize",
-        "atualizar-base-conhecimento",
-        "knowledge sync"
+        "fpf-actualize",
+        "fpf-atualizar",
+        "atualizar-fpf",
+        "actualize-fpf",
+        "reconciliar-fpf",
+        "fpf-reconcile",
+        "fpf:actualize"
       ],
       "invocation": "/fpf:actualize",
-      "category": "planning",
+      "category": "utility",
       "inputs": [
-        "repository state",
-        "recent changes",
-        "decision history"
+        "current FPF state file",
+        "recent git changes",
+        "repository diff since last actualization"
       ],
       "outputs": [
-        "updated knowledge base",
-        "refreshed assumptions",
-        "state reconciliation"
+        "updated FPF state",
+        "reconciliation report",
+        "hypothesis adjustments based on new evidence"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:knowledge-base-maintenance",
-        "concept:repository-alignment",
-        "concept:evidence-freshness",
-        "concept:assumption-tracking",
-        "skill:fpf-decay",
+        "skill:observability",
+        "concept:quality",
+        "concept:automation",
+        "skill:fpf-reset",
         "skill:fpf-status",
-        "skill:fpf-query"
+        "skill:fpf-propose-hypotheses"
       ]
     },
     "skill:fpf-agent": {
@@ -5171,31 +6202,33 @@
       "type": "skill",
       "name": "fpf-decay",
       "aliases": [
-        "fpf:decay",
-        "decadência-evidência",
-        "evidence staleness"
+        "fpf-decay",
+        "fpf-decaimento",
+        "evidence-decay",
+        "decaimento-evidencia",
+        "fpf-freshness",
+        "frescor-evidencia"
       ],
       "invocation": "/fpf:decay",
-      "category": "planning",
+      "category": "quality",
       "inputs": [
-        "knowledge base",
-        "decision history",
-        "timestamp data"
+        "\"FPF knowledge base\"",
+        "\"current date\"",
+        "\"evidence timestamps\""
       ],
       "outputs": [
-        "staleness report",
-        "governance actions",
-        "refresh priorities"
+        "\"stale evidence report\"",
+        "\"governance actions for expired decisions\"",
+        "\"freshness scores per evidence item\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:evidence-staleness",
-        "concept:governance-actions",
-        "concept:refresh-priorities",
-        "concept:decision-lifecycle",
-        "skill:fpf-actualize",
-        "skill:fpf-query",
-        "skill:kaizen-why"
+        "concept:quality",
+        "skill:observability",
+        "concept:planning",
+        "skill:fpf-status",
+        "skill:investigate",
+        "skill:reflexion-critique"
       ]
     },
     "skill:fpf-propose-hypotheses": {
@@ -5234,78 +6267,94 @@
       "name": "fpf-query",
       "aliases": [
         "fpf:query",
-        "consultar-hipóteses",
-        "hypothesis search"
+        "fpf-query",
+        "consulta-fpf",
+        "buscar-fpf",
+        "fpf-search",
+        "pesquisar-fpf"
       ],
       "invocation": "/fpf:query",
-      "category": "planning",
+      "category": "data",
       "inputs": [
-        "search terms",
-        "hypothesis filters",
-        "domain scope"
+        "search query",
+        "hypothesis ID",
+        "knowledge base context"
       ],
       "outputs": [
-        "matched hypotheses",
-        "assurance details",
-        "evidence links"
+        "hypothesis details",
+        "assurance information",
+        "matching knowledge base entries"
       ],
-      "estimated_tokens": "small",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:knowledge-search",
-        "concept:assurance-information",
-        "concept:hypothesis-details",
-        "concept:evidence-linking",
-        "skill:fpf-actualize",
+        "concept:planning",
+        "concept:quality",
         "skill:fpf-propose-hypotheses",
-        "skill:fpf-status"
+        "skill:fpf-status",
+        "skill:fpf-actualize"
       ]
     },
     "skill:fpf-reset": {
       "type": "skill",
       "name": "fpf-reset",
       "aliases": [
-        "fpf:reset",
-        "limpar-ciclo",
-        "reset reasoning cycle"
+        "fpf-reset",
+        "fpf-resetar",
+        "resetar-fpf",
+        "reset-fpf",
+        "limpar-fpf",
+        "fpf-clear",
+        "fpf:reset"
       ],
       "invocation": "/fpf:reset",
-      "category": "planning",
+      "category": "utility",
       "inputs": [
-        "reset scope",
-        "preservation options"
+        "confirmation to reset",
+        "optional reason for reset"
       ],
       "outputs": [
         "clean FPF state",
-        "preserved artifacts if specified"
+        "reset confirmation",
+        "previous state backup"
       ],
-      "estimated_tokens": "small",
+      "estimated_tokens": 2000,
       "edges": [
-        "skill:fpf-status",
-        "skill:fpf-actualize"
+        "concept:debugging",
+        "concept:quality",
+        "concept:automation",
+        "skill:fpf-actualize",
+        "skill:fpf-propose-hypotheses",
+        "skill:fpf-status"
       ]
     },
     "skill:fpf-status": {
       "type": "skill",
       "name": "fpf-status",
       "aliases": [
-        "fpf:status",
+        "fpf-status",
         "status-fpf",
-        "knowledge state"
+        "fpf-estado",
+        "fpf-overview",
+        "visao-geral-fpf"
       ],
       "invocation": "/fpf:status",
-      "category": "planning",
+      "category": "utility",
       "inputs": [
-        "none required"
+        "\"FPF knowledge base directory\""
       ],
       "outputs": [
-        "knowledge base state",
-        "hypothesis count",
-        "freshness metrics"
+        "\"knowledge base summary\"",
+        "\"evidence count and freshness distribution\"",
+        "\"hypothesis status overview\"",
+        "\"overall health score\""
       ],
-      "estimated_tokens": "small",
+      "estimated_tokens": 2000,
       "edges": [
+        "skill:observability",
+        "concept:documentation",
+        "concept:planning",
         "skill:fpf-decay",
-        "skill:fpf-actualize",
+        "skill:fpf-agent",
         "skill:fpf-query"
       ]
     },
@@ -5414,24 +6463,57 @@
       "name": "gerar-proposta-bpo",
       "aliases": [
         "gerar-proposta-bpo",
-        "gerar-proposta-bpo"
+        "bpo-proposal",
+        "proposta-comercial",
+        "gerar-pptx"
       ],
       "invocation": "/gerar-proposta-bpo",
-      "category": "debugging",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "OBZ data",
+        "client information"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "PPTX proposal",
+        "presentation file"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:security",
-        "concept:design",
-        "concept:ai-ml"
+        "skill:analisar-obz",
+        "skill:mapear-slide",
+        "skill:plan-design-review"
+      ]
+    },
+    "skill:get-qodo-rules": {
+      "type": "skill",
+      "name": "get-qodo-rules",
+      "aliases": [
+        "get-qodo-rules",
+        "regras-qodo",
+        "qodo-rules",
+        "carregar-regras-qodo",
+        "qodo-coding-rules"
+      ],
+      "invocation": "/get-qodo-rules",
+      "category": "quality",
+      "inputs": [
+        "organization ID",
+        "repository path",
+        "Qodo configuration"
+      ],
+      "outputs": [
+        "org-level coding rules",
+        "repo-level coding rules",
+        "merged rule set for code generation"
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:quality",
+        "concept:architecture",
+        "concept:automation",
+        "skill:conventions",
+        "skill:code-review-review-local-changes",
+        "skill:sdd-implement"
       ]
     },
     "skill:git-analyze-issue": {
@@ -5462,75 +6544,99 @@
       "name": "git-attach-review-to-pr",
       "aliases": [
         "git:attach-review-to-pr",
-        "comentar-pr",
-        "line-specific review"
+        "attach-review-to-pr",
+        "anexar-revisao-pr",
+        "adicionar-comentarios-pr",
+        "pr-comments",
+        "comentarios-pr"
       ],
       "invocation": "/git:attach-review-to-pr",
       "category": "quality",
       "inputs": [
-        "PR number or URL",
-        "review comments with line references"
+        "pull request number",
+        "review comments with line references",
+        "repository context"
       ],
       "outputs": [
-        "PR review comments",
-        "annotated feedback",
-        "GitHub API submission"
+        "posted PR review comments",
+        "line-specific annotations on GitHub"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "skill:git-create-pr",
+        "concept:quality",
+        "concept:automation",
+        "concept:documentation",
         "skill:code-review-review-pr",
-        "skill:sadd-judge"
+        "skill:git-create-pr",
+        "skill:code-reviewer"
       ]
     },
     "skill:git-commit": {
       "type": "skill",
       "name": "git-commit",
       "aliases": [
-        "git:commit",
-        "commit-command",
-        "conventional commits"
+        "git-commit",
+        "commit",
+        "commitar",
+        "criar-commit",
+        "conventional-commit",
+        "git-commitar",
+        "git:commit"
       ],
       "invocation": "/git:commit",
       "category": "deployment",
       "inputs": [
         "staged changes",
-        "commit message intent",
-        "optional flags"
+        "commit type (feat/fix/chore/etc)",
+        "optional scope",
+        "commit description"
       ],
       "outputs": [
-        "formatted commit",
-        "conventional message",
-        "signed if configured"
+        "git commit with conventional message",
+        "emoji-prefixed commit",
+        "formatted commit log entry"
       ],
-      "estimated_tokens": "small",
+      "estimated_tokens": 2000,
       "edges": [
+        "concept:deployment",
+        "concept:quality",
+        "concept:documentation",
         "skill:git-create-pr",
-        "skill:land-and-deploy"
+        "skill:git-load-issues",
+        "skill:retro"
       ]
     },
     "skill:git-compare-worktrees": {
       "type": "skill",
       "name": "git-compare-worktrees",
       "aliases": [
-        "git:compare-worktrees",
-        "git-compare-worktrees"
+        "git-compare-worktrees",
+        "comparar-worktrees",
+        "compare-worktrees",
+        "worktree-diff",
+        "diff-worktrees",
+        "comparar-arvores-trabalho"
       ],
       "invocation": "/git:compare-worktrees",
-      "category": "implementation",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"worktree path or branch name\"",
+        "\"files or directories to compare\"",
+        "\"current branch context\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"diff output between worktrees\"",
+        "\"file-by-file comparison\"",
+        "\"summary of differences\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:debugging",
+        "concept:quality",
+        "concept:architecture",
+        "skill:git-merge-worktree",
+        "skill:git-worktrees",
+        "skill:code-review-review-local-changes"
       ]
     },
     "skill:git-create-pr": {
@@ -5563,74 +6669,101 @@
       "name": "git-create-worktree",
       "aliases": [
         "git:create-worktree",
-        "git-create-worktree"
+        "create-worktree",
+        "criar-worktree",
+        "novo-worktree",
+        "worktree-novo",
+        "git-worktree-create"
       ],
       "invocation": "/git:create-worktree",
-      "category": "debugging",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "branch name",
+        "base branch",
+        "worktree directory path"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "created git worktree",
+        "installed dependencies",
+        "ready development environment"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:debugging",
-        "concept:security",
-        "concept:testing",
-        "concept:design"
+        "concept:automation",
+        "concept:tooling",
+        "concept:architecture",
+        "skill:git-worktrees",
+        "skill:git-merge-worktree",
+        "skill:git-compare-worktrees"
       ]
     },
     "skill:git-load-issues": {
       "type": "skill",
       "name": "git-load-issues",
       "aliases": [
-        "git:load-issues",
-        "git-load-issues"
+        "git-load-issues",
+        "carregar-issues",
+        "load-issues",
+        "listar-issues-github",
+        "github-issues",
+        "git:load-issues"
       ],
       "invocation": "/git:load-issues",
-      "category": "quality",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "GitHub repository URL or current repo",
+        "issue filters (labels",
+        "assignees",
+        "state)"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "markdown files for each open issue",
+        "issue summaries",
+        "issue metadata (labels",
+        "assignees",
+        "milestones)"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:security",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:planning",
+        "concept:documentation",
+        "concept:automation",
+        "skill:git-commit",
+        "skill:git-create-pr",
+        "skill:write-plan"
       ]
     },
     "skill:git-merge-worktree": {
       "type": "skill",
       "name": "git-merge-worktree",
       "aliases": [
-        "git:merge-worktree",
-        "git-merge-worktree"
+        "git-merge-worktree",
+        "mesclar-worktree",
+        "merge-worktree",
+        "worktree-merge",
+        "mesclar-arvore-trabalho",
+        "cherry-pick-worktree"
       ],
       "invocation": "/git:merge-worktree",
-      "category": "implementation",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"source worktree path or branch\"",
+        "\"target branch (current)\"",
+        "\"files or commits to merge\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"merged changes in current branch\"",
+        "\"conflict resolution guidance\"",
+        "\"selective merge report\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:automation",
+        "concept:quality",
+        "concept:debugging",
+        "skill:git-compare-worktrees",
+        "skill:git-worktrees",
+        "skill:git-commit"
       ]
     },
     "skill:git-notes": {
@@ -5663,24 +6796,66 @@
       "name": "git-worktrees",
       "aliases": [
         "git:worktrees",
-        "git-worktrees"
+        "git-worktrees",
+        "worktrees",
+        "arvores-de-trabalho",
+        "gerenciar-worktrees",
+        "listar-worktrees"
       ],
       "invocation": "/git:worktrees",
-      "category": "quality",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "current repository context",
+        "active worktree list"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "worktree status overview",
+        "branch-worktree mapping",
+        "active development contexts"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:testing",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:tooling",
+        "concept:automation",
+        "concept:architecture",
+        "skill:git-create-worktree",
+        "skill:git-merge-worktree",
+        "skill:git-compare-worktrees"
+      ]
+    },
+    "skill:github": {
+      "type": "skill",
+      "name": "github",
+      "aliases": [
+        "github",
+        "github-mcp",
+        "servidor-github",
+        "github-server",
+        "integracao-github",
+        "github-integration"
+      ],
+      "invocation": "/github",
+      "category": "utility",
+      "inputs": [
+        "GitHub repository URL",
+        "issue/PR number",
+        "search query",
+        "repository owner/name"
+      ],
+      "outputs": [
+        "repository data",
+        "issue details",
+        "PR information",
+        "commit history",
+        "GitHub API responses"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:tooling",
+        "concept:automation",
+        "skill:git-create-pr",
+        "skill:git-attach-review-to-pr",
+        "skill:git-analyze-issue"
       ]
     },
     "skill:golang-pro": {
@@ -5783,29 +6958,168 @@
         "concept:architecture"
       ]
     },
+    "skill:gstack-openclaw-ceo-review": {
+      "type": "skill",
+      "name": "gstack-openclaw-ceo-review",
+      "aliases": [
+        "gstack-openclaw-ceo-review",
+        "revisao-ceo",
+        "ceo-review",
+        "founder-review",
+        "revisao-fundador",
+        "plan-review-ceo"
+      ],
+      "invocation": "/gstack-openclaw-ceo-review",
+      "category": "planning",
+      "inputs": [
+        "\"implementation plan or design document\"",
+        "\"project context and goals\"",
+        "\"current architecture overview\""
+      ],
+      "outputs": [
+        "\"critical review with challenged premises\"",
+        "\"10-star product vision\"",
+        "\"expanded scope recommendations\"",
+        "\"risk assessment from CEO perspective\""
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "skill:write-plan",
+        "skill:brainstorm",
+        "skill:code-architect"
+      ]
+    },
+    "skill:gstack-openclaw-investigate": {
+      "type": "skill",
+      "name": "gstack-openclaw-investigate",
+      "aliases": [
+        "gstack-openclaw-investigate",
+        "openclaw-investigate",
+        "investigacao-sistematica",
+        "investigar-bug",
+        "systematic-investigation",
+        "gstack-investigate"
+      ],
+      "invocation": "/gstack-openclaw-investigate",
+      "category": "debugging",
+      "inputs": [
+        "\"bug report or error description\"",
+        "\"codebase path\"",
+        "\"reproduction steps or logs\""
+      ],
+      "outputs": [
+        "\"root cause analysis\"",
+        "\"hypothesis ranking\"",
+        "\"fix implementation\"",
+        "\"verification results\""
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:debugging",
+        "skill:observability",
+        "concept:architecture",
+        "concept:quality",
+        "skill:tdd-fix-tests",
+        "skill:kaizen-why",
+        "skill:kaizen-cause-and-effect",
+        "skill:reflexion-reflect"
+      ]
+    },
+    "skill:gstack-openclaw-office-hours": {
+      "type": "skill",
+      "name": "gstack-openclaw-office-hours",
+      "aliases": [
+        "gstack-openclaw-office-hours",
+        "office-hours",
+        "horas-de-escritorio",
+        "interrogacao-de-produto",
+        "product-interrogation",
+        "openclaw"
+      ],
+      "invocation": "/gstack-openclaw-office-hours",
+      "category": "planning",
+      "inputs": [
+        "product description",
+        "current product status",
+        "target market context"
+      ],
+      "outputs": [
+        "structured product interrogation report",
+        "demand reality assessment",
+        "desperate-situation analysis",
+        "strategic recommendations"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "skill:brainstorm",
+        "skill:write-plan",
+        "skill:sdd-plan"
+      ]
+    },
+    "skill:gstack-openclaw-retro": {
+      "type": "skill",
+      "name": "gstack-openclaw-retro",
+      "aliases": [
+        "gstack-openclaw-retro",
+        "retrospectiva-semanal",
+        "retro",
+        "retrospectiva-engenharia",
+        "weekly-retro",
+        "engineering-retrospective"
+      ],
+      "invocation": "/gstack-openclaw-retro",
+      "category": "quality",
+      "inputs": [
+        "git commit history",
+        "work patterns data",
+        "code quality metrics",
+        "persistent history from previous retros"
+      ],
+      "outputs": [
+        "weekly retrospective report",
+        "commit analysis summary",
+        "quality trend metrics",
+        "improvement recommendations"
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:quality",
+        "skill:observability",
+        "concept:planning",
+        "concept:automation",
+        "skill:git-commit",
+        "skill:retro",
+        "skill:write-plan"
+      ]
+    },
     "skill:gstack-upgrade": {
       "type": "skill",
       "name": "gstack-upgrade",
       "aliases": [
         "gstack-upgrade",
-        "gstack-upgrade"
+        "upgrade",
+        "tool-upgrade",
+        "atualizar-gstack"
       ],
       "invocation": "/gstack-upgrade",
-      "category": "quality",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "gstack installation"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "upgraded gstack",
+        "changelog"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "small",
       "edges": [
-        "concept:testing",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:documentation"
+        "skill:gstack",
+        "skill:health"
       ]
     },
     "skill:gstack": {
@@ -5813,24 +7127,24 @@
       "name": "gstack",
       "aliases": [
         "gstack",
-        "gstack"
+        "headless-browser",
+        "browser-automation",
+        "navegador-sem-interface"
       ],
       "invocation": "/gstack",
-      "category": "debugging",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "web application URL"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "browser session",
+        "page interactions"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:debugging",
-        "concept:testing",
-        "concept:deployment",
-        "concept:ai-ml"
+        "skill:qa",
+        "skill:setup-browser-cookies",
+        "skill:investigate"
       ]
     },
     "skill:guard": {
@@ -5838,24 +7152,23 @@
       "name": "guard",
       "aliases": [
         "guard",
-        "guard"
+        "safety-mode",
+        "full-safety",
+        "modo-seguro"
       ],
       "invocation": "/guard",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "code changes"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "guarded execution with warnings"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "small",
       "edges": [
-        "concept:debugging",
-        "concept:version-control",
-        "concept:architecture",
-        "concept:documentation"
+        "skill:careful",
+        "skill:freeze",
+        "skill:unfreeze"
       ]
     },
     "skill:health": {
@@ -6012,24 +7325,23 @@
       "name": "hook-development",
       "aliases": [
         "hook-development",
-        "hook-development"
+        "create-hook",
+        "custom-hook",
+        "desenvolvimento-hook"
       ],
       "invocation": "/hook-development",
       "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "hook requirements",
+        "event type"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "hook code",
+        "configuration"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:extensibility"
+        "skill:writing-hookify-rules"
       ]
     },
     "skill:huggingface-community-evals": {
@@ -6207,6 +7519,37 @@
         "concept:version-control"
       ]
     },
+    "skill:huggingface-tool-builder": {
+      "type": "skill",
+      "name": "huggingface-tool-builder",
+      "aliases": [
+        "huggingface-tool-builder",
+        "hf-tool-builder",
+        "construtor-ferramentas-huggingface",
+        "hf-api-builder",
+        "huggingface-scripts"
+      ],
+      "invocation": "/huggingface-tool-builder",
+      "category": "implementation",
+      "inputs": [
+        "\"task description requiring Hugging Face API\"",
+        "\"target model or dataset\"",
+        "\"desired output format\""
+      ],
+      "outputs": [
+        "\"working script or tool using Hugging Face API\"",
+        "\"API integration code\"",
+        "\"data pipeline\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:automation",
+        "concept:architecture",
+        "skill:huggingface-datasets",
+        "skill:huggingface-papers",
+        "skill:python-pro"
+      ]
+    },
     "skill:huggingface-trackio": {
       "type": "skill",
       "name": "huggingface-trackio",
@@ -6262,24 +7605,25 @@
       "name": "interface-design",
       "aliases": [
         "interface-design",
-        "interface-design"
+        "ui-design",
+        "dashboards",
+        "interface-design-pt"
       ],
       "invocation": "/interface-design",
-      "category": "deployment",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "design requirements",
+        "user workflows"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "UI mockups",
+        "design specifications"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:extensibility"
+        "skill:plan-design-review",
+        "skill:plan-devex-review",
+        "skill:frontend-design"
       ]
     },
     "skill:internal-comms": {
@@ -6463,50 +7807,68 @@
       "type": "skill",
       "name": "kaizen-analyse-problem",
       "aliases": [
-        "kaizen:analyse-problem",
-        "kaizen-analyse-problem"
+        "kaizen-analyse-problem",
+        "analise-a3",
+        "a3-problem-analysis",
+        "analise-de-problema",
+        "kaizen-a3",
+        "problem-analysis"
       ],
       "invocation": "/kaizen:analyse-problem",
-      "category": "documentation",
+      "category": "debugging",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"problem description\"",
+        "\"affected system or process\"",
+        "\"observable symptoms\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"A3 one-page problem analysis\"",
+        "\"root cause identification\"",
+        "\"action plan with owners and deadlines\"",
+        "\"countermeasure recommendations\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture",
-        "concept:documentation"
+        "concept:debugging",
+        "concept:quality",
+        "concept:planning",
+        "skill:kaizen-root-cause-tracing",
+        "skill:kaizen-why",
+        "skill:investigate"
       ]
     },
     "skill:kaizen-analyse": {
       "type": "skill",
       "name": "kaizen-analyse",
       "aliases": [
-        "kaizen:analyse",
-        "kaizen-analyse"
+        "kaizen-analyse",
+        "kaizen-analisar",
+        "analise-kaizen",
+        "kaizen-analysis",
+        "melhoria-continua",
+        "continuous-improvement",
+        "kaizen:analyse"
       ],
       "invocation": "/kaizen:analyse",
-      "category": "deployment",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "target system/process/codebase to analyze",
+        "analysis scope",
+        "quality concerns"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "analysis report using best-fit Kaizen method",
+        "waste identification",
+        "improvement recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:security",
-        "concept:deployment",
-        "concept:design",
-        "concept:ai-ml"
+        "concept:quality",
+        "skill:observability",
+        "concept:architecture",
+        "skill:kaizen-plan-do-check-act",
+        "skill:kaizen-root-cause-tracing",
+        "skill:reflexion-critique"
       ]
     },
     "skill:kaizen-cause-and-effect": {
@@ -6539,74 +7901,103 @@
       "name": "kaizen-kaizen",
       "aliases": [
         "kaizen:kaizen",
-        "kaizen-kaizen"
+        "kaizen",
+        "melhoria-continua",
+        "continuous-improvement",
+        "otimizacao-kaizen",
+        "kaizen-method"
       ],
       "invocation": "/kaizen:kaizen",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "code or system to improve",
+        "current architecture description",
+        "problem statement"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "improvement recommendations",
+        "refactoring plan",
+        "root cause analysis",
+        "optimized design"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
+        "concept:quality",
+        "concept:architecture",
         "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:kaizen-root-cause-tracing",
+        "skill:kaizen-analyse-problem",
+        "skill:kaizen-plan-do-check-act"
       ]
     },
     "skill:kaizen-plan-do-check-act": {
       "type": "skill",
       "name": "kaizen-plan-do-check-act",
       "aliases": [
-        "kaizen:plan-do-check-act",
-        "kaizen-plan-do-check-act"
+        "kaizen-plan-do-check-act",
+        "pdca",
+        "ciclo-pdca",
+        "plan-do-check-act",
+        "kaizen-pdca",
+        "melhoria-iterativa",
+        "kaizen:plan-do-check-act"
       ],
       "invocation": "/kaizen:plan-do-check-act",
-      "category": "documentation",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "improvement hypothesis",
+        "target metric",
+        "experiment design",
+        "success criteria"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "PDCA cycle report",
+        "experiment results",
+        "metric comparisons",
+        "next iteration recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:quality",
+        "concept:testing",
+        "concept:planning",
+        "skill:kaizen-analyse",
+        "skill:kaizen-root-cause-tracing",
+        "skill:benchmark"
       ]
     },
     "skill:kaizen-root-cause-tracing": {
       "type": "skill",
       "name": "kaizen-root-cause-tracing",
       "aliases": [
-        "kaizen:root-cause-tracing",
-        "kaizen-root-cause-tracing"
+        "kaizen-root-cause-tracing",
+        "rastreamento-causa-raiz",
+        "root-cause-tracing",
+        "trace-root-cause",
+        "rastrear-causa-raiz",
+        "kaizen-tracing"
       ],
       "invocation": "/kaizen:root-cause-tracing",
       "category": "debugging",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"error message or stack trace\"",
+        "\"execution context\"",
+        "\"affected code paths\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"traced execution path from error to origin\"",
+        "\"original trigger identification\"",
+        "\"causal chain diagram\"",
+        "\"fix recommendations at the root\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
         "concept:debugging",
-        "concept:testing",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:observability",
+        "concept:architecture",
+        "skill:kaizen-analyse-problem",
+        "skill:systematic-debugging",
+        "skill:bug-hunter"
       ]
     },
     "skill:kaizen-why": {
@@ -6767,24 +8158,25 @@
       "name": "learn",
       "aliases": [
         "learn",
-        "learn"
+        "project-learnings",
+        "knowledge-management",
+        "gerenciamento-conhecimento"
       ],
       "invocation": "/learn",
-      "category": "debugging",
+      "category": "documentation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "learnings across sessions"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "consolidated knowledge",
+        "searchable database"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:debugging",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:knowledge-search",
+        "skill:retro",
+        "skill:office-hours",
+        "skill:health"
       ]
     },
     "skill:legacy-modernizer": {
@@ -6817,24 +8209,25 @@
       "name": "mapear-slide",
       "aliases": [
         "mapear-slide",
-        "mapear-slide"
+        "slide-mapping",
+        "slide-analysis",
+        "mapear-conteudo"
       ],
       "invocation": "/mapear-slide",
-      "category": "debugging",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "slide content",
+        "proposal structure"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "slide mapping",
+        "content analysis"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:debugging",
-        "concept:deployment",
-        "concept:design",
-        "concept:ai-ml"
+        "skill:gerar-proposta-bpo",
+        "skill:analisar-obz",
+        "skill:plan-design-review"
       ]
     },
     "skill:marketplace": {
@@ -6867,24 +8260,34 @@
       "name": "mcp-build-mcp",
       "aliases": [
         "mcp:build-mcp",
-        "mcp-build-mcp"
+        "build-mcp",
+        "construir-mcp",
+        "criar-servidor-mcp",
+        "mcp-server-builder",
+        "construir-servidor-mcp"
       ],
       "invocation": "/mcp:build-mcp",
-      "category": "debugging",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "MCP server purpose",
+        "external service API details",
+        "tool definitions",
+        "resource schemas"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "MCP server implementation",
+        "tool handlers",
+        "resource definitions",
+        "configuration files"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:architecture",
+        "concept:automation",
+        "concept:security",
+        "skill:mcp-setup-serena-mcp",
+        "skill:mcp-developer",
+        "skill:mcp-integration"
       ]
     },
     "skill:mcp-builder": {
@@ -6942,74 +8345,87 @@
       "name": "mcp-integration",
       "aliases": [
         "mcp-integration",
-        "mcp-integration"
+        "add-mcp",
+        "configure-mcp",
+        "integracao-mcp"
       ],
       "invocation": "/mcp-integration",
-      "category": "data",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "MCP server details",
+        "configuration"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "MCP integration",
+        ".mcp.json setup"
       ],
       "estimated_tokens": "medium",
-      "edges": [
-        "concept:security",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
-      ]
+      "edges": []
     },
     "skill:mcp-setup-arxiv-mcp": {
       "type": "skill",
       "name": "mcp-setup-arxiv-mcp",
       "aliases": [
-        "mcp:setup-arxiv-mcp",
-        "mcp-setup-arxiv-mcp"
+        "mcp-setup-arxiv-mcp",
+        "setup-arxiv",
+        "configurar-arxiv",
+        "arxiv-mcp",
+        "pesquisa-artigos",
+        "paper-search",
+        "mcp:setup-arxiv-mcp"
       ],
       "invocation": "/mcp:setup-arxiv-mcp",
-      "category": "debugging",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "Docker installation status",
+        "MCP server configuration",
+        "arXiv search requirements"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "configured arXiv MCP server",
+        "Docker container running",
+        "arXiv search capability enabled"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:deployment",
+        "concept:automation",
+        "concept:documentation",
+        "skill:researcher",
+        "skill:mcp-integration",
+        "skill:learn"
       ]
     },
     "skill:mcp-setup-codemap-cli": {
       "type": "skill",
       "name": "mcp-setup-codemap-cli",
       "aliases": [
-        "mcp:setup-codemap-cli",
-        "mcp-setup-codemap-cli"
+        "mcp-setup-codemap-cli",
+        "setup-codemap",
+        "codemap-cli",
+        "configurar-codemap",
+        "codemap-setup",
+        "visualizacao-codebase"
       ],
       "invocation": "/mcp:setup-codemap-cli",
-      "category": "documentation",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"project root directory\"",
+        "\"desired visualization scope\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"Codemap CLI installation guide\"",
+        "\"MCP server configuration for Codemap\"",
+        "\"codebase visualization and navigation setup\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:architecture",
+        "concept:documentation",
+        "skill:observability",
+        "skill:cc-mcp",
+        "skill:code-explorer",
+        "skill:software-architect"
       ]
     },
     "skill:mcp-setup-context7-mcp": {
@@ -7042,24 +8458,32 @@
       "name": "mcp-setup-serena-mcp",
       "aliases": [
         "mcp:setup-serena-mcp",
-        "mcp-setup-serena-mcp"
+        "setup-serena-mcp",
+        "configurar-serena",
+        "serena-mcp",
+        "serena-setup",
+        "configuracao-serena"
       ],
       "invocation": "/mcp:setup-serena-mcp",
-      "category": "documentation",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "project repository path",
+        "language/framework context",
+        "Serena configuration preferences"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "configured Serena MCP server",
+        "semantic code retrieval setup",
+        "editing capabilities configuration"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:tooling",
+        "concept:architecture",
+        "concept:automation",
+        "skill:mcp-build-mcp",
+        "skill:code-explorer",
+        "skill:mcp-developer"
       ]
     },
     "skill:meta-judge": {
@@ -7442,24 +8866,88 @@
       "name": "office-hours",
       "aliases": [
         "office-hours",
-        "office-hours"
+        "yc-office-hours",
+        "startup-mode",
+        "office-horas"
       ],
       "invocation": "/office-hours",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "product idea",
+        "business question",
+        "market assumption"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "strategic insights",
+        "validated assumptions",
+        "next steps"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:plan-ceo-review",
+        "skill:plan-design-review",
+        "skill:plan-eng-review"
+      ]
+    },
+    "skill:open-gstack-browser": {
+      "type": "skill",
+      "name": "open-gstack-browser",
+      "aliases": [
+        "open-gstack-browser",
+        "abrir-navegador-gstack",
+        "gstack-browser",
+        "navegador-gstack",
+        "gstack-chromium"
+      ],
+      "invocation": "/open-gstack-browser",
+      "category": "utility",
+      "inputs": [
+        "browser configuration",
+        "GStack extension settings"
+      ],
+      "outputs": [
+        "visible Chromium browser window with AI sidebar extension",
+        "browser session ready for automation"
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:automation",
+        "concept:tooling",
+        "concept:deployment",
+        "skill:gstack",
+        "skill:agent-browser",
+        "skill:browse"
+      ]
+    },
+    "skill:pair-agent": {
+      "type": "skill",
+      "name": "pair-agent",
+      "aliases": [
+        "pair-agent",
+        "agente-pareamento",
+        "pair",
+        "pareamento-agente",
+        "remote-pair"
+      ],
+      "invocation": "/pair-agent",
+      "category": "utility",
+      "inputs": [
+        "browser session URL",
+        "setup key generation request",
+        "remote agent connection details"
+      ],
+      "outputs": [
+        "setup key for remote agent",
+        "pairing instructions",
+        "active browser-agent bridge session"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:automation",
+        "concept:deployment",
+        "concept:security",
+        "skill:agent-browser",
+        "skill:cc-agent"
       ]
     },
     "skill:pandas-pro": {
@@ -7592,24 +9080,26 @@
       "name": "plan-ceo-review",
       "aliases": [
         "plan-ceo-review",
-        "plan-ceo-review"
+        "ceo-review",
+        "founder-mode",
+        "revisao-ceo"
       ],
       "invocation": "/plan-ceo-review",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "product plan",
+        "business goals"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "strategic analysis",
+        "10-star vision",
+        "scope expansion"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "skill:office-hours",
+        "skill:plan-design-review",
+        "skill:plan-eng-review"
       ]
     },
     "skill:plan-design-review": {
@@ -7617,24 +9107,26 @@
       "name": "plan-design-review",
       "aliases": [
         "plan-design-review",
-        "plan-design-review"
+        "design-review",
+        "designer-review",
+        "revisao-design"
       ],
       "invocation": "/plan-design-review",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "design mockups",
+        "user flows",
+        "UI/UX plan"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "design ratings",
+        "improvement recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:office-hours",
+        "skill:plan-ceo-review",
+        "skill:interface-design"
       ]
     },
     "skill:plan-devex-review": {
@@ -7642,24 +9134,26 @@
       "name": "plan-devex-review",
       "aliases": [
         "plan-devex-review",
-        "plan-devex-review"
+        "devex-review",
+        "developer-experience",
+        "revisao-devex"
       ],
       "invocation": "/plan-devex-review",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "technical plan",
+        "API design",
+        "developer tooling"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "DX score",
+        "improvement recommendations"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:plan-eng-review",
+        "skill:health",
+        "skill:office-hours"
       ]
     },
     "skill:plan-eng-review": {
@@ -7667,24 +9161,27 @@
       "name": "plan-eng-review",
       "aliases": [
         "plan-eng-review",
-        "plan-eng-review"
+        "eng-review",
+        "architecture-review",
+        "revisao-eng"
       ],
       "invocation": "/plan-eng-review",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "technical architecture",
+        "data flows",
+        "edge cases"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "execution plan",
+        "risk assessment",
+        "implementation roadmap"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:testing",
-        "concept:design",
-        "concept:ai-ml"
+        "skill:plan-ceo-review",
+        "skill:plan-design-review",
+        "skill:ship"
       ]
     },
     "skill:playground": {
@@ -7742,50 +9239,42 @@
       "name": "plugin-settings",
       "aliases": [
         "plugin-settings",
-        "plugin-settings"
+        "plugin-config",
+        "user-configuration",
+        "configuracoes-plugin"
       ],
       "invocation": "/plugin-settings",
-      "category": "documentation",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "plugin configuration needs"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "settings configuration",
+        ".local.md files"
       ],
-      "estimated_tokens": "medium",
-      "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
-      ]
+      "estimated_tokens": "small",
+      "edges": []
     },
     "skill:plugin-structure": {
       "type": "skill",
       "name": "plugin-structure",
       "aliases": [
         "plugin-structure",
-        "plugin-structure"
+        "create-plugin",
+        "scaffold-plugin",
+        "estrutura-plugin"
       ],
       "invocation": "/plugin-structure",
-      "category": "planning",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "plugin requirements"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "plugin scaffold",
+        "folder structure"
       ],
       "estimated_tokens": "medium",
-      "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
-      ]
+      "edges": []
     },
     "skill:plugin-validator": {
       "type": "skill",
@@ -7942,24 +9431,26 @@
       "name": "qa-only",
       "aliases": [
         "qa-only",
-        "qa-only"
+        "qa-report",
+        "testing-only",
+        "relatorio-qa"
       ],
       "invocation": "/qa-only",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "web application",
+        "deployment URL"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "structured QA report",
+        "health score",
+        "screenshots"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:testing",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:qa",
+        "skill:investigate",
+        "skill:health"
       ]
     },
     "skill:qa": {
@@ -7967,24 +9458,93 @@
       "name": "qa",
       "aliases": [
         "qa",
-        "qa"
+        "quality-assurance",
+        "qa-testing",
+        "teste-qualidade"
       ],
       "invocation": "/qa",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "web application",
+        "deployment URL"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "bugs found and fixed",
+        "test report",
+        "health score"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
+        "concept:bug-fixing",
+        "skill:qa-only",
+        "skill:investigate",
+        "skill:review"
+      ]
+    },
+    "skill:qodo-get-rules": {
+      "type": "skill",
+      "name": "qodo-get-rules",
+      "aliases": [
+        "qodo-get-rules",
+        "qodo-rules",
+        "regras-qodo",
+        "qodo-coding-rules",
+        "qodo-best-practices",
+        "carregar-regras-qodo"
+      ],
+      "invocation": "/qodo-get-rules",
+      "category": "quality",
+      "inputs": [
+        "\"current coding task description\"",
+        "\"codebase context\""
+      ],
+      "outputs": [
+        "\"relevant coding rules from Qodo\"",
+        "\"best practice guidelines\"",
+        "\"rule applicability ranking\""
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:quality",
+        "concept:automation",
+        "concept:architecture",
+        "skill:customaize-agent-create-rule",
+        "skill:code-review-review-local-changes",
+        "skill:tdd-fix-tests"
+      ]
+    },
+    "skill:qodo-pr-resolver": {
+      "type": "skill",
+      "name": "qodo-pr-resolver",
+      "aliases": [
+        "qodo-pr-resolver",
+        "resolver-pr",
+        "qodo-review",
+        "pr-resolver",
+        "resolver-pull-request",
+        "revisao-pr-qodo"
+      ],
+      "invocation": "/qodo-pr-resolver",
+      "category": "quality",
+      "inputs": [
+        "\"pull request URL or number\"",
+        "\"repository context\"",
+        "\"PR diff and comments\""
+      ],
+      "outputs": [
+        "\"list of PR issues with severity\"",
+        "\"AI-powered fix suggestions\"",
+        "\"resolved code changes\"",
+        "\"review summary\""
+      ],
+      "estimated_tokens": 10000,
+      "edges": [
+        "concept:quality",
         "concept:debugging",
-        "concept:testing",
-        "concept:deployment",
-        "concept:design"
+        "concept:security",
+        "skill:code-review-review-pr",
+        "skill:git-create-pr",
+        "skill:security-reviewer"
       ]
     },
     "skill:rag-architect": {
@@ -8191,50 +9751,70 @@
       "type": "skill",
       "name": "reflexion-critique",
       "aliases": [
-        "reflexion:critique",
-        "reflexion-critique"
+        "reflexion-critique",
+        "critica-reflexiva",
+        "critique",
+        "revisao-multiperspectiva",
+        "multi-judge-review",
+        "debate-consenso",
+        "reflexion:critique"
       ],
       "invocation": "/reflexion:critique",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "artifact to review (code",
+        "design",
+        "plan)",
+        "review criteria",
+        "number of judge perspectives"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "multi-perspective review report",
+        "debate transcript",
+        "consensus findings",
+        "improvement recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:quality",
+        "concept:testing",
+        "concept:architecture",
+        "skill:reflexion-reflect",
+        "skill:sadd-judge-with-debate",
+        "skill:code-review-review-local-changes"
       ]
     },
     "skill:reflexion-memorize": {
       "type": "skill",
       "name": "reflexion-memorize",
       "aliases": [
-        "reflexion:memorize",
-        "reflexion-memorize"
+        "reflexion-memorize",
+        "memorizar-reflexao",
+        "memorize-insights",
+        "curar-insights",
+        "reflexion-curate",
+        "memorizar"
       ],
       "invocation": "/reflexion:memorize",
-      "category": "quality",
+      "category": "documentation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"reflection or critique output\"",
+        "\"current CLAUDE.md\"",
+        "\"project context\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"curated insights added to CLAUDE.md\"",
+        "\"agentic context engineering updates\"",
+        "\"knowledge base enrichment\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:documentation",
+        "concept:quality",
+        "concept:automation",
+        "skill:reflexion-reflect",
+        "skill:reflexion-critique",
+        "skill:revise-claude-md"
       ]
     },
     "skill:reflexion-reflect": {
@@ -8260,6 +9840,70 @@
         "concept:security",
         "concept:deployment",
         "concept:design"
+      ]
+    },
+    "skill:remembering-conversations": {
+      "type": "skill",
+      "name": "remembering-conversations",
+      "aliases": [
+        "remembering-conversations",
+        "lembrar-conversas",
+        "memoria-episodica",
+        "episodic-memory",
+        "memoria-de-conversas",
+        "recall-conversations"
+      ],
+      "invocation": "/remembering-conversations",
+      "category": "data",
+      "inputs": [
+        "current conversation context",
+        "user query about past approaches",
+        "problem being solved"
+      ],
+      "outputs": [
+        "relevant past conversation snippets",
+        "previously successful approaches",
+        "historical context"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:planning",
+        "concept:debugging",
+        "skill:knowledge-update",
+        "skill:investigate",
+        "skill:learn"
+      ]
+    },
+    "skill:remotion-best-practices": {
+      "type": "skill",
+      "name": "remotion-best-practices",
+      "aliases": [
+        "remotion-best-practices",
+        "boas-praticas-remotion",
+        "remotion-practices",
+        "remotion-video",
+        "video-react"
+      ],
+      "invocation": "/remotion-best-practices",
+      "category": "implementation",
+      "inputs": [
+        "\"Remotion project files\"",
+        "\"video composition requirements\"",
+        "\"React component code\""
+      ],
+      "outputs": [
+        "\"optimized Remotion component patterns\"",
+        "\"performance recommendations\"",
+        "\"best practice guidance for video rendering\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:architecture",
+        "concept:quality",
+        "concept:automation",
+        "skill:react-best-practices",
+        "skill:performance-optimizer",
+        "skill:code-review-review-local-changes"
       ]
     },
     "skill:requesting-code-review": {
@@ -8317,24 +9961,27 @@
       "name": "retro",
       "aliases": [
         "retro",
-        "retro"
+        "retrospective",
+        "weekly-retro",
+        "retrospectiva"
       ],
       "invocation": "/retro",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "commit history",
+        "work patterns",
+        "codebase"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "retrospective analysis",
+        "metrics",
+        "improvement suggestions"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:debugging",
-        "concept:deployment",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:learn",
+        "skill:health",
+        "skill:office-hours"
       ]
     },
     "skill:review": {
@@ -8342,24 +9989,26 @@
       "name": "review",
       "aliases": [
         "review",
-        "review"
+        "pr-review",
+        "code-review",
+        "revisao-pr"
       ],
       "invocation": "/review",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "PR diff",
+        "base branch code"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "review findings",
+        "safety checks",
+        "recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "skill:ship",
+        "skill:land-and-deploy",
+        "skill:investigate"
       ]
     },
     "skill:revise-claude-md": {
@@ -8467,74 +10116,101 @@
       "name": "sadd-do-and-judge",
       "aliases": [
         "sadd:do-and-judge",
-        "sadd-do-and-judge"
+        "do-and-judge",
+        "fazer-e-julgar",
+        "executar-e-avaliar",
+        "implementar-e-verificar",
+        "do-judge-loop"
       ],
       "invocation": "/sadd:do-and-judge",
-      "category": "deployment",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "task description",
+        "acceptance criteria",
+        "maximum retry count"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "implemented solution",
+        "judge evaluation report",
+        "retry history",
+        "final verification result"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:security",
-        "concept:deployment",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:quality",
+        "concept:automation",
+        "concept:testing",
+        "skill:sadd-judge",
+        "skill:sadd-subagent-driven-development",
+        "skill:sadd-do-in-steps"
       ]
     },
     "skill:sadd-do-competitively": {
       "type": "skill",
       "name": "sadd-do-competitively",
       "aliases": [
-        "sadd:do-competitively",
-        "sadd-do-competitively"
+        "sadd-do-competitively",
+        "execucao-competitiva",
+        "competitive-execution",
+        "multi-agent-competition",
+        "competicao-agentes",
+        "sadd:do-competitively"
       ],
       "invocation": "/sadd:do-competitively",
-      "category": "planning",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "task description",
+        "number of competing agents",
+        "evaluation criteria",
+        "meta-judge specification"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "winning solution",
+        "evaluation scores for all candidates",
+        "meta-judge rationale",
+        "ranked solutions"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:quality",
+        "concept:testing",
+        "concept:architecture",
+        "skill:sadd-judge-with-debate",
+        "skill:sadd-tree-of-thoughts",
+        "skill:meta-judge"
       ]
     },
     "skill:sadd-do-in-parallel": {
       "type": "skill",
       "name": "sadd-do-in-parallel",
       "aliases": [
-        "sadd:do-in-parallel",
-        "sadd-do-in-parallel"
+        "sadd-do-in-parallel",
+        "executar-em-paralelo",
+        "parallel-agents",
+        "agentes-paralelos",
+        "do-in-parallel",
+        "execucao-paralela"
       ],
       "invocation": "/sadd:do-in-parallel",
-      "category": "deployment",
+      "category": "automation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"list of independent tasks\"",
+        "\"target files or directories\"",
+        "\"quality criteria for each task\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"parallel execution results from multiple sub-agents\"",
+        "\"quality-validated outputs per task\"",
+        "\"consolidated summary of all parallel results\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:deployment",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:automation",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sadd-launch-sub-agent",
+        "skill:sadd-do-and-judge",
+        "skill:execute-plan"
       ]
     },
     "skill:sadd-do-in-steps": {
@@ -8566,25 +10242,36 @@
       "type": "skill",
       "name": "sadd-judge-with-debate",
       "aliases": [
-        "sadd:judge-with-debate",
-        "sadd-judge-with-debate"
+        "sadd-judge-with-debate",
+        "debate-juizes",
+        "judge-debate",
+        "avaliacao-debate",
+        "multi-round-debate",
+        "consenso-juizes",
+        "sadd:judge-with-debate"
       ],
       "invocation": "/sadd:judge-with-debate",
-      "category": "implementation",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "solutions to evaluate",
+        "evaluation criteria",
+        "number of judges",
+        "maximum debate rounds"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "consensus evaluation",
+        "debate transcript",
+        "per-judge scores",
+        "final ranking with rationale"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality",
-        "concept:architecture"
+        "concept:quality",
+        "concept:testing",
+        "concept:planning",
+        "skill:sadd-do-competitively",
+        "skill:reflexion-critique",
+        "skill:meta-judge"
       ]
     },
     "skill:sadd-judge": {
@@ -8592,49 +10279,67 @@
       "name": "sadd-judge",
       "aliases": [
         "sadd:judge",
-        "sadd-judge"
+        "sadd-judge",
+        "julgar",
+        "avaliar-resultado",
+        "judge",
+        "julgamento",
+        "avaliacao"
       ],
       "invocation": "/sadd:judge",
       "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "implementation results from current conversation",
+        "evaluation criteria",
+        "context of the task"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "meta-judge assessment",
+        "judge evaluation report",
+        "pass/fail determination",
+        "improvement suggestions"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:quality",
+        "concept:testing",
+        "concept:automation",
+        "skill:sadd-do-and-judge",
+        "skill:sadd-judge-with-debate",
+        "skill:sadd-subagent-driven-development"
       ]
     },
     "skill:sadd-launch-sub-agent": {
       "type": "skill",
       "name": "sadd-launch-sub-agent",
       "aliases": [
-        "sadd:launch-sub-agent",
-        "sadd-launch-sub-agent"
+        "sadd-launch-sub-agent",
+        "lancar-sub-agente",
+        "launch-subagent",
+        "sub-agent",
+        "subagente",
+        "agente-auxiliar"
       ],
       "invocation": "/sadd:launch-sub-agent",
-      "category": "debugging",
+      "category": "automation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"task description and requirements\"",
+        "\"complexity level\"",
+        "\"target files or scope\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"sub-agent execution results\"",
+        "\"model selection rationale\"",
+        "\"specialized agent output\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:debugging",
-        "concept:security",
-        "concept:testing",
-        "concept:design"
+        "concept:automation",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sadd-do-in-parallel",
+        "skill:sadd-judge",
+        "skill:sadd-do-in-steps"
       ]
     },
     "skill:sadd-multi-agent-patterns": {
@@ -8667,49 +10372,68 @@
       "name": "sadd-subagent-driven-development",
       "aliases": [
         "sadd:subagent-driven-development",
-        "sadd-subagent-driven-development"
+        "subagent-driven-development",
+        "desenvolvimento-com-subagentes",
+        "sadd",
+        "desenvolvimento-orientado-subagentes"
       ],
       "invocation": "/sadd:subagent-driven-development",
-      "category": "debugging",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "implementation plan with independent tasks",
+        "issue list with 3+ independent items",
+        "task dependencies map"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "parallel sub-agent execution results",
+        "integrated implementation",
+        "task completion report"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:debugging",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:automation",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sadd-do-and-judge",
+        "skill:sadd-do-in-parallel",
+        "skill:sadd-do-in-steps"
       ]
     },
     "skill:sadd-tree-of-thoughts": {
       "type": "skill",
       "name": "sadd-tree-of-thoughts",
       "aliases": [
-        "sadd:tree-of-thoughts",
-        "sadd-tree-of-thoughts"
+        "sadd-tree-of-thoughts",
+        "arvore-pensamentos",
+        "tree-of-thoughts",
+        "tot",
+        "exploracao-sistematica",
+        "systematic-exploration",
+        "sadd:tree-of-thoughts"
       ],
       "invocation": "/sadd:tree-of-thoughts",
       "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "task description",
+        "branching factor",
+        "evaluation criteria",
+        "pruning threshold",
+        "meta-judge specification"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "explored thought tree",
+        "pruned branches with rationale",
+        "optimal path",
+        "final solution"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sadd-do-competitively",
+        "skill:sadd-judge-with-debate",
+        "skill:customaize-agent-thought-based-reasoning"
       ]
     },
     "skill:salesforce-developer": {
@@ -8741,25 +10465,34 @@
       "type": "skill",
       "name": "sdd-add-task",
       "aliases": [
-        "sdd:add-task",
-        "sdd-add-task"
+        "sdd-add-task",
+        "adicionar-tarefa",
+        "add-task-sdd",
+        "criar-tarefa",
+        "nova-tarefa",
+        "sdd-task"
       ],
       "invocation": "/sdd:add-task",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"user intent or feature request\"",
+        "\"project context\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"draft task file in .specs/tasks/draft/\"",
+        "\"preserved original user intent\"",
+        "\"task metadata (priority",
+        "scope",
+        "dependencies)\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:debugging",
-        "concept:testing",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:planning",
+        "concept:documentation",
+        "concept:quality",
+        "skill:sdd-plan",
+        "skill:write-plan",
+        "skill:code-architect"
       ]
     },
     "skill:sdd-brainstorm": {
@@ -8792,73 +10525,136 @@
       "name": "sdd-create-ideas",
       "aliases": [
         "sdd:create-ideas",
-        "sdd-create-ideas"
+        "create-ideas",
+        "criar-ideias",
+        "gerar-ideias",
+        "ideation",
+        "brainstorm-ideas",
+        "ideacao"
       ],
       "invocation": "/sdd:create-ideas",
-      "category": "implementation",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "problem statement",
+        "domain context",
+        "constraints",
+        "number of ideas to generate"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "list of creative ideas",
+        "idea evaluations",
+        "ranked recommendations"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sdd-plan",
+        "skill:sdd-brainstorm",
+        "skill:brainstorm"
       ]
     },
     "skill:sdd-implement": {
       "type": "skill",
       "name": "sdd-implement",
       "aliases": [
-        "sdd:implement",
-        "sdd-implement"
+        "sdd-implement",
+        "implementar-sdd",
+        "sdd-implementar",
+        "implement-with-verification",
+        "implementacao-verificada",
+        "llm-judge-implementation",
+        "sdd:implement"
       ],
       "invocation": "/sdd:implement",
-      "category": "debugging",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "task specification",
+        "implementation plan",
+        "critical step definitions",
+        "verification criteria"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "implemented code",
+        "LLM-as-Judge verification results per critical step",
+        "implementation report"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:debugging",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:quality",
+        "concept:testing",
+        "concept:architecture",
+        "skill:sdd-plan",
+        "skill:tdd-write-tests",
+        "skill:reflexion-critique"
       ]
     },
     "skill:sdd-plan": {
       "type": "skill",
       "name": "sdd-plan",
       "aliases": [
-        "sdd:plan",
-        "sdd-plan"
+        "sdd-plan",
+        "planejar-sdd",
+        "plan-task-sdd",
+        "refinar-tarefa",
+        "sdd-refine",
+        "planejar-tarefa"
       ],
       "invocation": "/sdd:plan",
-      "category": "debugging",
+      "category": "planning",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"draft task file from .specs/tasks/draft/\"",
+        "\"project context and codebase\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"refined implementation-ready task specification\"",
+        "\"parallelization plan\"",
+        "\"verified dependencies and integration points\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 5000,
       "edges": [
-        "concept:debugging",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:planning",
+        "concept:architecture",
+        "concept:quality",
+        "skill:sdd-add-task",
+        "skill:execute-plan",
+        "skill:sadd-do-in-parallel"
+      ]
+    },
+    "skill:search-conversations": {
+      "type": "skill",
+      "name": "search-conversations",
+      "aliases": [
+        "search-conversations",
+        "buscar-conversas",
+        "pesquisar-conversas",
+        "memory-search",
+        "episodic-memory",
+        "memoria-sessoes",
+        "conversation-history"
+      ],
+      "invocation": "/search-conversations",
+      "category": "utility",
+      "inputs": [
+        "search query keywords",
+        "date range filter",
+        "conversation topic",
+        "project context"
+      ],
+      "outputs": [
+        "matching conversation excerpts",
+        "session metadata",
+        "relevant context from past sessions"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "skill:observability",
+        "concept:documentation",
+        "concept:planning",
+        "skill:reflexion-memorize",
+        "skill:investigate",
+        "skill:researcher"
       ]
     },
     "skill:secure-code-guardian": {
@@ -8941,24 +10737,23 @@
       "name": "setup-browser-cookies",
       "aliases": [
         "setup-browser-cookies",
-        "setup-browser-cookies"
+        "cookies",
+        "browser-setup",
+        "configurar-cookies"
       ],
       "invocation": "/setup-browser-cookies",
-      "category": "debugging",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "Chromium browser with cookies"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "headless browser with imported cookies"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "small",
       "edges": [
-        "concept:debugging",
-        "concept:security",
-        "concept:testing",
-        "concept:design"
+        "skill:gstack",
+        "skill:qa",
+        "skill:setup-deploy"
       ]
     },
     "skill:setup-deploy": {
@@ -8966,24 +10761,24 @@
       "name": "setup-deploy",
       "aliases": [
         "setup-deploy",
-        "setup-deploy"
+        "deploy-config",
+        "deployment-setup",
+        "configurar-deploy"
       ],
       "invocation": "/setup-deploy",
-      "category": "debugging",
+      "category": "deployment",
       "inputs": [
-        "codebase",
-        "user-request"
+        "deployment platform",
+        "environment variables"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "deployment configuration"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "small",
       "edges": [
-        "concept:debugging",
-        "concept:deployment",
-        "concept:ai-ml",
-        "concept:version-control"
+        "skill:land-and-deploy",
+        "skill:ship",
+        "skill:health"
       ]
     },
     "skill:setup": {
@@ -9041,24 +10836,24 @@
       "name": "ship",
       "aliases": [
         "ship",
-        "ship"
+        "shipping",
+        "pr-creation",
+        "criar-pr"
       ],
       "invocation": "/ship",
-      "category": "debugging",
+      "category": "deployment",
       "inputs": [
-        "codebase",
-        "user-request"
+        "implementation changes",
+        "version bump"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "PR created and pushed"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "large",
       "edges": [
-        "concept:debugging",
-        "concept:testing",
-        "concept:deployment",
-        "concept:ai-ml"
+        "skill:review",
+        "skill:land-and-deploy",
+        "skill:health"
       ]
     },
     "skill:shopify-expert": {
@@ -9141,25 +10936,22 @@
       "name": "skill-development",
       "aliases": [
         "skill-development",
-        "skill-development"
+        "create-skill",
+        "write-skill",
+        "desenvolvimento-skill"
       ],
       "invocation": "/skill-development",
-      "category": "documentation",
+      "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "skill requirements",
+        "workflow definition"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "skill code",
+        "documentation"
       ],
-      "estimated_tokens": "medium",
-      "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
-      ]
+      "estimated_tokens": "large",
+      "edges": []
     },
     "skill:skill-reviewer": {
       "type": "skill",
@@ -9411,6 +11203,70 @@
         "concept:deployment"
       ]
     },
+    "skill:stripe-best-practices": {
+      "type": "skill",
+      "name": "stripe-best-practices",
+      "aliases": [
+        "stripe-best-practices",
+        "boas-praticas-stripe",
+        "stripe-melhores-praticas",
+        "stripe-patterns",
+        "padroes-stripe"
+      ],
+      "invocation": "/stripe-best-practices",
+      "category": "implementation",
+      "inputs": [
+        "Stripe integration code",
+        "payment flow description",
+        "Stripe API usage context"
+      ],
+      "outputs": [
+        "best practice recommendations",
+        "Stripe integration patterns",
+        "security guidelines",
+        "optimized payment flow"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:security",
+        "concept:architecture",
+        "concept:quality",
+        "skill:api-designer",
+        "skill:security-auditor",
+        "skill:architecture-designer"
+      ]
+    },
+    "skill:stripe-projects": {
+      "type": "skill",
+      "name": "stripe-projects",
+      "aliases": [
+        "stripe-projects",
+        "projetos-stripe",
+        "stripe",
+        "stripe-integration",
+        "stripe-setup"
+      ],
+      "invocation": "/stripe-projects",
+      "category": "implementation",
+      "inputs": [
+        "Stripe project configuration",
+        "API keys",
+        "integration requirements"
+      ],
+      "outputs": [
+        "Stripe project setup",
+        "integration configuration",
+        "project management interface"
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:architecture",
+        "concept:deployment",
+        "concept:security",
+        "skill:api-designer",
+        "skill:deploy"
+      ]
+    },
     "skill:subagent-driven-development": {
       "type": "skill",
       "name": "subagent-driven-development",
@@ -9516,49 +11372,70 @@
       "name": "tdd-test-driven-development",
       "aliases": [
         "tdd:test-driven-development",
-        "tdd-test-driven-development"
+        "test-driven-development",
+        "tdd",
+        "desenvolvimento-orientado-testes",
+        "desenvolvimento-guiado-por-testes",
+        "red-green-refactor"
       ],
       "invocation": "/tdd:test-driven-development",
-      "category": "debugging",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "feature or bugfix description",
+        "acceptance criteria",
+        "target file paths"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "failing test (RED)",
+        "minimal implementation (GREEN)",
+        "refactored code (REFACTOR)",
+        "passing test suite"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
-        "concept:debugging",
         "concept:testing",
-        "concept:deployment",
-        "concept:design"
+        "concept:quality",
+        "concept:architecture",
+        "skill:tdd-write-tests",
+        "skill:tdd-fix-tests",
+        "skill:sadd-do-and-judge"
       ]
     },
     "skill:tdd-write-tests": {
       "type": "skill",
       "name": "tdd-write-tests",
       "aliases": [
-        "tdd:write-tests",
-        "tdd-write-tests"
+        "tdd-write-tests",
+        "escrever-testes",
+        "write-tests",
+        "adicionar-testes",
+        "add-tests",
+        "cobertura-testes",
+        "test-coverage",
+        "tdd:write-tests"
       ],
       "invocation": "/tdd:write-tests",
       "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "local code changes (diff)",
+        "codebase path",
+        "existing test files",
+        "test framework configuration"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "new test files",
+        "updated test suites",
+        "coverage report for changes",
+        "test review feedback"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 10000,
       "edges": [
         "concept:testing",
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control"
+        "concept:quality",
+        "concept:automation",
+        "skill:tdd-fix-tests",
+        "skill:code-review-review-local-changes",
+        "skill:sdd-implement"
       ]
     },
     "skill:team-lead": {
@@ -9615,25 +11492,33 @@
       "type": "skill",
       "name": "tech-stack-add-typescript-best-practices",
       "aliases": [
-        "tech-stack:add-typescript-best-practices",
-        "tech-stack-add-typescript-best-practices"
+        "tech-stack-add-typescript-best-practices",
+        "boas-praticas-typescript",
+        "typescript-best-practices",
+        "ts-best-practices",
+        "melhores-praticas-ts",
+        "typescript-setup"
       ],
       "invocation": "/tech-stack:add-typescript-best-practices",
-      "category": "data",
+      "category": "quality",
       "inputs": [
-        "codebase",
-        "user-request"
+        "\"project root directory\"",
+        "\"existing CLAUDE.md\"",
+        "\"current tsconfig.json\""
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "\"TypeScript best practices added to CLAUDE.md\"",
+        "\"code style rules for TypeScript\"",
+        "\"strict mode recommendations\""
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": 2000,
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:code-quality"
+        "concept:quality",
+        "concept:documentation",
+        "concept:architecture",
+        "skill:ddd-setup-code-formating",
+        "skill:conventions",
+        "skill:revise-claude-md"
       ]
     },
     "skill:tech-writer": {
@@ -9684,6 +11569,67 @@
         "concept:security",
         "concept:testing",
         "concept:deployment"
+      ]
+    },
+    "skill:test-agent": {
+      "type": "skill",
+      "name": "test-agent",
+      "aliases": [
+        "test-agent",
+        "agente-teste",
+        "agente-revisao-codigo",
+        "test-review-agent",
+        "code-quality-agent"
+      ],
+      "invocation": "/test-agent",
+      "category": "quality",
+      "inputs": [
+        "codebase path",
+        "files to review",
+        "quality criteria"
+      ],
+      "outputs": [
+        "code review findings",
+        "quality analysis report",
+        "improvement suggestions"
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:quality",
+        "concept:testing",
+        "concept:architecture",
+        "skill:code-review-review-local-changes",
+        "skill:tdd-write-tests",
+        "skill:reflexion-critique"
+      ]
+    },
+    "skill:test-command": {
+      "type": "skill",
+      "name": "test-command",
+      "aliases": [
+        "test-command",
+        "comando-teste",
+        "test-plugin-command",
+        "comando-de-teste",
+        "qa-command"
+      ],
+      "invocation": "/test-command",
+      "category": "quality",
+      "inputs": [
+        "test parameters",
+        "verification target"
+      ],
+      "outputs": [
+        "test execution results",
+        "QA verification report"
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:testing",
+        "concept:quality",
+        "concept:automation",
+        "skill:customaize-agent-test-skill",
+        "skill:qa"
       ]
     },
     "skill:test-coverage-reviewer": {
@@ -9941,24 +11887,56 @@
       "name": "unfreeze",
       "aliases": [
         "unfreeze",
-        "unfreeze"
+        "unfreeze-scope",
+        "scope-expansion",
+        "descongelar"
       ],
       "invocation": "/unfreeze",
-      "category": "documentation",
+      "category": "utility",
       "inputs": [
-        "codebase",
-        "user-request"
+        "current freeze state"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "expanded edit permissions"
       ],
-      "estimated_tokens": "medium",
+      "estimated_tokens": "small",
       "edges": [
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:documentation",
-        "concept:extensibility"
+        "skill:freeze",
+        "skill:careful",
+        "skill:guard"
+      ]
+    },
+    "skill:upgrade-stripe": {
+      "type": "skill",
+      "name": "upgrade-stripe",
+      "aliases": [
+        "upgrade-stripe",
+        "atualizar-stripe",
+        "stripe-upgrade",
+        "stripe-migration",
+        "migracao-stripe"
+      ],
+      "invocation": "/upgrade-stripe",
+      "category": "implementation",
+      "inputs": [
+        "\"current Stripe API version\"",
+        "\"target Stripe API version\"",
+        "\"project codebase with Stripe integration\""
+      ],
+      "outputs": [
+        "\"migration guide with breaking changes\"",
+        "\"updated API calls and SDK usage\"",
+        "\"deprecation warnings and replacements\"",
+        "\"test recommendations for payment flows\""
+      ],
+      "estimated_tokens": 5000,
+      "edges": [
+        "concept:deployment",
+        "concept:security",
+        "concept:testing",
+        "skill:tdd-write-tests",
+        "skill:code-review-review-local-changes",
+        "skill:deploy"
       ]
     },
     "skill:using-git-worktrees": {
@@ -10561,29 +12539,62 @@
         "concept:frontend-frameworks"
       ]
     },
+    "skill:writing-clearly-and-concisely": {
+      "type": "skill",
+      "name": "writing-clearly-and-concisely",
+      "aliases": [
+        "writing-clearly-and-concisely",
+        "escrita-clara-concisa",
+        "strunk-rules",
+        "clear-writing",
+        "concise-writing",
+        "redacao-tecnica",
+        "technical-writing-style"
+      ],
+      "invocation": "/writing-clearly-and-concisely",
+      "category": "documentation",
+      "inputs": [
+        "\"prose text to improve (docs",
+        "commit messages",
+        "error messages",
+        "comments",
+        "explanations)\""
+      ],
+      "outputs": [
+        "\"revised text following Strunk's rules\"",
+        "\"clarity improvements\"",
+        "\"conciseness edits\""
+      ],
+      "estimated_tokens": 2000,
+      "edges": [
+        "concept:documentation",
+        "concept:quality",
+        "concept:planning",
+        "skill:docs-update-docs",
+        "skill:git-create-pr",
+        "skill:tech-writer"
+      ]
+    },
     "skill:writing-hookify-rules": {
       "type": "skill",
       "name": "writing-hookify-rules",
       "aliases": [
-        "Writing Hookify Rules",
-        "writing-hookify-rules"
+        "writing-hookify-rules",
+        "hookify-rules",
+        "rule-writing",
+        "escrever-regras-hookify"
       ],
-      "invocation": "/Writing Hookify Rules",
+      "invocation": "/writing-hookify-rules",
       "category": "implementation",
       "inputs": [
-        "codebase",
-        "user-request"
+        "automation requirement"
       ],
       "outputs": [
-        "modified-code",
-        "report"
+        "hookify rule configuration"
       ],
       "estimated_tokens": "medium",
       "edges": [
-        "concept:design",
-        "concept:ai-ml",
-        "concept:version-control",
-        "concept:architecture"
+        "skill:health"
       ]
     },
     "skill:writing-plans": {
@@ -10659,6 +12670,24 @@
         "concept:design",
         "concept:ai-ml",
         "concept:version-control"
+      ]
+    },
+    "pipeline:analysis-context-pipeline": {
+      "type": "pipeline",
+      "name": "analysis-context-pipeline",
+      "aliases": [
+        "analise-contexto",
+        "context-analysis",
+        "context-sync",
+        "analise-mudancas",
+        "review-context-update"
+      ],
+      "steps": [],
+      "triggers": [],
+      "edges": [
+        "skill:brainstorming",
+        "skill:writing-plans",
+        "skill:investigate"
       ]
     },
     "pipeline:bugfix-pipeline": {
@@ -10806,9 +12835,24 @@
     "assurance information": "concept:assurance-information",
     "audience-adaptation": "concept:audience-adaptation",
     "audience adaptation": "concept:audience-adaptation",
+    "automation": "concept:automation",
+    "automacao": "concept:automation",
+    "automatizacao": "concept:automation",
+    "ci-cd": "concept:automation",
+    "workflow-automation": "concept:automation",
+    "bug-fixing": "concept:bug-fixing",
+    "correcao-de-bugs": "concept:bug-fixing",
+    "fix-bugs": "concept:bug-fixing",
+    "resolver-bugs": "concept:bug-fixing",
+    "bug-fix": "concept:bug-fixing",
+    "hotfix": "concept:bug-fixing",
+    "corrigir-erro": "concept:bug-fixing",
+    "fix-error": "concept:bug-fixing",
+    "debug-fix": "concept:bug-fixing",
+    "patch-bug": "concept:bug-fixing",
     "clarity-patterns": "concept:clarity-patterns",
     "clarity patterns": "concept:clarity-patterns",
-    "code-quality": "concept:code-quality",
+    "code-quality": "concept:quality",
     "qualidade-codigo": "concept:code-quality",
     "code quality": "concept:code-quality",
     "debugging": "skill:investigate",
@@ -10830,7 +12874,7 @@
     "evidence-linking": "concept:evidence-linking",
     "evidence linking": "concept:evidence-linking",
     "evidence-staleness": "concept:evidence-staleness",
-    "evidence staleness": "skill:fpf-decay",
+    "evidence staleness": "concept:evidence-staleness",
     "evidence-verification": "concept:evidence-verification",
     "evidence verification": "concept:evidence-verification",
     "extensibility": "concept:extensibility",
@@ -10839,21 +12883,35 @@
     "first principles reasoning": "concept:first-principles-reasoning",
     "first-principles-thinking": "concept:first-principles-thinking",
     "first principles thinking": "concept:first-principles-thinking",
-    "fpf-actualize": "concept:fpf-actualize",
+    "fpf-actualize": "skill:fpf-actualize",
     "fpf actualize": "concept:fpf-actualize",
     "fpf-agent": "skill:fpf-agent",
     "fpf agent": "concept:fpf-agent",
-    "fpf-decay": "concept:fpf-decay",
+    "fpf-decay": "skill:fpf-decay",
     "fpf decay": "concept:fpf-decay",
     "fpf-propose-hypotheses": "concept:fpf-propose-hypotheses",
     "fpf propose hypotheses": "concept:fpf-propose-hypotheses",
-    "fpf-query": "concept:fpf-query",
+    "fpf-query": "skill:fpf-query",
     "fpf query": "concept:fpf-query",
-    "fpf-status": "concept:fpf-status",
+    "fpf-status": "skill:fpf-status",
     "fpf status": "concept:fpf-status",
     "frontend-frameworks": "concept:frontend-frameworks",
     "frameworks-frontend": "concept:frontend-frameworks",
-    "frontend frameworks": "concept:frontend-frameworks",
+    "react": "concept:frontend-frameworks",
+    "vue": "concept:frontend-frameworks",
+    "angular": "concept:frontend-frameworks",
+    "svelte": "concept:frontend-frameworks",
+    "nextjs": "skill:nextjs",
+    "frontend": "concept:frontend-frameworks",
+    "front-end": "concept:frontend-frameworks",
+    "ui-frameworks": "concept:frontend-frameworks",
+    "web-frameworks": "concept:frontend-frameworks",
+    "spa": "concept:frontend-frameworks",
+    "single-page-app": "concept:frontend-frameworks",
+    "componentes-ui": "concept:frontend-frameworks",
+    "react-hooks": "concept:frontend-frameworks",
+    "jsx": "concept:frontend-frameworks",
+    "tsx": "concept:frontend-frameworks",
     "governance-actions": "concept:governance-actions",
     "governance actions": "concept:governance-actions",
     "hypothesis-details": "concept:hypothesis-details",
@@ -10862,10 +12920,31 @@
     "hypothesis generation": "skill:fpf-propose-hypotheses",
     "kaizen-why": "skill:kaizen-why",
     "kaizen why": "concept:kaizen-why",
+    "complexidade-kiro": "concept:kiro-complexity",
+    "kiro-complexity": "concept:kiro-complexity",
+    "simples-media-complexa": "concept:kiro-complexity",
+    "pipeline-complexity": "concept:kiro-complexity",
+    "classificacao-complexidade": "concept:kiro-complexity",
     "knowledge-base-maintenance": "concept:knowledge-base-maintenance",
     "knowledge base maintenance": "concept:knowledge-base-maintenance",
     "knowledge-search": "concept:knowledge-search",
     "knowledge search": "concept:knowledge-search",
+    "observability": "skill:observability",
+    "observabilidade": "concept:observability",
+    "monitoring": "concept:observability",
+    "monitoramento": "concept:observability",
+    "logging": "concept:observability",
+    "tracing": "concept:observability",
+    "planning": "concept:planning",
+    "planejamento": "concept:planning",
+    "planejar": "concept:planning",
+    "design-planning": "concept:planning",
+    "spec-planning": "concept:planning",
+    "quality": "concept:quality",
+    "qualidade": "concept:quality",
+    "qualidade-de-codigo": "concept:quality",
+    "qa": "skill:qa",
+    "garantia-qualidade": "concept:quality",
     "refresh-priorities": "concept:refresh-priorities",
     "refresh priorities": "concept:refresh-priorities",
     "repository-alignment": "concept:repository-alignment",
@@ -10878,6 +12957,11 @@
     "technical writing": "concept:technical-writing",
     "testing": "concept:testing",
     "testes": "pipeline:testing-pipeline",
+    "tooling": "concept:tooling",
+    "ferramentas": "concept:tooling",
+    "developer-tools": "concept:tooling",
+    "dev-tools": "concept:tooling",
+    "ferramentas-dev": "concept:tooling",
     "trust-calculus": "concept:trust-calculus",
     "trust calculus": "concept:trust-calculus",
     "trust-metrics": "concept:trust-metrics",
@@ -10887,26 +12971,49 @@
     "version-control": "concept:version-control",
     "controle-versao": "concept:version-control",
     "version control": "concept:version-control",
+    "rhema v1 launch closeout": "skill:rhema v1 launch closeout",
+    "rhema-v1-closeout": "skill:rhema v1 launch closeout",
+    "rhema-v1-launch": "skill:rhema v1 launch closeout",
+    "fechamento-lancamento-v1": "skill:rhema v1 launch closeout",
+    "rhema-gaps": "skill:rhema v1 launch closeout",
+    "v1-master-plan": "skill:rhema v1 launch closeout",
     "a11y-debugging": "skill:a11y-debugging",
     "access": "skill:access",
     "advisor-auto": "skill:advisor-auto",
     "advisor-catalog": "skill:advisor-catalog",
     "advisor-config": "skill:advisor-config",
     "advisor-feedback": "skill:advisor-feedback",
+    "advisor-gate": "skill:advisor-gate",
+    "gate-advisor": "skill:advisor-gate",
+    "portao-advisor": "skill:advisor-gate",
+    "skill-gate": "skill:advisor-gate",
+    "advisor-approval": "skill:advisor-gate",
+    "aprovacao-advisor": "skill:advisor-gate",
+    "loadout-gate": "skill:advisor-gate",
     "advisor-index": "skill:advisor-index",
     "advisor-router": "skill:advisor-router",
     "advisor": "skill:advisor",
     "agent-browser-verify": "skill:agent-browser-verify",
     "agent-browser": "skill:agent-browser",
-    "agent-creator": "skill:agent-creator",
+    "agent-creator": "skill:customaize-agent-create-agent",
     "agent-development": "skill:agent-development",
+    "create-agent": "skill:customaize-agent-create-agent",
+    "subagent": "skill:agent-development",
+    "desenvolvimento-agente": "skill:agent-development",
     "agents": "skill:agents",
+    "agentes": "skill:agents",
+    "huggingface-agents": "skill:agents",
+    "agentes-huggingface": "skill:agents",
+    "hf-agents": "skill:agents",
     "ai-architect": "skill:ai-architect",
     "ai-elements": "skill:ai-elements",
     "ai-gateway": "skill:ai-gateway",
     "ai-sdk": "skill:ai-sdk",
     "algorithmic-art": "skill:algorithmic-art",
     "analisar-obz": "skill:analisar-obz",
+    "obz-analysis": "skill:analisar-obz",
+    "analise-obz": "skill:analisar-obz",
+    "ler-planilha-obz": "skill:analisar-obz",
     "analyzer": "skill:analyzer",
     "angular-architect": "skill:angular-architect",
     "api-designer": "skill:api-designer",
@@ -10929,6 +13036,73 @@
     "cancel-ralph": "skill:cancel-ralph",
     "canvas-design": "skill:canvas-design",
     "careful": "skill:careful",
+    "cc-agent": "skill:cc-agent",
+    "agente-claude-code": "skill:cc-agent",
+    "claude-code-agent": "skill:cc-agent",
+    "configurar-agente": "skill:cc-agent",
+    "agent-design": "skill:cc-agent",
+    "agent-configuration": "skill:cc-agent",
+    "cc-audit": "skill:cc-audit",
+    "auditoria-cc": "skill:cc-audit",
+    "claude-code-audit": "skill:cc-audit",
+    "audit-context": "skill:cc-audit",
+    "auditoria-contexto": "skill:cc-audit",
+    "cc-toolkit-audit": "skill:cc-audit",
+    "cc-context": "skill:cc-context",
+    "claude-code-context": "skill:cc-context",
+    "contexto-claude-code": "skill:cc-context",
+    "context-diagnostics": "skill:cc-context",
+    "compaction-fix": "skill:cc-context",
+    "context-window": "skill:cc-context",
+    "gerenciamento-contexto": "skill:cc-context",
+    "cc-expert-router": "skill:cc-expert-router",
+    "roteador-especialista-cc": "skill:cc-expert-router",
+    "claude-code-expert": "skill:cc-expert-router",
+    "especialista-claude-code": "skill:cc-expert-router",
+    "cc-help": "skill:cc-expert-router",
+    "ajuda-claude-code": "skill:cc-expert-router",
+    "cc-hooks": "skill:cc-hooks",
+    "hooks-claude-code": "skill:cc-hooks",
+    "claude-code-hooks": "skill:cc-hooks",
+    "criar-hook": "skill:customaize-agent-create-hook",
+    "configurar-hooks": "skill:cc-hooks",
+    "hook-debug": "skill:cc-hooks",
+    "cc-mcp": "skill:cc-mcp",
+    "mcp-config": "skill:cc-mcp",
+    "configurar-mcp": "skill:cc-mcp",
+    "mcp-setup": "skill:cc-mcp",
+    "cc-toolkit-mcp": "skill:cc-mcp",
+    "mcp-diagnostico": "skill:cc-mcp",
+    "cc-prompt": "skill:cc-prompt",
+    "claude-code-prompt": "skill:cc-prompt",
+    "otimizar-prompt": "skill:customaize-agent-prompt-engineering",
+    "prompt-optimization": "skill:cc-prompt",
+    "claude-api-config": "skill:cc-prompt",
+    "configuracao-prompt": "skill:cc-prompt",
+    "cc-security": "skill:cc-security",
+    "seguranca-cc": "skill:cc-security",
+    "claude-code-security": "skill:cc-security",
+    "seguranca-claude-code": "skill:cc-security",
+    "cc-permissions": "skill:cc-security",
+    "permissoes-cc": "skill:cc-security",
+    "cc-setup": "skill:cc-setup",
+    "setup-claude-code": "skill:cc-setup",
+    "instalar-claude-code": "skill:cc-setup",
+    "configurar-claude-code": "skill:cc-setup",
+    "claude-code-setup": "skill:cc-setup",
+    "claude-code-install": "skill:cc-setup",
+    "cc-skill": "skill:cc-skill",
+    "criar-skill": "skill:customaize-agent-create-skill",
+    "create-skill-cc": "skill:cc-skill",
+    "cc-toolkit-skill": "skill:cc-skill",
+    "skill-creator-cc": "skill:cc-skill",
+    "criar-comando": "skill:customaize-agent-create-command",
+    "cc": "skill:cc",
+    "cc-toolkit": "skill:cc",
+    "claude-code-toolkit": "skill:cc",
+    "kit-claude-code": "skill:cc",
+    "ferramenta-claude-code": "skill:cc",
+    "swiss-army-knife": "skill:cc",
     "chaos-engineer": "skill:chaos-engineer",
     "chat-sdk": "skill:chat-sdk",
     "checkpoint": "skill:checkpoint",
@@ -10938,16 +13112,28 @@
     "claude-opus-4-5-migration": "skill:claude-opus-4-5-migration",
     "cli-developer": "skill:cli-developer",
     "cloud-architect": "skill:cloud-architect",
+    "code-architect": "skill:code-architect",
+    "arquiteto-de-codigo": "skill:code-architect",
+    "feature-architect": "skill:code-architect",
+    "architecture-designer-code": "skill:code-architect",
+    "design-feature": "skill:code-architect",
     "code-documenter": "skill:code-documenter",
     "code-explorer": "skill:code-explorer",
     "code-review:review-local-changes": "skill:code-review-review-local-changes",
     "code-review-review-local-changes": "skill:code-review-review-local-changes",
     "code-review:review-pr": "skill:code-review-review-pr",
-    "code-review-review-pr": "skill:code-review-review-pr",
+    "review-pr": "skill:code-review-review-pr",
+    "revisao-pr": "skill:review",
+    "revisao-pull-request": "skill:code-review-review-pr",
+    "revisar-pr": "skill:code-review-review-pr",
+    "pr-review": "pipeline:code-review-pipeline",
     "code-reviewer": "skill:code-reviewer",
     "code-simplifier": "skill:code-simplifier",
     "codex": "skill:codex",
     "command-development": "skill:command-development",
+    "create-command": "skill:customaize-agent-create-command",
+    "custom-command": "skill:command-development",
+    "desenvolvimento-comando": "skill:command-development",
     "comparator": "skill:comparator",
     "configure": "skill:configure",
     "connect-chrome": "skill:connect-chrome",
@@ -10955,59 +13141,100 @@
     "_conventions": "skill:conventions",
     "conventions": "skill:conventions",
     "cpp-pro": "skill:cpp-pro",
-    "create-plugin": "skill:create-plugin",
+    "create-plugin": "skill:plugin-structure",
     "cron-jobs": "skill:cron-jobs",
     "csharp-developer": "skill:csharp-developer",
     "cso": "skill:cso",
-    "customaize-agent:agent-evaluation": "skill:customaize-agent-agent-evaluation",
     "customaize-agent-agent-evaluation": "skill:customaize-agent-agent-evaluation",
-    "customaize-agent:apply-anthropic-skill-best-practices": "skill:customaize-agent-apply-anthropic-skill-best-practices",
+    "avaliacao-agente": "skill:customaize-agent-agent-evaluation",
+    "agent-evaluation": "skill:customaize-agent-agent-evaluation",
+    "avaliar-agente": "skill:customaize-agent-agent-evaluation",
+    "evaluate-agent": "skill:customaize-agent-agent-evaluation",
+    "prompt-evaluation": "skill:customaize-agent-agent-evaluation",
+    "customaize-agent:agent-evaluation": "skill:customaize-agent-agent-evaluation",
     "customaize-agent-apply-anthropic-skill-best-practices": "skill:customaize-agent-apply-anthropic-skill-best-practices",
+    "apply-anthropic-best-practices": "skill:customaize-agent-apply-anthropic-skill-best-practices",
+    "boas-praticas-anthropic": "skill:customaize-agent-apply-anthropic-skill-best-practices",
+    "anthropic-skill-guide": "skill:customaize-agent-apply-anthropic-skill-best-practices",
+    "melhores-praticas-skill-anthropic": "skill:customaize-agent-apply-anthropic-skill-best-practices",
     "customaize-agent:context-engineering": "skill:customaize-agent-context-engineering",
     "customaize-agent-context-engineering": "skill:customaize-agent-context-engineering",
     "customaize-agent:create-agent": "skill:customaize-agent-create-agent",
-    "customaize-agent-create-agent": "skill:customaize-agent-create-agent",
-    "customaize-agent:create-command": "skill:customaize-agent-create-command",
+    "criar-agente": "skill:customaize-agent-create-agent",
+    "criador-de-agente": "skill:customaize-agent-create-agent",
+    "criacao-de-agente": "skill:customaize-agent-create-agent",
     "customaize-agent-create-command": "skill:customaize-agent-create-command",
-    "customaize-agent:create-hook": "skill:customaize-agent-create-hook",
+    "novo-comando": "skill:customaize-agent-create-command",
+    "command-creation": "skill:customaize-agent-create-command",
+    "customaize-agent:create-command": "skill:customaize-agent-create-command",
     "customaize-agent-create-hook": "skill:customaize-agent-create-hook",
+    "create-git-hook": "skill:customaize-agent-create-hook",
+    "create-hook": "skill:hook-development",
+    "hook-inteligente": "skill:customaize-agent-create-hook",
+    "criar-hook-git": "skill:customaize-agent-create-hook",
     "customaize-agent:create-rule": "skill:customaize-agent-create-rule",
     "customaize-agent-create-rule": "skill:customaize-agent-create-rule",
     "customaize-agent:create-skill": "skill:customaize-agent-create-skill",
-    "customaize-agent-create-skill": "skill:customaize-agent-create-skill",
-    "customaize-agent:create-workflow-command": "skill:customaize-agent-create-workflow-command",
+    "create-skill": "skill:skill-development",
+    "criador-de-skill": "skill:customaize-agent-create-skill",
+    "skill-creator-guide": "skill:customaize-agent-create-skill",
+    "criacao-de-skill": "skill:customaize-agent-create-skill",
     "customaize-agent-create-workflow-command": "skill:customaize-agent-create-workflow-command",
-    "customaize-agent:prompt-engineering": "skill:customaize-agent-prompt-engineering",
+    "criar-workflow": "skill:customaize-agent-create-workflow-command",
+    "create-workflow": "skill:customaize-agent-create-workflow-command",
+    "workflow-command": "skill:customaize-agent-create-workflow-command",
+    "comando-workflow": "skill:customaize-agent-create-workflow-command",
+    "orquestrar-agentes": "skill:customaize-agent-create-workflow-command",
+    "customaize-agent:create-workflow-command": "skill:customaize-agent-create-workflow-command",
     "customaize-agent-prompt-engineering": "skill:customaize-agent-prompt-engineering",
+    "engenharia-de-prompt": "skill:customaize-agent-prompt-engineering",
+    "prompt-engineering": "skill:customaize-agent-prompt-engineering",
+    "prompt-craft": "skill:customaize-agent-prompt-engineering",
+    "engenharia-prompt": "skill:customaize-agent-prompt-engineering",
     "customaize-agent:test-prompt": "skill:customaize-agent-test-prompt",
     "customaize-agent-test-prompt": "skill:customaize-agent-test-prompt",
     "customaize-agent:test-skill": "skill:customaize-agent-test-skill",
-    "customaize-agent-test-skill": "skill:customaize-agent-test-skill",
-    "customaize-agent:thought-based-reasoning": "skill:customaize-agent-thought-based-reasoning",
+    "test-skill": "skill:customaize-agent-test-skill",
+    "testar-skill": "skill:customaize-agent-test-skill",
+    "teste-de-skill": "skill:customaize-agent-test-skill",
+    "skill-tester": "skill:customaize-agent-test-skill",
+    "verificar-skill": "skill:customaize-agent-test-skill",
     "customaize-agent-thought-based-reasoning": "skill:customaize-agent-thought-based-reasoning",
+    "raciocinio-passo-a-passo": "skill:customaize-agent-thought-based-reasoning",
+    "thought-reasoning": "skill:customaize-agent-thought-based-reasoning",
+    "raciocinio-logico": "skill:customaize-agent-thought-based-reasoning",
+    "step-by-step-reasoning": "skill:customaize-agent-thought-based-reasoning",
+    "chain-of-thought": "skill:customaize-agent-thought-based-reasoning",
+    "customaize-agent:thought-based-reasoning": "skill:customaize-agent-thought-based-reasoning",
     "database-optimizer": "skill:database-optimizer",
-    "ddd:setup-code-formating": "skill:ddd-setup-code-formating",
     "ddd-setup-code-formating": "skill:ddd-setup-code-formating",
+    "setup-code-formatting": "skill:ddd-setup-code-formating",
+    "configurar-formatacao": "skill:ddd-setup-code-formating",
+    "code-formatting": "skill:ddd-setup-code-formating",
+    "formatacao-codigo": "skill:ddd-setup-code-formating",
+    "ddd-formatting": "skill:ddd-setup-code-formating",
     "debug-optimize-lcp": "skill:debug-optimize-lcp",
     "debugging-wizard": "skill:debugging-wizard",
     "deploy": "pipeline:deployment-pipeline",
     "deployment-expert": "skill:deployment-expert",
     "deployments-cicd": "skill:deployments-cicd",
     "design-html": "skill:design-html",
-    "design-review": "skill:design-review",
+    "design-review": "skill:plan-design-review",
     "design-shotgun": "skill:design-shotgun",
     "developer": "skill:developer",
     "developing-claude-code-plugins": "skill:developing-claude-code-plugins",
-    "devex-review": "skill:devex-review",
+    "devex-review": "skill:plan-devex-review",
     "devops-engineer": "skill:devops-engineer",
     "dispatching-parallel-agents": "skill:dispatching-parallel-agents",
     "django-expert": "skill:django-expert",
     "doc-coauthoring": "skill:doc-coauthoring",
     "docs:update-docs": "skill:docs-update-docs",
+    "docs:write-concisely": "skill:docs-write-concisely",
     "write-concisely": "skill:docs-write-concisely",
-    "documentação concisa": "skill:docs-write-concisely",
-    "documentacao concisa": "skill:docs-write-concisely",
-    "technical writing clarity": "skill:docs-write-concisely",
+    "escrever-concisamente": "skill:docs-write-concisely",
+    "escrita-concisa": "skill:docs-write-concisely",
+    "redacao-clara": "skill:docs-write-concisely",
+    "concise-writing": "skill:writing-clearly-and-concisely",
     "document-release": "skill:document-release",
     "docx": "skill:docx",
     "dotnet-core-expert": "skill:dotnet-core-expert",
@@ -11017,6 +13244,12 @@
     "enrich-contact": "skill:enrich-contact",
     "env-vars": "skill:env-vars",
     "env": "skill:env",
+    "example-workflow": "skill:example-workflow",
+    "fluxo-exemplo": "skill:example-workflow",
+    "workflow-example": "skill:example-workflow",
+    "demo-workflow": "skill:example-workflow",
+    "exemplo-fluxo": "skill:example-workflow",
+    "plugin-workflow-demo": "skill:example-workflow",
     "execute-plan": "skill:execute-plan",
     "executing-plans": "skill:executing-plans",
     "fastapi-expert": "skill:fastapi-expert",
@@ -11029,67 +13262,166 @@
     "figma-generate-library": "skill:figma-generate-library",
     "figma-implement-design": "skill:figma-implement-design",
     "figma-use": "skill:figma-use",
+    "figma": "skill:figma",
+    "figma-mcp": "skill:figma",
+    "figma-server": "skill:figma",
+    "design-figma": "skill:figma",
+    "integracao-figma": "skill:figma",
+    "figma-integration": "skill:figma",
     "find-similar": "skill:find-similar",
     "fine-tuning-expert": "skill:fine-tuning-expert",
     "finishing-a-development-branch": "skill:finishing-a-development-branch",
+    "firebase-cli": "skill:firebase-cli",
+    "firebase-mcp": "skill:firebase",
+    "firebase": "skill:firebase",
+    "cli-firebase": "skill:firebase-cli",
+    "firebase-tools": "skill:firebase",
+    "firebase-deploy": "skill:firebase-cli",
+    "servidor-firebase": "skill:firebase",
+    "firebase-server": "skill:firebase",
     "flutter-expert": "skill:flutter-expert",
+    "fpf-atualizar": "skill:fpf-actualize",
+    "atualizar-fpf": "skill:fpf-actualize",
+    "actualize-fpf": "skill:fpf-actualize",
+    "reconciliar-fpf": "skill:fpf-actualize",
+    "fpf-reconcile": "skill:fpf-actualize",
     "fpf:actualize": "skill:fpf-actualize",
-    "atualizar-base-conhecimento": "skill:fpf-actualize",
-    "knowledge sync": "skill:fpf-actualize",
     "primeiro-princípios": "skill:fpf-agent",
     "primeiro-principios": "skill:fpf-agent",
     "first-principles reasoning": "skill:fpf-agent",
-    "fpf:decay": "skill:fpf-decay",
-    "decadência-evidência": "skill:fpf-decay",
-    "decadencia-evidencia": "skill:fpf-decay",
+    "fpf-decaimento": "skill:fpf-decay",
+    "evidence-decay": "skill:fpf-decay",
+    "decaimento-evidencia": "skill:fpf-decay",
+    "fpf-freshness": "skill:fpf-decay",
+    "frescor-evidencia": "skill:fpf-decay",
     "fpf:propose-hypotheses": "skill:fpf-propose-hypotheses",
     "gerar-hipóteses": "skill:fpf-propose-hypotheses",
     "gerar-hipoteses": "skill:fpf-propose-hypotheses",
     "fpf:query": "skill:fpf-query",
-    "consultar-hipóteses": "skill:fpf-query",
-    "consultar-hipoteses": "skill:fpf-query",
-    "hypothesis search": "skill:fpf-query",
+    "consulta-fpf": "skill:fpf-query",
+    "buscar-fpf": "skill:fpf-query",
+    "fpf-search": "skill:fpf-query",
+    "pesquisar-fpf": "skill:fpf-query",
+    "fpf-reset": "skill:fpf-reset",
+    "fpf-resetar": "skill:fpf-reset",
+    "resetar-fpf": "skill:fpf-reset",
+    "reset-fpf": "skill:fpf-reset",
+    "limpar-fpf": "skill:fpf-reset",
+    "fpf-clear": "skill:fpf-reset",
     "fpf:reset": "skill:fpf-reset",
-    "limpar-ciclo": "skill:fpf-reset",
-    "reset reasoning cycle": "skill:fpf-reset",
-    "fpf:status": "skill:fpf-status",
     "status-fpf": "skill:fpf-status",
-    "knowledge state": "skill:fpf-status",
+    "fpf-estado": "skill:fpf-status",
+    "fpf-overview": "skill:fpf-status",
+    "visao-geral-fpf": "skill:fpf-status",
     "freeze": "skill:freeze",
     "frontend-design": "skill:frontend-design",
     "fullstack-guardian": "skill:fullstack-guardian",
     "game-developer": "skill:game-developer",
     "gerar-proposta-bpo": "skill:gerar-proposta-bpo",
+    "bpo-proposal": "skill:gerar-proposta-bpo",
+    "proposta-comercial": "skill:gerar-proposta-bpo",
+    "gerar-pptx": "skill:gerar-proposta-bpo",
+    "get-qodo-rules": "skill:get-qodo-rules",
+    "regras-qodo": "skill:qodo-get-rules",
+    "qodo-rules": "skill:qodo-get-rules",
+    "carregar-regras-qodo": "skill:qodo-get-rules",
+    "qodo-coding-rules": "skill:qodo-get-rules",
     "git:analyze-issue": "skill:git-analyze-issue",
     "analisar-issue": "skill:git-analyze-issue",
     "issue technical spec": "skill:git-analyze-issue",
     "git:attach-review-to-pr": "skill:git-attach-review-to-pr",
-    "comentar-pr": "skill:git-attach-review-to-pr",
-    "line-specific review": "skill:git-attach-review-to-pr",
+    "attach-review-to-pr": "skill:git-attach-review-to-pr",
+    "anexar-revisao-pr": "skill:git-attach-review-to-pr",
+    "adicionar-comentarios-pr": "skill:git-attach-review-to-pr",
+    "pr-comments": "skill:git-attach-review-to-pr",
+    "comentarios-pr": "skill:git-attach-review-to-pr",
+    "git-commit": "skill:git-commit",
+    "commit": "skill:git-commit",
+    "commitar": "skill:git-commit",
+    "criar-commit": "skill:git-commit",
+    "conventional-commit": "skill:git-commit",
+    "git-commitar": "skill:git-commit",
     "git:commit": "skill:git-commit",
-    "commit-command": "skill:git-commit",
-    "conventional commits": "skill:git-commit",
-    "git:compare-worktrees": "skill:git-compare-worktrees",
     "git-compare-worktrees": "skill:git-compare-worktrees",
+    "comparar-worktrees": "skill:git-compare-worktrees",
+    "compare-worktrees": "skill:git-compare-worktrees",
+    "worktree-diff": "skill:git-compare-worktrees",
+    "diff-worktrees": "skill:git-compare-worktrees",
+    "comparar-arvores-trabalho": "skill:git-compare-worktrees",
     "git:create-pr": "skill:git-create-pr",
     "git-create-pr": "skill:git-create-pr",
     "git:create-worktree": "skill:git-create-worktree",
-    "git-create-worktree": "skill:git-create-worktree",
-    "git:load-issues": "skill:git-load-issues",
+    "create-worktree": "skill:git-create-worktree",
+    "criar-worktree": "skill:git-create-worktree",
+    "novo-worktree": "skill:git-create-worktree",
+    "worktree-novo": "skill:git-create-worktree",
+    "git-worktree-create": "skill:git-create-worktree",
     "git-load-issues": "skill:git-load-issues",
-    "git:merge-worktree": "skill:git-merge-worktree",
+    "carregar-issues": "skill:git-load-issues",
+    "load-issues": "skill:git-load-issues",
+    "listar-issues-github": "skill:git-load-issues",
+    "github-issues": "skill:git-load-issues",
+    "git:load-issues": "skill:git-load-issues",
     "git-merge-worktree": "skill:git-merge-worktree",
+    "mesclar-worktree": "skill:git-merge-worktree",
+    "merge-worktree": "skill:git-merge-worktree",
+    "worktree-merge": "skill:git-merge-worktree",
+    "mesclar-arvore-trabalho": "skill:git-merge-worktree",
+    "cherry-pick-worktree": "skill:git-merge-worktree",
     "git:notes": "skill:git-notes",
     "git-notes": "skill:git-notes",
     "git:worktrees": "skill:git-worktrees",
     "git-worktrees": "skill:git-worktrees",
+    "worktrees": "skill:git-worktrees",
+    "arvores-de-trabalho": "skill:git-worktrees",
+    "gerenciar-worktrees": "skill:git-worktrees",
+    "listar-worktrees": "skill:git-worktrees",
+    "github": "skill:github",
+    "github-mcp": "skill:github",
+    "servidor-github": "skill:github",
+    "github-server": "skill:github",
+    "integracao-github": "skill:github",
+    "github-integration": "skill:github",
     "golang-pro": "skill:golang-pro",
     "grader": "skill:grader",
     "graphql-architect": "skill:graphql-architect",
     "grill-me": "skill:grill-me",
+    "gstack-openclaw-ceo-review": "skill:gstack-openclaw-ceo-review",
+    "revisao-ceo": "skill:plan-ceo-review",
+    "ceo-review": "skill:plan-ceo-review",
+    "founder-review": "skill:gstack-openclaw-ceo-review",
+    "revisao-fundador": "skill:gstack-openclaw-ceo-review",
+    "plan-review-ceo": "skill:gstack-openclaw-ceo-review",
+    "gstack-openclaw-investigate": "skill:gstack-openclaw-investigate",
+    "openclaw-investigate": "skill:gstack-openclaw-investigate",
+    "investigacao-sistematica": "skill:investigate",
+    "investigar-bug": "skill:gstack-openclaw-investigate",
+    "systematic-investigation": "skill:gstack-openclaw-investigate",
+    "gstack-investigate": "skill:gstack-openclaw-investigate",
+    "gstack-openclaw-office-hours": "skill:gstack-openclaw-office-hours",
+    "office-hours": "skill:office-hours",
+    "horas-de-escritorio": "skill:gstack-openclaw-office-hours",
+    "interrogacao-de-produto": "skill:gstack-openclaw-office-hours",
+    "product-interrogation": "skill:gstack-openclaw-office-hours",
+    "openclaw": "skill:gstack-openclaw-office-hours",
+    "gstack-openclaw-retro": "skill:gstack-openclaw-retro",
+    "retrospectiva-semanal": "skill:gstack-openclaw-retro",
+    "retro": "skill:retro",
+    "retrospectiva-engenharia": "skill:gstack-openclaw-retro",
+    "weekly-retro": "skill:retro",
+    "engineering-retrospective": "skill:gstack-openclaw-retro",
     "gstack-upgrade": "skill:gstack-upgrade",
+    "upgrade": "skill:gstack-upgrade",
+    "tool-upgrade": "skill:gstack-upgrade",
+    "atualizar-gstack": "skill:gstack-upgrade",
     "gstack": "skill:gstack",
+    "headless-browser": "skill:gstack",
+    "browser-automation": "skill:gstack",
+    "navegador-sem-interface": "skill:gstack",
     "guard": "skill:guard",
+    "safety-mode": "skill:guard",
+    "full-safety": "skill:guard",
+    "modo-seguro": "skill:guard",
     "health": "skill:health",
     "code-quality-dashboard": "skill:health",
     "dashboard-qualidade-codigo": "skill:health",
@@ -11099,6 +13431,8 @@
     "hf-mcp": "skill:hf-mcp",
     "historical-context-reviewer": "skill:historical-context-reviewer",
     "hook-development": "skill:hook-development",
+    "custom-hook": "skill:hook-development",
+    "desenvolvimento-hook": "skill:hook-development",
     "huggingface-community-evals": "skill:huggingface-community-evals",
     "huggingface-datasets": "skill:huggingface-datasets",
     "huggingface-gradio": "skill:huggingface-gradio",
@@ -11106,30 +13440,57 @@
     "huggingface-llm-trainer": "skill:huggingface-llm-trainer",
     "huggingface-paper-publisher": "skill:huggingface-paper-publisher",
     "huggingface-papers": "skill:huggingface-papers",
+    "huggingface-tool-builder": "skill:huggingface-tool-builder",
+    "hf-tool-builder": "skill:huggingface-tool-builder",
+    "construtor-ferramentas-huggingface": "skill:huggingface-tool-builder",
+    "hf-api-builder": "skill:huggingface-tool-builder",
+    "huggingface-scripts": "skill:huggingface-tool-builder",
     "huggingface-trackio": "skill:huggingface-trackio",
     "huggingface-vision-trainer": "skill:huggingface-vision-trainer",
     "interface-design": "skill:interface-design",
+    "ui-design": "skill:interface-design",
+    "dashboards": "skill:interface-design",
+    "interface-design-pt": "skill:interface-design",
     "internal-comms": "skill:internal-comms",
     "investigate": "skill:investigate",
-    "investigacao-sistematica": "skill:investigate",
     "root-cause-analysis": "skill:investigate",
     "investigation-mode": "skill:investigation-mode",
     "java-architect": "skill:java-architect",
     "javascript-pro": "skill:javascript-pro",
     "json-render": "skill:json-render",
-    "judge": "skill:judge",
-    "kaizen:analyse-problem": "skill:kaizen-analyse-problem",
+    "judge": "skill:sadd-judge",
     "kaizen-analyse-problem": "skill:kaizen-analyse-problem",
-    "kaizen:analyse": "skill:kaizen-analyse",
+    "analise-a3": "skill:kaizen-analyse-problem",
+    "a3-problem-analysis": "skill:kaizen-analyse-problem",
+    "analise-de-problema": "skill:kaizen-analyse-problem",
+    "kaizen-a3": "skill:kaizen-analyse-problem",
+    "problem-analysis": "skill:kaizen-analyse-problem",
     "kaizen-analyse": "skill:kaizen-analyse",
+    "kaizen-analisar": "skill:kaizen-analyse",
+    "analise-kaizen": "skill:kaizen-analyse",
+    "kaizen-analysis": "skill:kaizen-analyse",
+    "melhoria-continua": "skill:kaizen-kaizen",
+    "continuous-improvement": "skill:kaizen-kaizen",
+    "kaizen:analyse": "skill:kaizen-analyse",
     "kaizen:cause-and-effect": "skill:kaizen-cause-and-effect",
     "kaizen-cause-and-effect": "skill:kaizen-cause-and-effect",
     "kaizen:kaizen": "skill:kaizen-kaizen",
-    "kaizen-kaizen": "skill:kaizen-kaizen",
-    "kaizen:plan-do-check-act": "skill:kaizen-plan-do-check-act",
+    "kaizen": "skill:kaizen-kaizen",
+    "otimizacao-kaizen": "skill:kaizen-kaizen",
+    "kaizen-method": "skill:kaizen-kaizen",
     "kaizen-plan-do-check-act": "skill:kaizen-plan-do-check-act",
-    "kaizen:root-cause-tracing": "skill:kaizen-root-cause-tracing",
+    "pdca": "skill:kaizen-plan-do-check-act",
+    "ciclo-pdca": "skill:kaizen-plan-do-check-act",
+    "plan-do-check-act": "skill:kaizen-plan-do-check-act",
+    "kaizen-pdca": "skill:kaizen-plan-do-check-act",
+    "melhoria-iterativa": "skill:kaizen-plan-do-check-act",
+    "kaizen:plan-do-check-act": "skill:kaizen-plan-do-check-act",
     "kaizen-root-cause-tracing": "skill:kaizen-root-cause-tracing",
+    "rastreamento-causa-raiz": "skill:kaizen-root-cause-tracing",
+    "root-cause-tracing": "skill:kaizen-root-cause-tracing",
+    "trace-root-cause": "skill:kaizen-root-cause-tracing",
+    "rastrear-causa-raiz": "skill:kaizen-root-cause-tracing",
+    "kaizen-tracing": "skill:kaizen-root-cause-tracing",
     "kaizen:why": "skill:kaizen-why",
     "knowledge-update": "skill:knowledge-update",
     "kotlin-specialist": "skill:kotlin-specialist",
@@ -11139,22 +13500,48 @@
     "land-workflow": "skill:land-and-deploy",
     "laravel-specialist": "skill:laravel-specialist",
     "learn": "skill:learn",
+    "project-learnings": "skill:learn",
+    "knowledge-management": "skill:learn",
+    "gerenciamento-conhecimento": "skill:learn",
     "legacy-modernizer": "skill:legacy-modernizer",
     "mapear-slide": "skill:mapear-slide",
+    "slide-mapping": "skill:mapear-slide",
+    "slide-analysis": "skill:mapear-slide",
+    "mapear-conteudo": "skill:mapear-slide",
     "marketplace": "skill:marketplace",
     "mcp:build-mcp": "skill:mcp-build-mcp",
-    "mcp-build-mcp": "skill:mcp-build-mcp",
+    "build-mcp": "skill:mcp-build-mcp",
+    "construir-mcp": "skill:mcp-build-mcp",
+    "criar-servidor-mcp": "skill:mcp-build-mcp",
+    "mcp-server-builder": "skill:mcp-build-mcp",
+    "construir-servidor-mcp": "skill:mcp-build-mcp",
     "mcp-builder": "skill:mcp-builder",
     "mcp-developer": "skill:mcp-developer",
     "mcp-integration": "skill:mcp-integration",
-    "mcp:setup-arxiv-mcp": "skill:mcp-setup-arxiv-mcp",
+    "add-mcp": "skill:mcp-integration",
+    "configure-mcp": "skill:mcp-integration",
+    "integracao-mcp": "skill:mcp-integration",
     "mcp-setup-arxiv-mcp": "skill:mcp-setup-arxiv-mcp",
-    "mcp:setup-codemap-cli": "skill:mcp-setup-codemap-cli",
+    "setup-arxiv": "skill:mcp-setup-arxiv-mcp",
+    "configurar-arxiv": "skill:mcp-setup-arxiv-mcp",
+    "arxiv-mcp": "skill:mcp-setup-arxiv-mcp",
+    "pesquisa-artigos": "skill:mcp-setup-arxiv-mcp",
+    "paper-search": "skill:mcp-setup-arxiv-mcp",
+    "mcp:setup-arxiv-mcp": "skill:mcp-setup-arxiv-mcp",
     "mcp-setup-codemap-cli": "skill:mcp-setup-codemap-cli",
+    "setup-codemap": "skill:mcp-setup-codemap-cli",
+    "codemap-cli": "skill:mcp-setup-codemap-cli",
+    "configurar-codemap": "skill:mcp-setup-codemap-cli",
+    "codemap-setup": "skill:mcp-setup-codemap-cli",
+    "visualizacao-codebase": "skill:mcp-setup-codemap-cli",
     "mcp:setup-context7-mcp": "skill:mcp-setup-context7-mcp",
     "mcp-setup-context7-mcp": "skill:mcp-setup-context7-mcp",
     "mcp:setup-serena-mcp": "skill:mcp-setup-serena-mcp",
-    "mcp-setup-serena-mcp": "skill:mcp-setup-serena-mcp",
+    "setup-serena-mcp": "skill:mcp-setup-serena-mcp",
+    "configurar-serena": "skill:mcp-setup-serena-mcp",
+    "serena-mcp": "skill:mcp-setup-serena-mcp",
+    "serena-setup": "skill:mcp-setup-serena-mcp",
+    "configuracao-serena": "skill:mcp-setup-serena-mcp",
     "meta-judge": "skill:meta-judge",
     "microservices-architect": "skill:microservices-architect",
     "microsoft-code-reference": "skill:microsoft-code-reference",
@@ -11168,22 +13555,45 @@
     "next-forge": "skill:next-forge",
     "next-upgrade": "skill:next-upgrade",
     "nextjs-developer": "skill:nextjs-developer",
-    "nextjs": "skill:nextjs",
-    "observability": "skill:observability",
-    "office-hours": "skill:office-hours",
+    "yc-office-hours": "skill:office-hours",
+    "startup-mode": "skill:office-hours",
+    "office-horas": "skill:office-hours",
+    "open-gstack-browser": "skill:open-gstack-browser",
+    "abrir-navegador-gstack": "skill:open-gstack-browser",
+    "gstack-browser": "skill:open-gstack-browser",
+    "navegador-gstack": "skill:open-gstack-browser",
+    "gstack-chromium": "skill:open-gstack-browser",
+    "pair-agent": "skill:pair-agent",
+    "agente-pareamento": "skill:pair-agent",
+    "pair": "skill:pair-agent",
+    "pareamento-agente": "skill:pair-agent",
+    "remote-pair": "skill:pair-agent",
     "pandas-pro": "skill:pandas-pro",
     "pdf": "skill:pdf",
     "performance-optimizer": "skill:performance-optimizer",
     "php-pro": "skill:php-pro",
     "pipeline": "skill:pipeline",
     "plan-ceo-review": "skill:plan-ceo-review",
+    "founder-mode": "skill:plan-ceo-review",
     "plan-design-review": "skill:plan-design-review",
+    "designer-review": "skill:plan-design-review",
+    "revisao-design": "skill:plan-design-review",
     "plan-devex-review": "skill:plan-devex-review",
+    "developer-experience": "skill:plan-devex-review",
+    "revisao-devex": "skill:plan-devex-review",
     "plan-eng-review": "skill:plan-eng-review",
+    "eng-review": "skill:plan-eng-review",
+    "architecture-review": "skill:plan-eng-review",
+    "revisao-eng": "skill:plan-eng-review",
     "playground": "skill:playground",
     "playwright-expert": "skill:playwright-expert",
     "plugin-settings": "skill:plugin-settings",
+    "plugin-config": "skill:plugin-settings",
+    "user-configuration": "skill:plugin-settings",
+    "configuracoes-plugin": "skill:plugin-settings",
     "plugin-structure": "skill:plugin-structure",
+    "scaffold-plugin": "skill:plugin-structure",
+    "estrutura-plugin": "skill:plugin-structure",
     "plugin-validator": "skill:plugin-validator",
     "postgres-pro": "skill:postgres-pro",
     "pptx": "skill:pptx",
@@ -11191,7 +13601,20 @@
     "python-pro": "skill:python-pro",
     "qa-engineer": "skill:qa-engineer",
     "qa-only": "skill:qa-only",
-    "qa": "skill:qa",
+    "qa-report": "skill:qa-only",
+    "testing-only": "skill:qa-only",
+    "relatorio-qa": "skill:qa-only",
+    "quality-assurance": "skill:qa",
+    "qa-testing": "skill:qa",
+    "teste-qualidade": "skill:qa",
+    "qodo-get-rules": "skill:qodo-get-rules",
+    "qodo-best-practices": "skill:qodo-get-rules",
+    "qodo-pr-resolver": "skill:qodo-pr-resolver",
+    "resolver-pr": "skill:qodo-pr-resolver",
+    "qodo-review": "skill:qodo-pr-resolver",
+    "pr-resolver": "skill:qodo-pr-resolver",
+    "resolver-pull-request": "skill:qodo-pr-resolver",
+    "revisao-pr-qodo": "skill:qodo-pr-resolver",
     "rag-architect": "skill:rag-architect",
     "rails-expert": "skill:rails-expert",
     "ralph-loop": "skill:ralph-loop",
@@ -11200,62 +13623,152 @@
     "react-native-expert": "skill:react-native-expert",
     "receiving-code-review": "skill:receiving-code-review",
     "recommended-contacts": "skill:recommended-contacts",
-    "reflexion:critique": "skill:reflexion-critique",
     "reflexion-critique": "skill:reflexion-critique",
-    "reflexion:memorize": "skill:reflexion-memorize",
+    "critica-reflexiva": "skill:reflexion-critique",
+    "critique": "skill:reflexion-critique",
+    "revisao-multiperspectiva": "skill:reflexion-critique",
+    "multi-judge-review": "skill:reflexion-critique",
+    "debate-consenso": "skill:reflexion-critique",
+    "reflexion:critique": "skill:reflexion-critique",
     "reflexion-memorize": "skill:reflexion-memorize",
+    "memorizar-reflexao": "skill:reflexion-memorize",
+    "memorize-insights": "skill:reflexion-memorize",
+    "curar-insights": "skill:reflexion-memorize",
+    "reflexion-curate": "skill:reflexion-memorize",
+    "memorizar": "skill:reflexion-memorize",
     "reflexion:reflect": "skill:reflexion-reflect",
     "reflexion-reflect": "skill:reflexion-reflect",
+    "remembering-conversations": "skill:remembering-conversations",
+    "lembrar-conversas": "skill:remembering-conversations",
+    "memoria-episodica": "skill:remembering-conversations",
+    "episodic-memory": "skill:search-conversations",
+    "memoria-de-conversas": "skill:remembering-conversations",
+    "recall-conversations": "skill:remembering-conversations",
+    "remotion-best-practices": "skill:remotion-best-practices",
+    "boas-praticas-remotion": "skill:remotion-best-practices",
+    "remotion-practices": "skill:remotion-best-practices",
+    "remotion-video": "skill:remotion-best-practices",
+    "video-react": "skill:remotion-best-practices",
     "requesting-code-review": "skill:requesting-code-review",
     "researcher": "skill:researcher",
-    "retro": "skill:retro",
+    "retrospective": "skill:retro",
+    "retrospectiva": "skill:retro",
     "review": "pipeline:code-review-pipeline",
+    "code-review": "skill:review",
     "revise-claude-md": "skill:revise-claude-md",
     "routing-middleware": "skill:routing-middleware",
     "runtime-cache": "skill:runtime-cache",
     "rust-engineer": "skill:rust-engineer",
     "sadd:do-and-judge": "skill:sadd-do-and-judge",
-    "sadd-do-and-judge": "skill:sadd-do-and-judge",
-    "sadd:do-competitively": "skill:sadd-do-competitively",
+    "do-and-judge": "skill:sadd-do-and-judge",
+    "fazer-e-julgar": "skill:sadd-do-and-judge",
+    "executar-e-avaliar": "skill:sadd-do-and-judge",
+    "implementar-e-verificar": "skill:sadd-do-and-judge",
+    "do-judge-loop": "skill:sadd-do-and-judge",
     "sadd-do-competitively": "skill:sadd-do-competitively",
-    "sadd:do-in-parallel": "skill:sadd-do-in-parallel",
+    "execucao-competitiva": "skill:sadd-do-competitively",
+    "competitive-execution": "skill:sadd-do-competitively",
+    "multi-agent-competition": "skill:sadd-do-competitively",
+    "competicao-agentes": "skill:sadd-do-competitively",
+    "sadd:do-competitively": "skill:sadd-do-competitively",
     "sadd-do-in-parallel": "skill:sadd-do-in-parallel",
+    "executar-em-paralelo": "skill:sadd-do-in-parallel",
+    "parallel-agents": "skill:sadd-do-in-parallel",
+    "agentes-paralelos": "skill:sadd-do-in-parallel",
+    "do-in-parallel": "skill:sadd-do-in-parallel",
+    "execucao-paralela": "skill:sadd-do-in-parallel",
     "sadd:do-in-steps": "skill:sadd-do-in-steps",
     "sadd-do-in-steps": "skill:sadd-do-in-steps",
-    "sadd:judge-with-debate": "skill:sadd-judge-with-debate",
     "sadd-judge-with-debate": "skill:sadd-judge-with-debate",
+    "debate-juizes": "skill:sadd-judge-with-debate",
+    "judge-debate": "skill:sadd-judge-with-debate",
+    "avaliacao-debate": "skill:sadd-judge-with-debate",
+    "multi-round-debate": "skill:sadd-judge-with-debate",
+    "consenso-juizes": "skill:sadd-judge-with-debate",
+    "sadd:judge-with-debate": "skill:sadd-judge-with-debate",
     "sadd:judge": "skill:sadd-judge",
-    "sadd:launch-sub-agent": "skill:sadd-launch-sub-agent",
+    "julgar": "skill:sadd-judge",
+    "avaliar-resultado": "skill:sadd-judge",
+    "julgamento": "skill:sadd-judge",
+    "avaliacao": "skill:sadd-judge",
     "sadd-launch-sub-agent": "skill:sadd-launch-sub-agent",
+    "lancar-sub-agente": "skill:sadd-launch-sub-agent",
+    "launch-subagent": "skill:sadd-launch-sub-agent",
+    "sub-agent": "skill:sadd-launch-sub-agent",
+    "subagente": "skill:sadd-launch-sub-agent",
+    "agente-auxiliar": "skill:sadd-launch-sub-agent",
     "sadd:multi-agent-patterns": "skill:sadd-multi-agent-patterns",
     "sadd-multi-agent-patterns": "skill:sadd-multi-agent-patterns",
     "sadd:subagent-driven-development": "skill:sadd-subagent-driven-development",
-    "sadd-subagent-driven-development": "skill:sadd-subagent-driven-development",
-    "sadd:tree-of-thoughts": "skill:sadd-tree-of-thoughts",
+    "subagent-driven-development": "skill:subagent-driven-development",
+    "desenvolvimento-com-subagentes": "skill:sadd-subagent-driven-development",
+    "sadd": "skill:sadd-subagent-driven-development",
+    "desenvolvimento-orientado-subagentes": "skill:sadd-subagent-driven-development",
     "sadd-tree-of-thoughts": "skill:sadd-tree-of-thoughts",
+    "arvore-pensamentos": "skill:sadd-tree-of-thoughts",
+    "tree-of-thoughts": "skill:sadd-tree-of-thoughts",
+    "tot": "skill:sadd-tree-of-thoughts",
+    "exploracao-sistematica": "skill:sadd-tree-of-thoughts",
+    "systematic-exploration": "skill:sadd-tree-of-thoughts",
+    "sadd:tree-of-thoughts": "skill:sadd-tree-of-thoughts",
     "salesforce-developer": "skill:salesforce-developer",
-    "sdd:add-task": "skill:sdd-add-task",
     "sdd-add-task": "skill:sdd-add-task",
+    "adicionar-tarefa": "skill:sdd-add-task",
+    "add-task-sdd": "skill:sdd-add-task",
+    "criar-tarefa": "skill:sdd-add-task",
+    "nova-tarefa": "skill:sdd-add-task",
+    "sdd-task": "skill:sdd-add-task",
     "sdd:brainstorm": "skill:sdd-brainstorm",
     "sdd-brainstorm": "skill:sdd-brainstorm",
     "sdd:create-ideas": "skill:sdd-create-ideas",
-    "sdd-create-ideas": "skill:sdd-create-ideas",
-    "sdd:implement": "skill:sdd-implement",
+    "create-ideas": "skill:sdd-create-ideas",
+    "criar-ideias": "skill:sdd-create-ideas",
+    "gerar-ideias": "skill:sdd-create-ideas",
+    "ideation": "skill:sdd-create-ideas",
+    "brainstorm-ideas": "skill:sdd-create-ideas",
+    "ideacao": "skill:sdd-create-ideas",
     "sdd-implement": "skill:sdd-implement",
-    "sdd:plan": "skill:sdd-plan",
+    "implementar-sdd": "skill:sdd-implement",
+    "sdd-implementar": "skill:sdd-implement",
+    "implement-with-verification": "skill:sdd-implement",
+    "implementacao-verificada": "skill:sdd-implement",
+    "llm-judge-implementation": "skill:sdd-implement",
+    "sdd:implement": "skill:sdd-implement",
     "sdd-plan": "skill:sdd-plan",
+    "planejar-sdd": "skill:sdd-plan",
+    "plan-task-sdd": "skill:sdd-plan",
+    "refinar-tarefa": "skill:sdd-plan",
+    "sdd-refine": "skill:sdd-plan",
+    "planejar-tarefa": "skill:sdd-plan",
+    "search-conversations": "skill:search-conversations",
+    "buscar-conversas": "skill:search-conversations",
+    "pesquisar-conversas": "skill:search-conversations",
+    "memory-search": "skill:search-conversations",
+    "memoria-sessoes": "skill:search-conversations",
+    "conversation-history": "skill:search-conversations",
     "secure-code-guardian": "skill:secure-code-guardian",
     "security-auditor": "skill:security-auditor",
     "security-reviewer": "skill:security-reviewer",
     "setup-browser-cookies": "skill:setup-browser-cookies",
+    "cookies": "skill:setup-browser-cookies",
+    "browser-setup": "skill:setup-browser-cookies",
+    "configurar-cookies": "skill:setup-browser-cookies",
     "setup-deploy": "skill:setup-deploy",
+    "deploy-config": "skill:setup-deploy",
+    "deployment-setup": "skill:setup-deploy",
+    "configurar-deploy": "skill:setup-deploy",
     "setup": "skill:setup",
     "shadcn": "skill:shadcn",
     "ship": "skill:ship",
+    "shipping": "skill:ship",
+    "pr-creation": "skill:ship",
+    "criar-pr": "skill:ship",
     "shopify-expert": "skill:shopify-expert",
     "sign-in-with-vercel": "skill:sign-in-with-vercel",
     "skill-creator": "skill:skill-creator",
     "skill-development": "skill:skill-development",
+    "write-skill": "skill:skill-development",
+    "desenvolvimento-skill": "skill:skill-development",
     "skill-reviewer": "skill:skill-reviewer",
     "skill": "skill:skill",
     "slack-gif-creator": "skill:slack-gif-creator",
@@ -11266,23 +13779,55 @@
     "sql-pro": "skill:sql-pro",
     "sre-engineer": "skill:sre-engineer",
     "status": "skill:status",
-    "subagent-driven-development": "skill:subagent-driven-development",
+    "stripe-best-practices": "skill:stripe-best-practices",
+    "boas-praticas-stripe": "skill:stripe-best-practices",
+    "stripe-melhores-praticas": "skill:stripe-best-practices",
+    "stripe-patterns": "skill:stripe-best-practices",
+    "padroes-stripe": "skill:stripe-best-practices",
+    "stripe-projects": "skill:stripe-projects",
+    "projetos-stripe": "skill:stripe-projects",
+    "stripe": "skill:stripe-projects",
+    "stripe-integration": "skill:stripe-projects",
+    "stripe-setup": "skill:stripe-projects",
     "swift-expert": "skill:swift-expert",
     "systematic-debugging": "skill:systematic-debugging",
     "tdd:fix-tests": "skill:tdd-fix-tests",
     "tdd-fix-tests": "skill:tdd-fix-tests",
     "tdd:test-driven-development": "skill:tdd-test-driven-development",
-    "tdd-test-driven-development": "skill:tdd-test-driven-development",
-    "tdd:write-tests": "skill:tdd-write-tests",
+    "test-driven-development": "skill:test-driven-development",
+    "tdd": "skill:tdd-test-driven-development",
+    "desenvolvimento-orientado-testes": "skill:tdd-test-driven-development",
+    "desenvolvimento-guiado-por-testes": "skill:tdd-test-driven-development",
+    "red-green-refactor": "skill:tdd-test-driven-development",
     "tdd-write-tests": "skill:tdd-write-tests",
+    "escrever-testes": "skill:tdd-write-tests",
+    "write-tests": "skill:tdd-write-tests",
+    "adicionar-testes": "skill:tdd-write-tests",
+    "add-tests": "skill:tdd-write-tests",
+    "cobertura-testes": "skill:tdd-write-tests",
+    "test-coverage": "skill:tdd-write-tests",
+    "tdd:write-tests": "skill:tdd-write-tests",
     "team-lead": "skill:team-lead",
     "tech-lead": "skill:tech-lead",
-    "tech-stack:add-typescript-best-practices": "skill:tech-stack-add-typescript-best-practices",
     "tech-stack-add-typescript-best-practices": "skill:tech-stack-add-typescript-best-practices",
+    "boas-praticas-typescript": "skill:tech-stack-add-typescript-best-practices",
+    "typescript-best-practices": "skill:tech-stack-add-typescript-best-practices",
+    "ts-best-practices": "skill:tech-stack-add-typescript-best-practices",
+    "melhores-praticas-ts": "skill:tech-stack-add-typescript-best-practices",
+    "typescript-setup": "skill:tech-stack-add-typescript-best-practices",
     "tech-writer": "skill:tech-writer",
     "terraform-engineer": "skill:terraform-engineer",
+    "test-agent": "skill:test-agent",
+    "agente-teste": "skill:test-agent",
+    "agente-revisao-codigo": "skill:test-agent",
+    "test-review-agent": "skill:test-agent",
+    "code-quality-agent": "skill:test-agent",
+    "test-command": "skill:test-command",
+    "comando-teste": "skill:test-command",
+    "test-plugin-command": "skill:test-command",
+    "comando-de-teste": "skill:test-command",
+    "qa-command": "skill:test-command",
     "test-coverage-reviewer": "skill:test-coverage-reviewer",
-    "test-driven-development": "skill:test-driven-development",
     "test-master": "skill:test-master",
     "the-fool": "skill:the-fool",
     "theme-factory": "skill:theme-factory",
@@ -11292,6 +13837,14 @@
     "turborepo": "skill:turborepo",
     "typescript-pro": "skill:typescript-pro",
     "unfreeze": "skill:unfreeze",
+    "unfreeze-scope": "skill:unfreeze",
+    "scope-expansion": "skill:unfreeze",
+    "descongelar": "skill:unfreeze",
+    "upgrade-stripe": "skill:upgrade-stripe",
+    "atualizar-stripe": "skill:upgrade-stripe",
+    "stripe-upgrade": "skill:upgrade-stripe",
+    "stripe-migration": "skill:upgrade-stripe",
+    "migracao-stripe": "skill:upgrade-stripe",
     "using-git-worktrees": "skill:using-git-worktrees",
     "using-superpowers": "skill:using-superpowers",
     "v0-dev": "skill:v0-dev",
@@ -11316,17 +13869,29 @@
     "workflow": "skill:workflow",
     "working-with-claude-code": "skill:working-with-claude-code",
     "write-plan": "skill:write-plan",
-    "writing hookify rules": "skill:writing-hookify-rules",
+    "writing-clearly-and-concisely": "skill:writing-clearly-and-concisely",
+    "escrita-clara-concisa": "skill:writing-clearly-and-concisely",
+    "strunk-rules": "skill:writing-clearly-and-concisely",
+    "clear-writing": "skill:writing-clearly-and-concisely",
+    "redacao-tecnica": "skill:writing-clearly-and-concisely",
+    "technical-writing-style": "skill:writing-clearly-and-concisely",
     "writing-hookify-rules": "skill:writing-hookify-rules",
+    "hookify-rules": "skill:writing-hookify-rules",
+    "rule-writing": "skill:writing-hookify-rules",
+    "escrever-regras-hookify": "skill:writing-hookify-rules",
     "writing-plans": "skill:writing-plans",
     "writing-skills": "skill:writing-skills",
     "xlsx": "skill:xlsx",
+    "analise-contexto": "pipeline:analysis-context-pipeline",
+    "context-analysis": "pipeline:analysis-context-pipeline",
+    "context-sync": "pipeline:analysis-context-pipeline",
+    "analise-mudancas": "pipeline:analysis-context-pipeline",
+    "review-context-update": "pipeline:analysis-context-pipeline",
     "bugfix": "pipeline:bugfix-pipeline",
     "corrigir-bug": "pipeline:bugfix-pipeline",
     "fix-bug": "pipeline:bugfix-pipeline",
     "debug-pipeline": "pipeline:bugfix-pipeline",
     "revisao-codigo": "pipeline:code-review-pipeline",
-    "pr-review": "pipeline:code-review-pipeline",
     "publicar": "pipeline:deployment-pipeline",
     "docs": "pipeline:documentation-pipeline",
     "readme": "pipeline:documentation-pipeline",

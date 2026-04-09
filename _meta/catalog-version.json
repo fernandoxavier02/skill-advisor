@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "generated_at": "2026-04-08T23:37:35.159406",
+  "skills": 386,
+  "concepts": 51,
+  "pipelines": 9,
+  "total_nodes": 446,
+  "total_edges": 3249,
+  "total_aliases": 1062,
+  "embeddings": {
+    "description_count": 219,
+    "vocab_count": 257,
+    "model": "Xenova/all-MiniLM-L6-v2",
+    "dimensions": 384
+  },
+  "changes": [
+    "Added 38 new skill cards (107 pending, 69 already existed)",
+    "Added 5 concept hub nodes (quality, automation, planning, observability, tooling)",
+    "Fixed paths.js vault path (was broken, now configurable via SKILL_ADVISOR_VAULT)",
+    "Fixed build-embeddings.js (installed @huggingface/transformers, added HF mirror fallback)",
+    "Created patch script for plugin updates: _meta/patch-build-embeddings.sh"
+  ]
+}
