@@ -57,6 +57,15 @@ If you had to add missing phases, inform the user: "Adicionei etapas de clarific
 
 If the router returns `clarification_needed: true`, present the clarification questions directly in your response text as a numbered list and wait for the user's reply. Then re-invoke the router with the refined context. Maximum 2 clarification rounds.
 
+⛔ **STOP — SEQUENTIAL BARRIER (Step 4 → Step 5)**
+- Do NOT present the dry-run (Step 5) in the SAME response as clarification questions.
+- Do NOT combine Steps 4 and 5 into a single message.
+- WAIT for the user to reply to clarification questions.
+- Only AFTER receiving their answers AND re-invoking the router should you proceed to Step 5.
+- If `clarification_needed: false`, skip directly to Step 5 — but NEVER merge Step 4 output with Step 5 output.
+
+**Self-check before continuing:** Did I present clarification questions? If yes, did I WAIT for the user's reply before showing the dry-run? If I showed both in the same response, I have VIOLATED this barrier — go back and present only the clarification questions.
+
 ### 5. Present the dry-run
 
 Format the router's recommendation as a visual dry-run:
@@ -79,6 +88,15 @@ Format the router's recommendation as a visual dry-run:
 │  Risk: low/medium/high                  │
 └─────────────────────────────────────────┘
 ```
+
+⛔ **STOP — MANDATORY GATE BARRIER (Step 5 → Step 6)**
+You MUST now present the Moment 1 approval menu from Step 6 below.
+- Do NOT skip the menu. Do NOT combine it with other content.
+- Do NOT proceed to Step 7 or execute any skill without the user's explicit choice.
+- The user MUST see the 4-option menu (Sim/Nao/Alterar/Sugerir) and explicitly respond.
+- Skipping this menu is a VIOLATION of the /advisor skill contract. There is NO alternative path — this gate is the ONLY way to proceed.
+
+**Self-check before continuing:** Did I present the dry-run above? Good. Now I MUST present the approval menu below. If I am about to skip to execution or present any other content, STOP — I am violating the contract.
 
 ### 6. User Approval Gate (MANDATORY — inline execution)
 
@@ -199,21 +217,39 @@ This step only runs if the user approved in Step 6 (Moment 1 was not "Nao").
 
 After pipeline completes: "Pipeline finalizado. Rode /advisor-feedback para registrar o resultado."
 
-### 9. Log telemetry
+### 9. Log telemetry (UNCONDITIONAL — runs in ALL scenarios)
+
+⛔ **TELEMETRY IS MANDATORY.** Log telemetry in EVERY scenario, including:
+- Flow completed successfully (action: "approve"/"alternative"/"custom")
+- User cancelled at Moment 1 (action: "cancelled")
+- User cancelled at Moment 2 confirmation (action: "cancelled_moment2")
+- Flow interrupted or incomplete (action: "incomplete")
+- Clarification loop exhausted (action: "clarification_exhausted")
+
+**IMPORTANT:** Do NOT wait until the end of a complete flow to log. If the flow exits early at ANY step (user says "Nao", clarification fails, error occurs), log telemetry IMMEDIATELY before stopping.
 
 ```bash
 ADVISOR_LIB=$(find "$HOME/.claude/plugins/cache" -path "*/skill-advisor/*/lib" -type d 2>/dev/null | head -1)
 ```
 
-Replace placeholders with actual values from the gate output:
-- `ACTION` = gate_output.decision (approve/cancel/alternative/custom)
-- `MOMENT2` = gate_output.moment2_decision (approve/skip/alternative/custom)
-- `SIZE` = gate_output.loadout length
-- `TOP` = first skill invocation in loadout
+Replace placeholders with actual values:
+- `ACTION` = outcome (approve/cancel/alternative/custom/incomplete/cancelled/cancelled_moment2/clarification_exhausted)
+- `MOMENT2` = gate_output.moment2_decision (approve/skip/alternative/custom) or "not_reached" if flow ended before Moment 2
+- `SIZE` = gate_output.loadout length (0 if no loadout generated)
+- `TOP` = first skill invocation in loadout or "none"
 - `SPEC` = true if spec_path exists, false otherwise
 - `PLANNING` = gate_output.planning_skill_used or "none"
-- `ITERS` = JSON string of gate_output.iterations
+- `ITERS` = JSON string of gate_output.iterations or `{"moment1_alterar":0,"moment1_sugerir":0,"moment2_alterar":0,"moment2_sugerir":0}`
+- `EXIT_STEP` = step number where flow ended (1-9)
 
 ```bash
-echo '{"ts":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","action":"ACTION","moment2":"MOMENT2","loadout_size":SIZE,"top_skill":"TOP","spec_generated":SPEC,"planning_skill":"PLANNING","iterations":ITERS,"mode":"gated"}' >> "$ADVISOR_LIB/advisor-telemetry.jsonl"
+echo '{"ts":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","action":"ACTION","moment2":"MOMENT2","loadout_size":SIZE,"top_skill":"TOP","spec_generated":SPEC,"planning_skill":"PLANNING","iterations":ITERS,"exit_step":EXIT_STEP,"mode":"gated"}' >> "$ADVISOR_LIB/advisor-telemetry.jsonl"
 ```
+
+**Telemetry checkpoints (log at these exit points):**
+- Step 2: If index not found → `action: "index_not_found", exit_step: 1`
+- Step 4: If clarification exhausted → `action: "clarification_exhausted", exit_step: 4`
+- Step 6 Moment 1: If user chose "Nao" → `action: "cancelled", exit_step: 6`
+- Step 6 Moment 2: If user confirmed skip → `action: "cancelled_moment2", exit_step: 6`
+- Step 7: If execution error → `action: "execution_error", exit_step: 7`
+- Step 8: Normal completion → `action: "completed", exit_step: 8`

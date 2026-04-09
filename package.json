@@ -1,6 +1,6 @@
 {
   "name": "skill-advisor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Intelligent toolchain orchestrator for Claude Code",
   "type": "commonjs",
   "scripts": {
