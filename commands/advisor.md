@@ -228,22 +228,61 @@ After pipeline completes: "Pipeline finalizado. Rode /advisor-feedback para regi
 
 **IMPORTANT:** Do NOT wait until the end of a complete flow to log. If the flow exits early at ANY step (user says "Nao", clarification fails, error occurs), log telemetry IMMEDIATELY before stopping.
 
+Generate a unique session_id at the START of /advisor execution (step 1), and track executed skills as they complete.
+
+**Session ID generation (do this in step 1, before anything else):**
 ```bash
-ADVISOR_LIB=$(find "$HOME/.claude/plugins/cache" -path "*/skill-advisor/*/lib" -type d 2>/dev/null | head -1)
+SESSION_ID="sess-$(date +%s)-$$"
+echo "SESSION_ID: $SESSION_ID"
+EXECUTED_ACTUAL="[]"
 ```
 
-Replace placeholders with actual values:
+**After each skill completes (in step 7), append to EXECUTED_ACTUAL:**
+Track the actual skills that ran (not the planned loadout). After each skill invocation completes successfully, add its name to the array. If a skill is skipped or fails, do not include it.
+
+**At the end (step 9), write telemetry to ~/.claude/advisor/:**
+
+```bash
+ADVISOR_DATA="$HOME/.claude/advisor"
+mkdir -p "$ADVISOR_DATA"
+```
+
+Replace placeholders with actual values from the gate output:
+- `SESSION_ID` = the session_id generated in step 1
 - `ACTION` = outcome (approve/cancel/alternative/custom/incomplete/cancelled/cancelled_moment2/clarification_exhausted)
-- `MOMENT2` = gate_output.moment2_decision (approve/skip/alternative/custom) or "not_reached" if flow ended before Moment 2
+- `MOMENT2` = gate_output.moment2_decision (approve/skip/alternative/custom) or "not_reached"
 - `SIZE` = gate_output.loadout length (0 if no loadout generated)
 - `TOP` = first skill invocation in loadout or "none"
+- `EXECUTED_ACTUAL` = JSON array of skill names that actually completed (e.g., ["investigate","fix","review"])
 - `SPEC` = true if spec_path exists, false otherwise
 - `PLANNING` = gate_output.planning_skill_used or "none"
 - `ITERS` = JSON string of gate_output.iterations or `{"moment1_alterar":0,"moment1_sugerir":0,"moment2_alterar":0,"moment2_sugerir":0}`
 - `EXIT_STEP` = step number where flow ended (1-9)
 
 ```bash
-echo '{"ts":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","action":"ACTION","moment2":"MOMENT2","loadout_size":SIZE,"top_skill":"TOP","spec_generated":SPEC,"planning_skill":"PLANNING","iterations":ITERS,"exit_step":EXIT_STEP,"mode":"gated"}' >> "$ADVISOR_LIB/advisor-telemetry.jsonl"
+echo '{"ts":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","session_id":"SESSION_ID","action":"ACTION","moment2":"MOMENT2","loadout_size":SIZE,"top_skill":"TOP","executed_actual":EXECUTED_ACTUAL,"spec_generated":SPEC,"planning_skill":"PLANNING","iterations":ITERS,"exit_step":EXIT_STEP,"mode":"gated"}' >> "$ADVISOR_DATA/telemetry.jsonl"
+```
+
+### 10. Update discovery nudge cooldown (D4 -- hook read-only, command writes)
+
+After logging telemetry, update the discovery nudge timestamp so the hook's 30-min cooldown works:
+
+```bash
+ADVISOR_CACHE="$ADVISOR_DATA/cache"
+mkdir -p "$ADVISOR_CACHE"
+SEEN_FILE="$ADVISOR_CACHE/advisor-discovery-seen.json"
+if [ ! -f "$SEEN_FILE" ]; then
+  echo '{"lastNudgeTs":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","seen":{}}' > "$SEEN_FILE"
+else
+  # Update lastNudgeTs in existing file (simple overwrite with preserved seen map)
+  node -e "
+    const fs = require('fs');
+    let seen = {};
+    try { seen = JSON.parse(fs.readFileSync('$SEEN_FILE', 'utf8')); } catch {}
+    seen.lastNudgeTs = new Date().toISOString();
+    fs.writeFileSync('$SEEN_FILE', JSON.stringify(seen, null, 2));
+  " 2>/dev/null || true
+fi
 ```
 
 **Telemetry checkpoints (log at these exit points):**
