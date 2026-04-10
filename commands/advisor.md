@@ -92,30 +92,36 @@ If the router returns `clarification_needed: true`, present the clarification qu
 
 ### 5. Present the dry-run
 
-Format the router's recommendation as a visual dry-run:
+Format the router's recommendation as a visual dry-run. The `reason` field from the router (explaining why each skill was chosen and what it does for this specific task) MUST be shown prominently.
 
 ```
-┌─────────────────────────────────────────┐
-│  ADVISOR LOADOUT (dry-run)              │
-│                                         │
-│  1. /skill-name  [category]  ~Xmin      │
-│     → what it does                      │
-│     score: 0.85 (semantic:0.9 kw:0.7    │
-│            graph:0.6 affinity:+0.1      │
-│            context:+0.1)                │
-│     depends on: (none or #N)            │
-│                                         │
-│  2. /next-skill  [category]  ~Xmin      │
-│     → what it does                      │
-│     score: 0.72 (semantic:0.8 kw:0.5)   │
-│     depends on: #1                      │
-│                                         │
-│  Excluded: /skill (reason)              │
-│                                         │
-│  Estimated context: ~Nk tokens          │
-│  Risk: low/medium/high                  │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│  ADVISOR LOADOUT (dry-run)                  │
+│                                             │
+│  Flow: #1 ─▶ #2 ─▶ #3 ─▶ #4               │
+│                                             │
+│  1. /skill-name  [category]  ~Xmin          │
+│     porque: {reason from router}            │
+│     score: 0.85 (semantic:0.9 kw:0.7       │
+│            graph:0.6 affinity:+0.1          │
+│            context:+0.1)                    │
+│     depends on: (none or #N)                │
+│                                             │
+│  2. /next-skill  [category]  ~Xmin          │
+│     porque: {reason from router}            │
+│     score: 0.72 (semantic:0.8 kw:0.5)       │
+│     depends on: #1                          │
+│                                             │
+│  Excluded: /skill (reason)                  │
+│                                             │
+│  Estimated context: ~Nk tokens              │
+│  Risk: low/medium/high                      │
+└─────────────────────────────────────────────┘
 ```
+
+**Flow line:** Show a single-line summary of the pipeline flow at the top using arrows between positions (e.g., `#1 ─▶ #2 ─▶ #3 ─▶ #4`). This gives the user an instant overview of the sequence.
+
+**`porque` field:** The `reason` from the router's loadout JSON for each skill. Must be task-specific and explain: (a) why this skill was selected, (b) what it contributes to the pipeline. If the router returned no `reason`, generate one based on the skill's `role` and `category`.
 
 **F1.3 Score Explainer:** For each skill in the loadout, show the score breakdown:
 - Contributing search layers (semantic, keyword, graph) with individual scores

@@ -61,6 +61,7 @@ Return a JSON object inside a code block:
       "invocation": "/superpowers:brainstorming",
       "category": "clarification",
       "role": "Define scope, clarify ambiguities, resolve information gaps",
+      "reason": "Tarefa com escopo ambiguo — brainstorming resolve lacunas antes de planejar",
       "graph_path": "task → [[clarification]] → /brainstorming",
       "context_in": {},
       "context_out": ["scope_definition", "resolved_ambiguities", "key_decisions"],
@@ -75,6 +76,7 @@ Return a JSON object inside a code block:
       "invocation": "/superpowers:writing-plans",
       "category": "planning",
       "role": "Document execution plan as spec before implementation",
+      "reason": "Pipeline com 3+ etapas — plano documentado evita retrabalho na implementacao",
       "graph_path": "task → [[planning]] → /writing-plans",
       "context_in": {"scope": "from position 1"},
       "context_out": ["implementation_plan", "spec_document"],
@@ -89,6 +91,7 @@ Return a JSON object inside a code block:
       "invocation": "/investigate",
       "category": "debugging",
       "role": "Diagnose root cause of the login bug",
+      "reason": "Bug de login sem causa obvia — investigacao sistematica mapeia arquivos e causa raiz",
       "graph_path": "debug → [[debugging]] → /investigate",
       "context_in": {"plan": "from position 2"},
       "context_out": ["root_cause_diagnosis", "affected_files_map"],
@@ -123,3 +126,4 @@ Return a JSON object inside a code block:
 9. Risk: low = <=3 implementation skills; medium = cross-cutting or >3; high = destructive ops
 10. Read skill cards deeply — understand workflows, not just names
 11. Rule 4 (position 1 = clarification, position 2 = planning) ALWAYS takes precedence over template content. If a template lacks clarification/planning, ADD them. If a template has them, KEEP them. You may only adapt implementation phases (position 3+)
+12. Every skill in the loadout MUST include a `reason` field (1-2 sentences max) explaining: (a) why this specific skill was selected for this task, and (b) what concrete output or value it produces for the pipeline. Write in the user's language. Be specific to the task — avoid generic descriptions like "helps with planning". Instead: "Pipeline com 4 etapas — plano documentado evita retrabalho" or "Bug sem causa obvia — investigacao sistematica mapeia arquivos afetados"
