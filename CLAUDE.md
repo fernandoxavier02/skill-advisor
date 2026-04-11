@@ -53,13 +53,22 @@ User prompt → hooks/advisor-nudge.cjs
   → presents dry-run → user approves/modifies/cancels
 ```
 
-### Search Pipeline (3 layers, tried in order)
+### Search Pipeline (3 layers, fused in parallel)
 
-1. **Semantic search** (`lib/semantic.js`) — cosine similarity of bag-of-words query embedding against pre-computed 384-dim vectors from `advisor-embeddings.json` + `advisor-vocab.json`. Model: `Xenova/all-MiniLM-L6-v2`.
+All three layers run simultaneously. Results are combined via weighted-average fusion (`FUSION_WEIGHTS`: semantic 0.5, keyword 0.3, graph 0.2).
 
-2. **Graph search** (`lib/graph-search.js`) — BFS traversal (max 2 hops) from alias-matched seed nodes in the Obsidian vault graph (`vault-graph/adjacency.json`). Scoring: `SCORE_BY_HOP = [1.0, 0.7, 0.4]`, with convergence boost (+0.15/extra seed) and category boost (+0.2 if task type matches).
+1. **Semantic search** (`lib/semantic.js`) — cosine similarity of bag-of-words query embedding against pre-computed 384-dim vectors from `advisor-embeddings.json` + `advisor-vocab.json`. Model: `Xenova/all-MiniLM-L6-v2`. Weight: 0.5.
 
-3. **Keyword matching** (`hooks/advisor-nudge.cjs`) — tokenize prompt, expand PT-BR→EN via SYNONYMS map (50+ terms), score against skill names (3x weight) and descriptions (2x weight).
+2. **Graph search** (`lib/graph-search.js`) — BFS traversal (max 2 hops) from alias-matched seed nodes in the Obsidian vault graph (`vault-graph/adjacency.json`). Scoring: `SCORE_BY_HOP = [1.0, 0.7, 0.4]`, with convergence boost (+0.15/extra seed) and category boost (+0.2 if task type matches). Weight: 0.2.
+
+3. **Keyword matching** (`hooks/advisor-nudge.cjs`) — tokenize prompt, expand PT-BR→EN via SYNONYMS map (50+ terms), score against skill names (3x weight) and descriptions (2x weight). Weight: 0.3.
+
+**Additional hook-level boosts (undocumented in earlier versions):**
+- **Affinity boost** (+20%): skills the user has executed frequently get a score boost from `hookData.affinity`.
+- **Context boost** (+10%): skills matching the current git branch category get a boost via `lib/context.js`.
+- **Discovery nudge**: low-affinity skills are periodically surfaced with a 30-min cooldown.
+- **Replay hint**: recent successful skill combos are suggested when patterns match.
+- **Prompt injection sanitization**: invocation fields are stripped of non-alphanumeric characters.
 
 ### Two-Tier Index
 
@@ -93,9 +102,9 @@ Four vault directories feed into the graph:
 
 ### Plugin Structure
 
-- `plugin.json` — manifest with `autoDiscover: true` (Claude Code auto-detects commands, agents, hooks, skills)
+- `plugin.json` — manifest with `autoDiscover: false` (commands, agents, hooks, skills are declared explicitly via their respective config files)
 - `hooks/hooks.json` — registers `advisor-nudge.cjs` on `UserPromptSubmit`
-- `commands/*.md` — 5 slash commands (advisor, advisor-catalog, advisor-config, advisor-feedback, advisor-index)
+- `commands/*.md` — 6 slash commands (advisor, advisor-catalog, advisor-config, advisor-feedback, advisor-index, advisor-stats)
 - `agents/advisor-router.md` — Sonnet subagent for task classification + loadout building
 - `skills/advisor-skill/SKILL.md` — auto-trigger skill for tool guidance
 
@@ -106,7 +115,7 @@ Four vault directories feed into the graph:
 - **Node.js >= 18** required (uses `node:test`, `node:assert/strict`).
 - Tests use Node.js built-in test runner (`node --test`), not Jest/Mocha.
 - Test fixtures live in `tests/fixtures/` with sample skills, plugins, and malformed data.
-- `parseFrontmatter` exists in both `build-index.js` and `build-graph.js` with slightly different implementations (graph version handles YAML lists and inline arrays).
+- `parseFrontmatter` is a shared module (`lib/frontmatter.js`) imported by both `build-index.js` and `build-graph.js`. Both re-export it for backwards compatibility.
 - The hook (`advisor-nudge.cjs`) must remain a single ephemeral CJS file — no persistent state, no async, no model loading.
 - Bilingual PT-BR/EN support is a core requirement — synonym bridge, stopwords, and accent normalization must cover both languages.
 
