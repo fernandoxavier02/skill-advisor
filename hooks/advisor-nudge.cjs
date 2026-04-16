@@ -93,9 +93,39 @@ try {
   debugLog('MODULE_LOAD', 'Context module not available', { cause: err.message });
 }
 
+// ── Prompt source ────────────────────────────────────────────────
+// Claude Code passes UserPromptSubmit hook payload as JSON via stdin.
+// We read synchronously (fs.readFileSync on fd 0) to preserve the
+// "no async" constraint of this hook. CLAUDE_USER_PROMPT env var is
+// preserved as a fallback for tests and manual invocation.
+
+function readPromptSync() {
+  const envPrompt = process.env.CLAUDE_USER_PROMPT;
+  if (envPrompt !== undefined && envPrompt !== '') return envPrompt;
+
+  try {
+    const input = fs.readFileSync(0, 'utf8');
+    if (!input) return '';
+    const trimmed = input.trim();
+    if (trimmed.startsWith('{')) {
+      try {
+        const data = JSON.parse(trimmed);
+        return typeof data.prompt === 'string' ? data.prompt : '';
+      } catch (err) {
+        debugLog('PARSE_JSON', 'Stdin JSON parse failed, falling back to raw', { cause: err.message });
+        return trimmed;
+      }
+    }
+    return trimmed;
+  } catch (err) {
+    debugLog('FS_READ', 'Stdin unavailable', { cause: err.message });
+    return '';
+  }
+}
+
 // ── Main ─────────────────────────────────────────────────────────
 
-function main() {
+function main(promptOverride) {
   // Env var override: explicit true/false takes precedence
   if (ENABLED === 'false') return;
   if (ENABLED !== 'true') {
@@ -110,7 +140,7 @@ function main() {
     }
   }
 
-  const prompt = process.env.CLAUDE_USER_PROMPT || '';
+  const prompt = typeof promptOverride === 'string' ? promptOverride : readPromptSync();
   if (prompt.trim().startsWith('/')) return;
   if (prompt.trim().length < 5) return;
 
@@ -327,6 +357,7 @@ function main() {
     }));
 
     for (const candidate of hookData.replay) {
+      if (!candidate || !Array.isArray(candidate.sequence) || candidate.sequence.length === 0) continue;
       const firstSkill = candidate.sequence[0];
       if (topBareNames.has(firstSkill)) {
         const seqStr = candidate.sequence.join(' \u2192 ');
@@ -341,4 +372,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { tokenize, scoreEntry, STOPWORDS, NAME_WEIGHT, DESC_WEIGHT };
+module.exports = { tokenize, scoreEntry, readPromptSync, STOPWORDS, NAME_WEIGHT, DESC_WEIGHT };
