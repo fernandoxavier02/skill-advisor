@@ -1,5 +1,5 @@
 ---
-name: advisor-auto
+name: advisor-skill
 description: Intelligent toolchain orchestrator that recommends skills, plugins, MCPs, and agents for any task. Activated when the user asks which tool to use, wants to compose multiple skills, or says "I don't know which skill to use". Also triggers on complex multi-step tasks that would benefit from skill composition.
 ---
 
