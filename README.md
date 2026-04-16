@@ -358,6 +358,18 @@ npm test                    # 424 tests must pass
 
 ---
 
+## See also — FX-Studio-AI suite
+
+skill-advisor is one of three plugins in the **FX-Studio-AI marketplace**. They form a coherent workflow:
+
+1. **[cc-toolkit](https://github.com/fernandoxavier02/cc-mastery)** — onboarding and diagnostics. Get your Claude Code setup in order.
+2. **skill-advisor** (this repo) — discovery and routing. Use the tools you already have, effectively.
+3. **[pipeline-orchestrator](https://github.com/fernandoxavier02/Pipeline-Orchestrator)** — adversarial review. Ship production code safely.
+
+Install the marketplace once, use any combination.
+
+---
+
 ## License
 
 MIT
