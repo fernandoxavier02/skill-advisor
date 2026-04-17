@@ -2,6 +2,13 @@
 
 Deferred items from v2.0 planning pipeline.
 
+## From adversarial-fixes pipeline (2026-04-16)
+
+- **Rename `gate_token` → `gate_invocation_id` (R-9 deferred)**: current name has `_token` suffix but field is invocation correlation ID, not a security token. Rename would touch 5 files (`commands/advisor.md`, `agents/advisor-gate.md`, `lib/schemas.js`, `tests/advisor-gate-contract.test.js`, any new consumer). Deferred because severity is LOW — mitigation notes added to advisor.md pre-check 5 and advisor-gate Rule 6 clarifying that it is NOT a security token. Reconsider if/when touching the gate contract for other reasons.
+- **Add `score_breakdown`/`matched_terms` to router Output Format (R-10 partial)**: Step 5 "Score Explainer" in `commands/advisor.md` currently renders only `confidence` (what the router actually emits). Per-layer breakdowns from the hook path would enrich the dry-run but require router.md Output Format extension first.
+- **Add JSDoc/comment to `lib/schemas.js` at gate_token validation**: note "not a security token — see agents/advisor-gate.md Rule 6" so future validators find the disclaimer at the point of first contact.
+- **Canonicalize gate_token disclaimer**: two disclaimers exist in `commands/advisor.md` Step 7 pre-check 5 and `agents/advisor-gate.md` Rule 6. Pick one as canonical and have the other cross-reference it to avoid drift.
+
 ## From CEO Review (2026-04-08)
 
 - **Onboarding Flow**: guided 5-min tour for cold start bootstrap

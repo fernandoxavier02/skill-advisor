@@ -50,8 +50,16 @@ User prompt → hooks/advisor-nudge.cjs
   → gathers git/project context
   → spawns agents/advisor-router.md (Sonnet subagent)
   → router classifies task, matches index, builds loadout JSON
-  → presents dry-run → user approves/modifies/cancels
+  → presents dry-run (visual context only)
+  → spawns agents/advisor-gate.md (Sonnet subagent)
+  → gate collects decisions via AskUserQuestion (native arrow-key menus)
+  → gate returns structured JSON contract (gate_output)
+  → command routes by gate_output.decision / moment2_decision:
+      cancel                     → stop
+      approve/alternative/custom → execute loadout (spec-driven or legacy)
 ```
+
+**Prompt-injection surface:** user inputs (task description, git status, index content) flow into both subagent prompts. See `commands/advisor.md` "Prompt-Injection Defenses" section (Step 6) for the escaping contract applied before interpolation.
 
 ### Search Pipeline (3 layers, fused in parallel)
 
@@ -106,6 +114,7 @@ Four vault directories feed into the graph:
 - `hooks/hooks.json` — registers `advisor-nudge.cjs` on `UserPromptSubmit`
 - `commands/*.md` — 6 slash commands (advisor, advisor-catalog, advisor-config, advisor-feedback, advisor-index, advisor-stats)
 - `agents/advisor-router.md` — Sonnet subagent for task classification + loadout building
+- `agents/advisor-gate.md` — Sonnet subagent that runs the two-moment approval gate (Moment 1: loadout / Moment 2: spec generation). Uses `AskUserQuestion` for all user input and returns a structured JSON contract consumed by `commands/advisor.md` Step 6
 - `skills/advisor-skill/SKILL.md` — auto-trigger skill for tool guidance
 
 ## Conventions
