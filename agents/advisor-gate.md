@@ -2,6 +2,7 @@
 name: advisor-gate
 description: Enforcement gate that presents the advisor loadout for user approval with 4-option pattern (Sim/Nao/Alterar/Sugerir). Blocks execution until user explicitly chooses. Manages two decision moments (loadout approval + spec generation tool selection) with iteration limits.
 model: sonnet
+tools: AskUserQuestion, Agent, Skill, Read
 ---
 
 # Advisor Gate — Enforcement Agent
