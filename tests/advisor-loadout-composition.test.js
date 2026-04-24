@@ -333,3 +333,71 @@ describe('T8: backward compatibility for missing optional fields', () => {
     assert.equal(result.valid, true, `got: ${result.errors.join(', ')}`);
   });
 });
+
+// T4: gate collapse — materialize a full loadout from CANONICAL_FLOWS
+describe('T4: collapseToCanonicalFlow materialization', () => {
+  const { collapseToCanonicalFlow } = require('../lib/loadout');
+  const { CANONICAL_FLOWS } = require('../lib/constants');
+
+  it('produces a loadout of length CANONICAL_FLOWS[owner].length for superpowers', () => {
+    const collapsed = collapseToCanonicalFlow('superpowers', FIXTURE_INDEX);
+    assert.equal(collapsed.length, CANONICAL_FLOWS['superpowers'].length);
+  });
+
+  it('every invocation matches CANONICAL_FLOWS order', () => {
+    const collapsed = collapseToCanonicalFlow('kiro', FIXTURE_INDEX);
+    const invocations = collapsed.map(e => e.invocation);
+    assert.deepEqual(invocations, CANONICAL_FLOWS['kiro'].slice());
+  });
+
+  it('every entry carries role/category/confidence/reason/depends_on', () => {
+    const collapsed = collapseToCanonicalFlow('sdd', FIXTURE_INDEX);
+    for (let i = 0; i < collapsed.length; i++) {
+      const e = collapsed[i];
+      assert.equal(typeof e.role, 'string', `entry ${i} role`);
+      assert.equal(typeof e.category, 'string', `entry ${i} category`);
+      assert.equal(typeof e.confidence, 'number', `entry ${i} confidence`);
+      assert.equal(typeof e.reason, 'string', `entry ${i} reason`);
+      assert.ok(Array.isArray(e.depends_on), `entry ${i} depends_on`);
+      assert.equal(e.pipeline_owner, 'sdd', `entry ${i} pipeline_owner`);
+      assert.equal(e.confidence, 1.0, `canonical confidence must be 1.0`);
+    }
+  });
+
+  it('first position has empty depends_on, position N depends on [N-1]', () => {
+    const collapsed = collapseToCanonicalFlow('compound-engineering', FIXTURE_INDEX);
+    assert.deepEqual(collapsed[0].depends_on, []);
+    for (let i = 1; i < collapsed.length; i++) {
+      assert.deepEqual(collapsed[i].depends_on, [i], `entry at index ${i}`);
+    }
+  });
+
+  it('single-skill flows (pipeline-orchestrator) produce a 1-entry loadout', () => {
+    const collapsed = collapseToCanonicalFlow('pipeline-orchestrator', FIXTURE_INDEX);
+    assert.equal(collapsed.length, 1);
+    assert.equal(collapsed[0].invocation, '/pipeline-orchestrator:pipeline');
+    assert.deepEqual(collapsed[0].depends_on, []);
+  });
+
+  it('throws for unknown owner', () => {
+    assert.throws(
+      () => collapseToCanonicalFlow('no-such-owner', FIXTURE_INDEX),
+      /unknown pipeline owner|CANONICAL_FLOWS/i,
+    );
+  });
+
+  it('throws if a CANONICAL_FLOWS invocation is missing from the index snapshot', () => {
+    const partialIndex = FIXTURE_INDEX.filter(e => e.invocation !== '/superpowers:writing-plans');
+    assert.throws(
+      () => collapseToCanonicalFlow('superpowers', partialIndex),
+      /writing-plans|not found|missing/i,
+    );
+  });
+
+  it('default reason mentions the owner', () => {
+    const collapsed = collapseToCanonicalFlow('sdd', FIXTURE_INDEX);
+    for (const e of collapsed) {
+      assert.match(e.reason, /sdd/i);
+    }
+  });
+});
