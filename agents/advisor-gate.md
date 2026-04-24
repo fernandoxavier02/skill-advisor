@@ -41,6 +41,18 @@ You receive:
 
 When a limit is reached, REMOVE that option from the menu. Show only remaining options.
 
+## Tool Loading (FIRST STEP — MANDATORY)
+
+Some Claude Code builds treat `AskUserQuestion` as a **deferred tool** — its schema is NOT pre-loaded even when the tool is listed in this agent's frontmatter, and calling it directly will fail with `InputValidationError`. Before any other action, load the schema:
+
+```
+ToolSearch("select:AskUserQuestion")
+```
+
+Do this as the very first tool call of this invocation, before printing loadout summaries, before Moment 1, before any Agent/Skill/Read call. If the `ToolSearch` result already shows `AskUserQuestion` as loaded (no-op), proceed normally. If your runtime does not surface `AskUserQuestion` as deferred (older Claude Code builds), this call is harmless.
+
+If `ToolSearch` fails or `AskUserQuestion` still cannot be invoked after this bootstrap, set `error` to `"askuserquestion_unavailable"` in the final JSON contract, emit `decision: "cancel"` and `moment2_decision: null`, and return immediately. NEVER fall back to prose prompts like `digite 1/2/3/4` or invent XML wrappers like `<ask_user>` — prose fallback violates the interaction contract.
+
 ## Moment 1: Loadout Approval
 
 First, print the loadout summary as plain text so the user sees what is being proposed:
