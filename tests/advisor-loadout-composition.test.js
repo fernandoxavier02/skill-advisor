@@ -118,3 +118,49 @@ describe('T1: pipeline_owner tagging', () => {
     assert.equal(tagged.pipeline_owner, 'sdd');
   });
 });
+
+// T7: CANONICAL_FLOWS parity with PIPELINE_OWNERS
+describe('T7: CANONICAL_FLOWS parity invariant', () => {
+  const { PIPELINE_OWNERS, CANONICAL_FLOWS } = require('../lib/constants');
+
+  it('Object.keys(CANONICAL_FLOWS) equals PIPELINE_OWNERS as a set', () => {
+    const canonicalKeys = Object.keys(CANONICAL_FLOWS).slice().sort();
+    const owners = PIPELINE_OWNERS.slice().sort();
+    assert.deepEqual(canonicalKeys, owners);
+  });
+
+  it('every CANONICAL_FLOWS value is a non-empty array of strings', () => {
+    for (const [owner, flow] of Object.entries(CANONICAL_FLOWS)) {
+      assert.ok(Array.isArray(flow), `${owner} flow must be an array`);
+      assert.ok(flow.length > 0, `${owner} flow must not be empty`);
+      for (const invocation of flow) {
+        assert.equal(typeof invocation, 'string', `${owner} flow contains non-string invocation`);
+        assert.ok(invocation.startsWith('/'), `${owner} invocation must start with '/'`);
+      }
+    }
+  });
+});
+
+// T9: PIPELINE_FINGERPRINTS parity with PIPELINE_OWNERS
+describe('T9: PIPELINE_FINGERPRINTS parity invariant', () => {
+  const { PIPELINE_OWNERS, PIPELINE_FINGERPRINTS } = require('../lib/constants');
+
+  it('Object.keys(PIPELINE_FINGERPRINTS) equals PIPELINE_OWNERS as a set', () => {
+    const fingerprintKeys = Object.keys(PIPELINE_FINGERPRINTS).slice().sort();
+    const owners = PIPELINE_OWNERS.slice().sort();
+    assert.deepEqual(fingerprintKeys, owners);
+  });
+
+  it('every fingerprint entry has best_for/typical_tasks/not_for/complexity_match', () => {
+    const COMPLEXITIES = ['simple', 'medium', 'complex'];
+    for (const [owner, fp] of Object.entries(PIPELINE_FINGERPRINTS)) {
+      assert.equal(typeof fp.best_for, 'string', `${owner}.best_for must be string`);
+      assert.ok(Array.isArray(fp.typical_tasks), `${owner}.typical_tasks must be array`);
+      assert.ok(Array.isArray(fp.not_for), `${owner}.not_for must be array`);
+      assert.ok(Array.isArray(fp.complexity_match), `${owner}.complexity_match must be array`);
+      for (const c of fp.complexity_match) {
+        assert.ok(COMPLEXITIES.includes(c), `${owner}.complexity_match contains invalid value: ${c}`);
+      }
+    }
+  });
+});
