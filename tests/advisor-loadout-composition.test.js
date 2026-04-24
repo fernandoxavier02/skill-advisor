@@ -244,3 +244,92 @@ describe('T3: validateRouterOutput — mixed-owner rejection', () => {
     );
   });
 });
+
+// T8: Backward compatibility — legacy outputs still validate
+describe('T8: backward compatibility for missing optional fields', () => {
+  const { validateRouterOutput } = require('../lib/schemas');
+  const { tagPipelineOwner } = require('../lib/loadout');
+
+  const legacyEntry = {
+    position: 1,
+    invocation: '/investigate',
+    category: 'debugging',
+    role: 'diagnose',
+    reason: 'test',
+    depends_on: [],
+    // NOTE: no pipeline_owner, no alternatives
+  };
+
+  it('accepts router output without task_complexity (no bounds enforced)', () => {
+    const out = {
+      clarification_needed: false,
+      reasoning: 'legacy v1 output, no task_complexity',
+      loadout: [legacyEntry, legacyEntry, legacyEntry, legacyEntry, legacyEntry, legacyEntry, legacyEntry],
+      excluded: [],
+      estimated_context_tokens: 10000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid without task_complexity, got: ${result.errors.join(', ')}`);
+  });
+
+  it('accepts router output without matched_fingerprint', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'medium',
+      reasoning: 'no fingerprint field',
+      loadout: [legacyEntry, legacyEntry, legacyEntry],
+      excluded: [],
+      estimated_context_tokens: 10000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid without matched_fingerprint, got: ${result.errors.join(', ')}`);
+  });
+
+  it('accepts per-entry alternatives missing (legacy entries)', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'medium',
+      reasoning: 'legacy entries without alternatives',
+      loadout: [legacyEntry, legacyEntry, legacyEntry],
+      excluded: [],
+      estimated_context_tokens: 10000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid without alternatives, got: ${result.errors.join(', ')}`);
+  });
+
+  it('tagPipelineOwner: index entry without pipeline_owner treated as null on consumers', () => {
+    // Legacy index entry has no pipeline_owner field at all
+    const legacyIndexEntry = {
+      id: 'global:investigate',
+      type: 'skill',
+      source: 'global',
+      name: 'investigate',
+      invocation: '/investigate',
+      category: 'debugging',
+    };
+    // Consumer contract: missing pipeline_owner must behave like null
+    const owner = legacyIndexEntry.pipeline_owner === undefined ? null : legacyIndexEntry.pipeline_owner;
+    assert.equal(owner, null);
+    // And re-tagging produces the same result
+    assert.equal(tagPipelineOwner(legacyIndexEntry), null);
+  });
+
+  it('accepts null matched_fingerprint explicitly', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'simple',
+      matched_fingerprint: null,
+      reasoning: 'explicit null',
+      loadout: [legacyEntry],
+      excluded: [],
+      estimated_context_tokens: 5000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `got: ${result.errors.join(', ')}`);
+  });
+});
