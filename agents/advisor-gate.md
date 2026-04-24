@@ -55,6 +55,52 @@ If `ToolSearch` fails or `AskUserQuestion` still cannot be invoked after this bo
 
 ## Moment 1: Loadout Approval
 
+### Initial state dispatch (MANDATORY — runs BEFORE the classic menu)
+
+Inspect the incoming router loadout before showing any summary. Three branches:
+
+1. **Pure standalone loadout.** Every entry has `pipeline_owner === null`. Run the per-step picker loop (below) to let the user swap individual positions. On loop exit, proceed with the final loadout into Moment 2.
+2. **Same-owner canonical loadout.** Every entry shares the same non-null `pipeline_owner` (router already emitted a canonical flow). SKIP the per-step loop — there is nothing to swap per-step in a canonical flow. Print the classic loadout box and run the classic 4-option menu (Sim/Nao/Alterar/Sugerir).
+3. **Mixed-owner loadout (invalid).** At least two distinct non-null `pipeline_owner` values OR a mix of null and non-null. Re-spawn the advisor-router exactly once with the prompt addition `last_error: "mixed_pipeline_owners"`. If the second attempt is still invalid, emit `gate_output` with `error: "invalid_loadout"`, `decision: "cancel"`, `moment2_decision: null`. This retry budget is separate from the malformed-JSON retry.
+
+**Backward compat.** If the router output is missing `alternatives` on every entry (legacy v1 output), skip the per-step picker and run the classic 4-option menu regardless of owner composition.
+
+### Per-step picker loop (standalone loadout only)
+
+After the tool-loading bootstrap and standard loadout summary box, iterate positions `N = 1..loadout.length`:
+
+For each position N, invoke `AskUserQuestion` with:
+
+- `question`: `"Etapa ${N}: qual skill executa ${role}?"` (header `"Etapa ${N}"`, ≤12 chars)
+- `options` (cap at 4 per the tool limit — see Feasibility Notes):
+  1. Router's pick, labeled `"Recomendado"`. Its `description` is the router's `reason` or a short summary.
+  2. Top 2 alternatives from `entry.alternatives` (router emits up to 3 ordered most-aligned-first; gate displays the top 2). Each `description` is the alternative's `one_line` (PT-BR).
+  3. A final option `"Voltar"` (description: `"Descartar escolhas e voltar ao menu principal"`).
+
+Handle the user's choice per position:
+
+- **Picks Recomendado:** record the recommendation at position N, continue to N+1.
+- **Picks same-owner alternative (both `pipeline_owner` null OR both equal to current owner):** apply `swapAtPosition` semantics — replace only position N, keep every other entry byte-identical (including `depends_on`), continue to N+1.
+- **Picks cross-owner alternative (`pipeline_owner !== current owner`):** trigger immediate collapse. Replace the loadout with `collapseToCanonicalFlow(newOwner, indexSnapshot)` from `lib/loadout.js`. Exit the per-step loop. Print the new canonical flow summary box and run a single summary `AskUserQuestion` with `Sim`/`Nao` (plus the automatic Other). Sim → emit `gate_output` with `decision: "custom"` and the collapsed loadout; Nao → emit `decision: "cancel"`.
+- **Picks Voltar:** abort the loop unconditionally. Discard all per-step picks accumulated so far. Restore the router's original loadout. Re-present the classic 4-option menu (Sim/Nao/Alterar/Sugerir). Voltar does NOT undo picks one at a time — it is a single-step escape.
+
+At end of loop:
+
+- If at least one alternative was picked during the loop → emit `decision: "custom"` with the final loadout.
+- If every position kept the recommendation → emit `decision: "approve"` with the unchanged loadout.
+
+### Canonical flow materialization
+
+When collapsing, reuse the default rule from `collapseToCanonicalFlow` (see `lib/loadout.js`):
+
+- `role` = category of the skill in the Step-1 index snapshot
+- `category` = same as above
+- `confidence` = `1.0`
+- `reason` = `"Parte do fluxo canônico de ${owner}."`
+- `depends_on` = `[]` for position 1, `[N-1]` (zero-indexed: `[i]`) for position N > 1
+
+### Classic 4-option menu (fallback path)
+
 First, print the loadout summary as plain text so the user sees what is being proposed:
 
 ```
