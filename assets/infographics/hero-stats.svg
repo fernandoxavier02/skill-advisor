@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 200" role="img" aria-labelledby="heroTitle heroDesc" preserveAspectRatio="xMidYMid meet">
+  <title id="heroTitle">Skill Advisor — at a glance</title>
+  <desc id="heroDesc">86 skills indexed, 500 tests passing, 5 orchestrated plugins isolated, sub-50 millisecond hook latency</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E1B4B"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="pink" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#F472B6"/>
+      <stop offset="1" stop-color="#DB2777"/>
+    </linearGradient>
+    <style>
+      .n { font: 700 44px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #F8FAFC; letter-spacing: -0.02em; }
+      .l { font: 500 13px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #CBD5E1; letter-spacing: 0.08em; text-transform: uppercase; }
+      .s { font: 400 11px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #94A3B8; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="200" rx="12" fill="url(#bg)"/>
+
+  <g transform="translate(24,32)">
+    <rect x="0" y="0" width="216" height="136" rx="10" fill="#1E293B" opacity="0.6"/>
+    <rect x="0" y="0" width="4" height="136" rx="2" fill="url(#purple)"/>
+    <text x="24" y="68" class="n">86</text>
+    <text x="24" y="100" class="l">Skills</text>
+    <text x="24" y="120" class="s">indexed across 11 plugins</text>
+  </g>
+
+  <g transform="translate(252,32)">
+    <rect x="0" y="0" width="216" height="136" rx="10" fill="#1E293B" opacity="0.6"/>
+    <rect x="0" y="0" width="4" height="136" rx="2" fill="url(#green)"/>
+    <text x="24" y="68" class="n">500</text>
+    <text x="24" y="100" class="l">Tests</text>
+    <text x="24" y="120" class="s">passing — zero red</text>
+  </g>
+
+  <g transform="translate(480,32)">
+    <rect x="0" y="0" width="216" height="136" rx="10" fill="#1E293B" opacity="0.6"/>
+    <rect x="0" y="0" width="4" height="136" rx="2" fill="url(#amber)"/>
+    <text x="24" y="68" class="n">5</text>
+    <text x="24" y="100" class="l">Orchestrated</text>
+    <text x="24" y="120" class="s">plugins isolated, never mixed</text>
+  </g>
+
+  <g transform="translate(708,32)">
+    <rect x="0" y="0" width="216" height="136" rx="10" fill="#1E293B" opacity="0.6"/>
+    <rect x="0" y="0" width="4" height="136" rx="2" fill="url(#pink)"/>
+    <text x="24" y="68" class="n">&lt;50<tspan font-size="24">ms</tspan></text>
+    <text x="24" y="100" class="l">Hook latency</text>
+    <text x="24" y="120" class="s">every prompt, local-only</text>
+  </g>
+</svg>

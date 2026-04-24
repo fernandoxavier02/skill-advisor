@@ -21,6 +21,7 @@
 <p align="center">
   <a href="#tldr">TL;DR</a> ·
   <a href="#features">Features</a> ·
+  <a href="#powered-by-obsidian">Obsidian</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#quickstart">Quickstart</a> ·
   <a href="#commands">Commands</a> ·
@@ -29,6 +30,10 @@
 
 <p align="center">
   You have 200+ skills installed. You use 10. Skill Advisor finds the other 190 — and knows which ones not to mix.
+</p>
+
+<p align="center">
+  <img src="assets/infographics/hero-stats.svg" alt="86 skills indexed, 500 tests passing, 5 orchestrated plugins isolated, sub-50ms hook latency" width="100%" />
 </p>
 
 ---
@@ -68,9 +73,53 @@ Three steps. No monolithic gate. No cross-plugin contamination.
 
 ---
 
+## Powered by Obsidian
+
+<p align="center">
+  <a href="https://obsidian.md" target="_blank" rel="noopener">
+    <img src="https://obsidian.md/images/obsidian-logo-gradient.svg" alt="Obsidian" height="64" />
+  </a>
+</p>
+
+Skill Advisor uses your **Obsidian vault** as a first-class input. Every wikilink in your notes becomes an edge in `vault-graph/adjacency.json`; the router traverses this graph up to two hops from alias-matched seed nodes, giving you recommendation signal that pure semantic search cannot produce on its own.
+
+**Why Obsidian specifically.** Obsidian's wikilink discipline means your notes already encode the relationships the advisor needs. A note titled `xau-trading.md` that links to `[[ict-silver-bullet]]`, `[[risk-sizing]]`, and `[[atr-regime-filter]]` tells the graph search: "if the user task touches XAU, those three topics are one hop away." The BFS surfaces skills registered against any of those topics, scored by hop distance and convergence.
+
+**What flows into the router.**
+
+- **Alias seeds** — your task prompt is tokenized (PT-BR + EN synonym expansion) and matched against the vault's alias index
+- **Adjacency traversal** — BFS with `SCORE_BY_HOP = [1.0, 0.7, 0.4]` and a convergence boost of +0.15 per additional seed hitting the same node
+- **Category boost** — if the matched nodes share a category with the inferred task type, the top score gets +0.2
+
+**Fusion.** Graph signal is one of three layers fused via weighted average: semantic 0.5, keyword 0.3, graph 0.2. The graph never decides alone — it pulls the recommendation toward the conceptual neighborhood your vault already maps.
+
+**Point it at your vault.**
+
+```bash
+# Set the vault path once
+export SKILL_ADVISOR_VAULT_PATH="/path/to/your/Obsidian/vault"
+
+# Rebuild the graph after major vault reorganizations
+node lib/build-graph.js
+```
+
+No vault? The advisor degrades gracefully — keyword + semantic layers continue to score; graph layer contributes zero until a vault is connected.
+
+<p align="center">
+  <sub>Obsidian® is a trademark of Dynalist Inc. Used here to indicate integration, not endorsement.</sub>
+</p>
+
+---
+
 ## How it works
 
-Three diagrams cover the whole architecture.
+<p align="center">
+  <img src="assets/infographics/architecture-flow.svg" alt="Architecture flow: Obsidian vault, installed skills, and MCP servers feed the advisor pipeline — build-index, router with fingerprint match, per-step gate — which emits a loadout that the execution layer runs" width="100%" />
+</p>
+
+Three **inputs** flow in from the left: your **Obsidian vault** (wikilinks parsed into a 2-hop adjacency graph), every installed skill across global/plugin/project scopes, and every MCP server surfaced by `.mcp.json`. The pipeline in the middle runs three passes — `build-index` (keyword + semantic + graph), `advisor-router` (classify + fingerprint match + compose), `advisor-gate` (per-step picker with isolation enforcement) — and emits a typed loadout that the execution layer invokes step by step. The same stack runs in under 50ms as a hook on every prompt, no network involved.
+
+Three Mermaid diagrams below zoom into the three decision points the SVG abstracts.
 
 ### Router — from task to loadout
 
@@ -126,6 +175,10 @@ sequenceDiagram
 The gate uses the native `AskUserQuestion` tool — arrow-key selection, automatic "Other" free-text option. Three outcomes: all recommendations kept (`decision: "approve"`), at least one alternative picked (`decision: "custom"`), or collapse to a canonical flow (`decision: "custom"` with the new loadout).
 
 ### Pipeline-owner isolation — why loadouts never mix
+
+<p align="center">
+  <img src="assets/infographics/ownership-matrix.svg" alt="Pipeline-owner isolation matrix showing standalone skills freely mixable, and five orchestrated plugins (superpowers, kiro, sdd, compound-engineering, pipeline-orchestrator) each with its own canonical flow that never mixes with another owner" width="100%" />
+</p>
 
 ```mermaid
 flowchart TD

@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" role="img" aria-labelledby="archTitle archDesc" preserveAspectRatio="xMidYMid meet">
+  <title id="archTitle">Skill Advisor — architecture flow with Obsidian integration</title>
+  <desc id="archDesc">Inputs from Obsidian vault, installed skills, and MCP servers feed the advisor pipeline: build-index, router with fingerprint match, per-step gate, executed loadout</desc>
+
+  <defs>
+    <linearGradient id="bgA" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E1B4B"/>
+    </linearGradient>
+    <linearGradient id="obs" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#6D28D9"/>
+    </linearGradient>
+    <style>
+      .h { font: 700 15px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #F8FAFC; letter-spacing: 0.02em; }
+      .t { font: 500 12px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #E2E8F0; }
+      .sm { font: 400 10.5px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #94A3B8; }
+      .col { font: 700 12px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #A78BFA; letter-spacing: 0.16em; text-transform: uppercase; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="440" rx="12" fill="url(#bgA)"/>
+
+  <!-- Column headers -->
+  <text x="150" y="36" text-anchor="middle" class="col">Sources</text>
+  <text x="480" y="36" text-anchor="middle" class="col">Advisor Pipeline</text>
+  <text x="810" y="36" text-anchor="middle" class="col">Execution</text>
+
+  <!-- SOURCES column -->
+  <!-- Obsidian (prominent) -->
+  <g transform="translate(40,60)">
+    <rect x="0" y="0" width="220" height="90" rx="10" fill="url(#obs)"/>
+    <g transform="translate(18,24)">
+      <!-- Simplified Obsidian-like mark: a gem / purple shard -->
+      <path d="M 0 22 L 22 0 L 44 22 L 22 44 Z" fill="#FFFFFF" opacity="0.95"/>
+      <path d="M 22 0 L 44 22 L 22 28 Z" fill="#C4B5FD" opacity="0.85"/>
+      <path d="M 0 22 L 22 28 L 22 44 Z" fill="#7C3AED" opacity="0.7"/>
+    </g>
+    <text x="86" y="40" class="h">Obsidian vault</text>
+    <text x="86" y="58" class="sm">Wikilinks → adjacency.json</text>
+    <text x="86" y="73" class="sm">BFS 2-hop graph traversal</text>
+  </g>
+
+  <g transform="translate(40,166)">
+    <rect x="0" y="0" width="220" height="72" rx="10" fill="#1E293B"/>
+    <rect x="0" y="0" width="4" height="72" rx="2" fill="#34D399"/>
+    <text x="20" y="28" class="h">Installed skills</text>
+    <text x="20" y="48" class="sm">Global + plugin + project</text>
+    <text x="20" y="62" class="sm">Scanned via build-catalog</text>
+  </g>
+
+  <g transform="translate(40,254)">
+    <rect x="0" y="0" width="220" height="72" rx="10" fill="#1E293B"/>
+    <rect x="0" y="0" width="4" height="72" rx="2" fill="#FBBF24"/>
+    <text x="20" y="28" class="h">MCP servers</text>
+    <text x="20" y="48" class="sm">Tool inventory from</text>
+    <text x="20" y="62" class="sm">.mcp.json + dynamic</text>
+  </g>
+
+  <!-- PIPELINE column -->
+  <g transform="translate(370,60)">
+    <rect x="0" y="0" width="220" height="72" rx="10" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="20" y="28" class="h">build-index</text>
+    <text x="20" y="48" class="sm">keyword + semantic 384-dim</text>
+    <text x="20" y="62" class="sm">+ vault-graph adjacency</text>
+  </g>
+
+  <g transform="translate(370,154)">
+    <rect x="0" y="0" width="220" height="100" rx="10" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="20" y="28" class="h">advisor-router</text>
+    <text x="20" y="48" class="sm">classify task_complexity</text>
+    <text x="20" y="62" class="sm">fingerprint match check</text>
+    <text x="20" y="76" class="sm">compose standalone OR</text>
+    <text x="20" y="90" class="sm">collapse to canonical flow</text>
+  </g>
+
+  <g transform="translate(370,276)">
+    <rect x="0" y="0" width="220" height="100" rx="10" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="20" y="28" class="h">advisor-gate</text>
+    <text x="20" y="48" class="sm">AskUserQuestion per step</text>
+    <text x="20" y="62" class="sm">swap on same-owner</text>
+    <text x="20" y="76" class="sm">collapse on cross-owner</text>
+    <text x="20" y="90" class="sm">never mix pipeline-owners</text>
+  </g>
+
+  <!-- EXECUTION column -->
+  <g transform="translate(700,100)">
+    <rect x="0" y="0" width="220" height="90" rx="10" fill="#1E293B"/>
+    <rect x="0" y="0" width="4" height="90" rx="2" fill="#F472B6"/>
+    <text x="20" y="28" class="h">Loadout JSON</text>
+    <text x="20" y="48" class="sm">N skills in order</text>
+    <text x="20" y="62" class="sm">each: invocation +</text>
+    <text x="20" y="76" class="sm">confidence + alternatives</text>
+  </g>
+
+  <g transform="translate(700,220)">
+    <rect x="0" y="0" width="220" height="90" rx="10" fill="#1E293B"/>
+    <rect x="0" y="0" width="4" height="90" rx="2" fill="#34D399"/>
+    <text x="20" y="28" class="h">Pipeline executes</text>
+    <text x="20" y="48" class="sm">Skill tool invokes each</text>
+    <text x="20" y="62" class="sm">step in sequence</text>
+    <text x="20" y="76" class="sm">context flows forward</text>
+  </g>
+
+  <!-- Arrows -->
+  <path d="M 260 96 Q 310 96 365 96" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <path d="M 260 200 Q 310 200 365 200" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <path d="M 260 288 Q 310 288 365 288" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <path d="M 480 132 L 480 150" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <path d="M 480 254 L 480 272" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <path d="M 590 200 Q 640 200 695 140" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <path d="M 820 190 L 820 218" fill="none" stroke="#7C3AED" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- Obsidian callout line connecting vault to router -->
+  <path d="M 150 150 Q 150 330 370 330" fill="none" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
+  <text x="82" y="346" class="sm" fill="#C4B5FD">graph signal</text>
+
+  <!-- Footer note -->
+  <text x="480" y="420" text-anchor="middle" class="sm">
+    Hook path runs the same stack in sub-50ms on every user prompt — no network, no cloud.
+  </text>
+</svg>
