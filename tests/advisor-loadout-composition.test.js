@@ -488,3 +488,96 @@ describe('T6: fixture-index invariant', () => {
     }
   });
 });
+
+// T2: task_complexity enum + loadout size bounds (standalone only)
+describe('T2: task_complexity + size bounds', () => {
+  const { validateRouterOutput } = require('../lib/schemas');
+
+  const standalone = () => ({
+    invocation: '/investigate', category: 'debugging', role: 'diag',
+    confidence: 0.9, reason: 'r', depends_on: [], pipeline_owner: null,
+  });
+
+  const outputOf = (complexity, size) => ({
+    clarification_needed: false,
+    task_complexity: complexity,
+    reasoning: 'test',
+    loadout: Array.from({ length: size }, standalone),
+    excluded: [],
+    estimated_context_tokens: 5000,
+    risk: 'low',
+  });
+
+  it('rejects invalid task_complexity enum value', () => {
+    const out = outputOf('huge', 3);
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, false);
+    assert.ok(result.errors.some(e => /task_complexity/.test(e)));
+  });
+
+  it('accepts simple with size 1', () => {
+    assert.equal(validateRouterOutput(outputOf('simple', 1)).valid, true);
+  });
+
+  it('accepts simple with size 2', () => {
+    assert.equal(validateRouterOutput(outputOf('simple', 2)).valid, true);
+  });
+
+  it('rejects simple with size 3', () => {
+    const result = validateRouterOutput(outputOf('simple', 3));
+    assert.equal(result.valid, false);
+    assert.ok(result.errors.some(e => /simple bounds/.test(e)));
+  });
+
+  it('accepts medium with size 3', () => {
+    assert.equal(validateRouterOutput(outputOf('medium', 3)).valid, true);
+  });
+
+  it('rejects medium with size 2', () => {
+    const result = validateRouterOutput(outputOf('medium', 2));
+    assert.equal(result.valid, false);
+    assert.ok(result.errors.some(e => /medium bounds/.test(e)));
+  });
+
+  it('rejects medium with size 4', () => {
+    const result = validateRouterOutput(outputOf('medium', 4));
+    assert.equal(result.valid, false);
+  });
+
+  it('accepts complex with size 4', () => {
+    assert.equal(validateRouterOutput(outputOf('complex', 4)).valid, true);
+  });
+
+  it('accepts complex with size 5', () => {
+    assert.equal(validateRouterOutput(outputOf('complex', 5)).valid, true);
+  });
+
+  it('rejects complex with size 3', () => {
+    const result = validateRouterOutput(outputOf('complex', 3));
+    assert.equal(result.valid, false);
+  });
+
+  it('rejects complex with size 6', () => {
+    const result = validateRouterOutput(outputOf('complex', 6));
+    assert.equal(result.valid, false);
+  });
+
+  it('does NOT apply size bounds to pipeline-owned flows (size is dictated by CANONICAL_FLOWS)', () => {
+    // e.g., pipeline-orchestrator has a 1-entry flow — even with complexity=complex it must pass
+    const owned = {
+      invocation: '/pipeline-orchestrator:pipeline', category: 'utility', role: 'pipeline',
+      confidence: 1.0, reason: 'canonical', depends_on: [], pipeline_owner: 'pipeline-orchestrator',
+    };
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'complex',
+      reasoning: 'pipeline-orchestrator canonical',
+      loadout: [owned], // length 1 but owner-dictated, not bound by complexity
+      excluded: [],
+      estimated_context_tokens: 5000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid, got: ${result.errors.join(', ')}`);
+  });
+});
