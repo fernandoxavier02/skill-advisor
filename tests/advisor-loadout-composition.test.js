@@ -164,3 +164,83 @@ describe('T9: PIPELINE_FINGERPRINTS parity invariant', () => {
     }
   });
 });
+
+// T3: validateRouterOutput rejects mixed-owner loadouts
+describe('T3: validateRouterOutput — mixed-owner rejection', () => {
+  const { validateRouterOutput } = require('../lib/schemas');
+
+  const baseEntry = (owner) => ({
+    invocation: owner ? `/${owner}:skill` : '/investigate',
+    category: 'planning',
+    role: 'planning',
+    confidence: 0.9,
+    reason: 'test',
+    depends_on: [],
+    pipeline_owner: owner,
+    alternatives: [],
+  });
+
+  it('accepts all-standalone loadout (all pipeline_owner null)', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'medium',
+      reasoning: 'standalone composition',
+      loadout: [baseEntry(null), baseEntry(null), baseEntry(null)],
+      excluded: [],
+      estimated_context_tokens: 10000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid, got errors: ${result.errors.join(', ')}`);
+  });
+
+  it('accepts all-same-owner loadout (all entries share one owner)', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'complex',
+      reasoning: 'kiro canonical flow',
+      loadout: [baseEntry('kiro'), baseEntry('kiro'), baseEntry('kiro'), baseEntry('kiro')],
+      excluded: [],
+      estimated_context_tokens: 15000,
+      risk: 'medium',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid, got errors: ${result.errors.join(', ')}`);
+  });
+
+  it('rejects mixed-owner loadout with two non-null distinct owners', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'medium',
+      reasoning: 'mixed, invalid',
+      loadout: [baseEntry('kiro'), baseEntry('superpowers')],
+      excluded: [],
+      estimated_context_tokens: 10000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, false);
+    assert.ok(
+      result.errors.some(e => /pipeline_owner|mixed/i.test(e)),
+      `expected a mixed-owner error, got: ${result.errors.join(', ')}`,
+    );
+  });
+
+  it('rejects mixed-owner loadout where one entry is standalone and one is owned', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'medium',
+      reasoning: 'standalone + owner = invalid',
+      loadout: [baseEntry(null), baseEntry('sdd')],
+      excluded: [],
+      estimated_context_tokens: 10000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, false);
+    assert.ok(
+      result.errors.some(e => /pipeline_owner|mixed/i.test(e)),
+      `expected a mixed-owner error, got: ${result.errors.join(', ')}`,
+    );
+  });
+});
