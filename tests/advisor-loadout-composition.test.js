@@ -401,3 +401,62 @@ describe('T4: collapseToCanonicalFlow materialization', () => {
     }
   });
 });
+
+// T5: swap at position preserves other positions byte-identical
+describe('T5: swapAtPosition — local positional substitution', () => {
+  const { swapAtPosition } = require('../lib/loadout');
+
+  const sampleLoadout = () => [
+    { invocation: '/investigate', role: 'debugging', category: 'debugging', confidence: 0.9, reason: 'diagnose', depends_on: [], pipeline_owner: null },
+    { invocation: '/fix', role: 'debugging', category: 'debugging', confidence: 0.85, reason: 'apply fix', depends_on: [0], pipeline_owner: null },
+    { invocation: '/review', role: 'quality', category: 'quality', confidence: 0.8, reason: 'pre-landing review', depends_on: [1], pipeline_owner: null },
+    { invocation: '/commit', role: 'deployment', category: 'deployment', confidence: 0.75, reason: 'conventional commit', depends_on: [2], pipeline_owner: null },
+  ];
+
+  it('replaces only the entry at the given position', () => {
+    const original = sampleLoadout();
+    const replacement = { invocation: '/verify', role: 'quality', category: 'quality', confidence: 0.9, reason: 'fresh evidence', depends_on: [1], pipeline_owner: null };
+    const swapped = swapAtPosition(original, 2, replacement);
+    assert.equal(swapped[2].invocation, '/verify');
+    assert.equal(swapped[2].reason, 'fresh evidence');
+  });
+
+  it('preserves other positions with deep equality', () => {
+    const original = sampleLoadout();
+    const replacement = { invocation: '/verify', role: 'quality', category: 'quality', confidence: 0.9, reason: 'fresh evidence', depends_on: [1], pipeline_owner: null };
+    const swapped = swapAtPosition(original, 2, replacement);
+    assert.deepEqual(swapped[0], original[0], 'position 0 must be unchanged');
+    assert.deepEqual(swapped[1], original[1], 'position 1 must be unchanged');
+    assert.deepEqual(swapped[3], original[3], 'position 3 must be unchanged');
+  });
+
+  it('does NOT mutate the original loadout', () => {
+    const original = sampleLoadout();
+    const snapshot = JSON.parse(JSON.stringify(original));
+    const replacement = { invocation: '/verify', role: 'quality', category: 'quality', confidence: 0.9, reason: 'fresh', depends_on: [1], pipeline_owner: null };
+    swapAtPosition(original, 2, replacement);
+    assert.deepEqual(original, snapshot, 'original loadout must remain byte-identical');
+  });
+
+  it('depends_on arrays elsewhere are NOT rewritten (position-indexed)', () => {
+    const original = sampleLoadout();
+    const replacement = { invocation: '/fix', role: 'debugging', category: 'debugging', confidence: 0.95, reason: 'alternate fixer', depends_on: [0], pipeline_owner: null };
+    const swapped = swapAtPosition(original, 1, replacement);
+    // downstream entries still reference [1] as their dependency;
+    // the swapped entry at position 1 is assumed to satisfy the role.
+    assert.deepEqual(swapped[2].depends_on, [1]);
+    assert.deepEqual(swapped[3].depends_on, [2]);
+  });
+
+  it('throws when position is out of bounds', () => {
+    const original = sampleLoadout();
+    const replacement = { invocation: '/x', role: 'utility', category: 'utility', confidence: 0.5, reason: 'r', depends_on: [], pipeline_owner: null };
+    assert.throws(() => swapAtPosition(original, 99, replacement), /out of bounds|invalid position/i);
+    assert.throws(() => swapAtPosition(original, -1, replacement), /out of bounds|invalid position/i);
+  });
+
+  it('throws when replacement lacks an invocation', () => {
+    const original = sampleLoadout();
+    assert.throws(() => swapAtPosition(original, 0, { role: 'nope' }), /invocation/i);
+  });
+});
