@@ -42,6 +42,8 @@ When a fingerprint matches, the `loadout` array MUST mirror the canonical flow e
 
 ## Complexity-Aware Sizing (standalone composition only)
 
+> **SSOT:** `lib/constants.js` → `COMPLEXITY_BOUNDS`. The values below mirror that single source; do NOT update them here — update constants.js.
+
 When you compose a standalone loadout (matched_fingerprint: null), declare `task_complexity` explicitly and respect these strict bounds:
 
 | task_complexity | loadout size |
