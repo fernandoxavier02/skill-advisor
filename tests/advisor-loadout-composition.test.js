@@ -684,3 +684,22 @@ describe('T10: fingerprint-match routing', () => {
     assert.equal(validateRouterOutput(out).valid, true);
   });
 });
+
+// ARCH-2: pipeline_owner invariant — every non-null owner in the fixture
+// must be a member of PIPELINE_OWNERS. Catches drift if someone removes
+// an owner from the list but leaves skills tagged with it.
+describe('ARCH-2: pipeline_owner ∈ PIPELINE_OWNERS in fixture', () => {
+  const { PIPELINE_OWNERS } = require('../lib/constants');
+
+  it('every non-null pipeline_owner in fixture belongs to PIPELINE_OWNERS', () => {
+    const violators = FIXTURE_INDEX
+      .filter(e => e.pipeline_owner !== null && e.pipeline_owner !== undefined)
+      .filter(e => !PIPELINE_OWNERS.includes(e.pipeline_owner))
+      .map(e => `${e.id} → "${e.pipeline_owner}"`);
+
+    assert.equal(
+      violators.length, 0,
+      `Fixture has entries with unrecognized pipeline_owner:\n${violators.join('\n')}`,
+    );
+  });
+});
