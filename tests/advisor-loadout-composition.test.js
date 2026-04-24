@@ -243,6 +243,37 @@ describe('T3: validateRouterOutput — mixed-owner rejection', () => {
       `expected a mixed-owner error, got: ${result.errors.join(', ')}`,
     );
   });
+  it('rejects hallucinated pipeline_owner not in PIPELINE_OWNERS', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'complex',
+      reasoning: 'hallucinated owner',
+      loadout: [baseEntry('superpowers-v2')],
+      excluded: [],
+      estimated_context_tokens: 5000,
+      risk: 'low',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, false);
+    assert.ok(
+      result.errors.some(e => /pipeline_owner.*not.*recognized|unknown.*pipeline_owner/i.test(e)),
+      `expected unknown-owner error, got: ${result.errors.join(', ')}`,
+    );
+  });
+
+  it('accepts valid pipeline_owner from PIPELINE_OWNERS', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'complex',
+      reasoning: 'valid owner',
+      loadout: [baseEntry('superpowers'), baseEntry('superpowers'), baseEntry('superpowers'), baseEntry('superpowers')],
+      excluded: [],
+      estimated_context_tokens: 15000,
+      risk: 'medium',
+    };
+    const result = validateRouterOutput(out);
+    assert.equal(result.valid, true, `expected valid, got: ${result.errors.join(', ')}`);
+  });
 });
 
 // T8: Backward compatibility — legacy outputs still validate
