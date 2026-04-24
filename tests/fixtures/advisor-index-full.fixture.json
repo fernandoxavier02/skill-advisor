@@ -1,0 +1,232 @@
+[
+  {
+    "id": "plugin:superpowers:brainstorming",
+    "type": "skill",
+    "source": "plugin:superpowers",
+    "name": "brainstorming",
+    "description": "Clarify scope and ambiguities before design.",
+    "invocation": "/superpowers:brainstorming",
+    "category": "planning",
+    "pipeline_owner": "superpowers"
+  },
+  {
+    "id": "plugin:superpowers:writing-plans",
+    "type": "skill",
+    "source": "plugin:superpowers",
+    "name": "writing-plans",
+    "description": "Document execution plan as spec.",
+    "invocation": "/superpowers:writing-plans",
+    "category": "planning",
+    "pipeline_owner": "superpowers"
+  },
+  {
+    "id": "plugin:superpowers:executing-plans",
+    "type": "skill",
+    "source": "plugin:superpowers",
+    "name": "executing-plans",
+    "description": "Execute an approved implementation plan.",
+    "invocation": "/superpowers:executing-plans",
+    "category": "implementation",
+    "pipeline_owner": "superpowers"
+  },
+  {
+    "id": "plugin:superpowers:verification-before-completion",
+    "type": "skill",
+    "source": "plugin:superpowers",
+    "name": "verification-before-completion",
+    "description": "Verify work before declaring complete.",
+    "invocation": "/superpowers:verification-before-completion",
+    "category": "quality",
+    "pipeline_owner": "superpowers"
+  },
+  {
+    "id": "plugin:pipeline-orchestrator:pipeline",
+    "type": "skill",
+    "source": "plugin:pipeline-orchestrator",
+    "name": "pipeline",
+    "description": "Automated multi-agent pipeline with classification and gates.",
+    "invocation": "/pipeline-orchestrator:pipeline",
+    "category": "utility",
+    "pipeline_owner": "pipeline-orchestrator"
+  },
+  {
+    "id": "plugin:cc-mastery:kiro-discovery",
+    "type": "skill",
+    "source": "plugin:cc-mastery",
+    "name": "kiro-discovery",
+    "description": "Discover and triage action path for a feature.",
+    "invocation": "/kiro-discovery",
+    "category": "planning",
+    "pipeline_owner": "kiro"
+  },
+  {
+    "id": "plugin:cc-mastery:kiro-spec-quick",
+    "type": "skill",
+    "source": "plugin:cc-mastery",
+    "name": "kiro-spec-quick",
+    "description": "Generate a complete Kiro spec in one pass.",
+    "invocation": "/kiro-spec-quick",
+    "category": "planning",
+    "pipeline_owner": "kiro"
+  },
+  {
+    "id": "plugin:cc-mastery:kiro-impl",
+    "type": "skill",
+    "source": "plugin:cc-mastery",
+    "name": "kiro-impl",
+    "description": "Implement Kiro spec tasks with reviewer-gated mode.",
+    "invocation": "/kiro-impl",
+    "category": "implementation",
+    "pipeline_owner": "kiro"
+  },
+  {
+    "id": "plugin:cc-mastery:kiro-validate-impl",
+    "type": "skill",
+    "source": "plugin:cc-mastery",
+    "name": "kiro-validate-impl",
+    "description": "Validate feature-level integration after Kiro implementation.",
+    "invocation": "/kiro-validate-impl",
+    "category": "quality",
+    "pipeline_owner": "kiro"
+  },
+  {
+    "id": "plugin:sdd:brainstorm",
+    "type": "skill",
+    "source": "plugin:sdd",
+    "name": "brainstorm",
+    "description": "SDD brainstorming before writing code.",
+    "invocation": "/sdd:brainstorm",
+    "category": "planning",
+    "pipeline_owner": "sdd"
+  },
+  {
+    "id": "plugin:sdd:plan",
+    "type": "skill",
+    "source": "plugin:sdd",
+    "name": "plan",
+    "description": "SDD planning and parallelization refinement.",
+    "invocation": "/sdd:plan",
+    "category": "planning",
+    "pipeline_owner": "sdd"
+  },
+  {
+    "id": "plugin:sdd:implement",
+    "type": "skill",
+    "source": "plugin:sdd",
+    "name": "implement",
+    "description": "SDD implementation with LLM-as-Judge verification.",
+    "invocation": "/sdd:implement",
+    "category": "implementation",
+    "pipeline_owner": "sdd"
+  },
+  {
+    "id": "plugin:compound-engineering:ce-brainstorm",
+    "type": "skill",
+    "source": "plugin:compound-engineering",
+    "name": "ce-brainstorm",
+    "description": "Compound brainstorming exploring requirements and approaches.",
+    "invocation": "/compound-engineering:ce-brainstorm",
+    "category": "planning",
+    "pipeline_owner": "compound-engineering"
+  },
+  {
+    "id": "plugin:compound-engineering:ce-plan",
+    "type": "skill",
+    "source": "plugin:compound-engineering",
+    "name": "ce-plan",
+    "description": "Compound structured plan for multi-step tasks.",
+    "invocation": "/compound-engineering:ce-plan",
+    "category": "planning",
+    "pipeline_owner": "compound-engineering"
+  },
+  {
+    "id": "plugin:compound-engineering:ce-work",
+    "type": "skill",
+    "source": "plugin:compound-engineering",
+    "name": "ce-work",
+    "description": "Compound execution with quality preservation.",
+    "invocation": "/compound-engineering:ce-work",
+    "category": "implementation",
+    "pipeline_owner": "compound-engineering"
+  },
+  {
+    "id": "plugin:compound-engineering:ce-commit",
+    "type": "skill",
+    "source": "plugin:compound-engineering",
+    "name": "ce-commit",
+    "description": "Compound commit with value-first message.",
+    "invocation": "/compound-engineering:ce-commit",
+    "category": "deployment",
+    "pipeline_owner": "compound-engineering"
+  },
+  {
+    "id": "plugin:superpowers:debug",
+    "type": "skill",
+    "source": "plugin:superpowers",
+    "name": "debug",
+    "description": "Alias inside superpowers for its debugging flow.",
+    "invocation": "/superpowers:debug",
+    "category": "debugging",
+    "pipeline_owner": "superpowers"
+  },
+  {
+    "id": "global:investigate",
+    "type": "skill",
+    "source": "global",
+    "name": "investigate",
+    "description": "Systematic debugging with root cause investigation.",
+    "invocation": "/investigate",
+    "category": "debugging",
+    "pipeline_owner": null
+  },
+  {
+    "id": "global:fix",
+    "type": "skill",
+    "source": "global",
+    "name": "fix",
+    "description": "Apply minimal focused fix to identified defect.",
+    "invocation": "/fix",
+    "category": "debugging",
+    "pipeline_owner": null
+  },
+  {
+    "id": "global:review",
+    "type": "skill",
+    "source": "global",
+    "name": "review",
+    "description": "Pre-landing PR review for correctness and quality.",
+    "invocation": "/review",
+    "category": "quality",
+    "pipeline_owner": null
+  },
+  {
+    "id": "global:commit",
+    "type": "skill",
+    "source": "global",
+    "name": "commit",
+    "description": "Compose a conventional commit.",
+    "invocation": "/commit",
+    "category": "deployment",
+    "pipeline_owner": null
+  },
+  {
+    "id": "global:verify",
+    "type": "skill",
+    "source": "global",
+    "name": "verify",
+    "description": "Verify claims with fresh evidence.",
+    "invocation": "/verify",
+    "category": "quality",
+    "pipeline_owner": null
+  },
+  {
+    "id": "plugin:cc-mastery:other-skill",
+    "type": "skill",
+    "source": "plugin:cc-mastery",
+    "name": "other-skill",
+    "description": "A cc-mastery skill not belonging to the kiro family.",
+    "invocation": "/cc-mastery:other-skill",
+    "category": "utility",
+    "pipeline_owner": null
+  }
+]
