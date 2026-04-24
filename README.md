@@ -1,12 +1,11 @@
 <p align="center">
-  <img src="assets/logo.png" alt="Skill Advisor" width="120" height="120" style="border-radius: 50%;" />
+  <img src="assets/infographics/hero-banner.png" alt="Skill Advisor — one task, the right skills, never mixed" width="100%" />
 </p>
 
-<h1 align="center">Skill Advisor</h1>
-
 <p align="center">
-  <strong>The AI that learns which AI tools to use</strong><br>
-  <em>Intelligent toolchain orchestrator for Claude Code — one task, the right skills.</em>
+  <a href="https://img.shields.io/badge/Powered_by-Obsidian-7C3AED?style=for-the-badge&logo=obsidian&logoColor=white"><img src="https://img.shields.io/badge/Powered_by-Obsidian-7C3AED?style=for-the-badge&logo=obsidian&logoColor=white" alt="Powered by Obsidian" /></a>
+  <a href="https://img.shields.io/badge/Built_for-Claude_Code-DE6A50?style=for-the-badge&logo=anthropic&logoColor=white"><img src="https://img.shields.io/badge/Built_for-Claude_Code-DE6A50?style=for-the-badge&logo=anthropic&logoColor=white" alt="Built for Claude Code" /></a>
+  <a href="https://img.shields.io/badge/Local_first-Zero_network-10B981?style=for-the-badge"><img src="https://img.shields.io/badge/Local_first-Zero_network-10B981?style=for-the-badge" alt="Local first" /></a>
 </p>
 
 <p align="center">

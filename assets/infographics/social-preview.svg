@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-labelledby="socialTitle socialDesc" preserveAspectRatio="xMidYMid meet">
+  <title id="socialTitle">Skill Advisor — social preview card</title>
+  <desc id="socialDesc">GitHub social preview image for skill-advisor plugin: intelligent toolchain orchestrator for Claude Code with per-step picker, pipeline-owner isolation, and Obsidian vault integration</desc>
+
+  <defs>
+    <linearGradient id="socbg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0B0F1E"/>
+      <stop offset="0.45" stop-color="#1E1B4B"/>
+      <stop offset="1" stop-color="#3730A3"/>
+    </linearGradient>
+    <radialGradient id="socglow" cx="0.28" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#A78BFA" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#1E1B4B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="socpurple" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#6D28D9"/>
+    </linearGradient>
+    <linearGradient id="socaccent" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#F472B6"/>
+      <stop offset="0.5" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="socsoft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+    <style>
+      .sebr { font: 700 16px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #A78BFA; letter-spacing: 0.28em; text-transform: uppercase; }
+      .sti  { font: 800 112px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #F8FAFC; letter-spacing: -0.035em; }
+      .sta  { font: 500 30px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #CBD5E1; letter-spacing: -0.01em; }
+      .sch  { font: 600 16px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #F8FAFC; letter-spacing: 0.02em; }
+      .slg  { font: 500 14px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #94A3B8; }
+      .sbg  { font: 700 13px -apple-system, "Segoe UI", Roboto, sans-serif; fill: #F8FAFC; letter-spacing: 0.1em; text-transform: uppercase; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="640" fill="url(#socbg)"/>
+  <rect x="0" y="0" width="1280" height="640" fill="url(#socglow)"/>
+
+  <!-- Accent strip top -->
+  <rect x="80" y="0" width="320" height="4" fill="url(#socaccent)" opacity="0.9"/>
+
+  <!-- LEFT block -->
+  <g transform="translate(80,120)">
+    <text class="sebr">Claude Code plugin · v0.3.4</text>
+    <text y="112" class="sti">Skill Advisor</text>
+    <text y="180" class="sta">One task. The right skills. Never mixed.</text>
+
+    <!-- Feature badges -->
+    <g transform="translate(0,236)">
+      <rect x="0" y="0" width="250" height="46" rx="23" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+      <circle cx="24" cy="23" r="6" fill="#A78BFA"/>
+      <text x="42" y="30" class="sch">Per-step picker</text>
+
+      <rect x="268" y="0" width="302" height="46" rx="23" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+      <circle cx="292" cy="23" r="6" fill="#F472B6"/>
+      <text x="310" y="30" class="sch">Pipeline-owner isolation</text>
+    </g>
+
+    <g transform="translate(0,298)">
+      <rect x="0" y="0" width="232" height="46" rx="23" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+      <circle cx="24" cy="23" r="6" fill="#34D399"/>
+      <text x="42" y="30" class="sch">Obsidian-aware</text>
+
+      <rect x="250" y="0" width="260" height="46" rx="23" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+      <circle cx="274" cy="23" r="6" fill="#FBBF24"/>
+      <text x="292" y="30" class="sch">Sub-50ms local hook</text>
+    </g>
+
+    <!-- Stats row -->
+    <g transform="translate(0,388)">
+      <text class="slg">86 skills indexed  ·  500 tests passing  ·  zero network  ·  MIT licensed</text>
+    </g>
+  </g>
+
+  <!-- RIGHT block: graph -->
+  <g transform="translate(820,140)">
+    <circle cx="200" cy="180" r="180" fill="#8B5CF6" opacity="0.14" filter="url(#socsoft)"/>
+
+    <!-- Edges -->
+    <g stroke="url(#socaccent)" stroke-width="1.4" opacity="0.55" fill="none">
+      <path d="M 200 180 L 90 80"/>
+      <path d="M 200 180 L 310 68"/>
+      <path d="M 200 180 L 350 210"/>
+      <path d="M 200 180 L 130 290"/>
+      <path d="M 200 180 L 270 310"/>
+      <path d="M 200 180 L 50 200"/>
+      <path d="M 90 80 L 30 140"/>
+      <path d="M 310 68 L 380 128"/>
+      <path d="M 350 210 L 380 128"/>
+      <path d="M 270 310 L 350 210"/>
+      <path d="M 130 290 L 50 200"/>
+      <path d="M 130 290 L 270 310"/>
+      <path d="M 90 80 L 310 68"/>
+      <path d="M 30 140 L 50 200"/>
+    </g>
+
+    <!-- Central advisor node -->
+    <circle cx="200" cy="180" r="30" fill="url(#socpurple)" stroke="#F8FAFC" stroke-width="3"/>
+    <text x="200" y="187" text-anchor="middle" class="sch" fill="#F8FAFC">A</text>
+
+    <!-- Obsidian gem -->
+    <g transform="translate(294,44)">
+      <path d="M 16 0 L 32 22 L 16 50 L 0 22 Z" fill="#8B5CF6" stroke="#F8FAFC" stroke-width="2"/>
+      <path d="M 16 0 L 32 22 L 16 32 Z" fill="#C4B5FD"/>
+      <path d="M 0 22 L 16 32 L 16 50 Z" fill="#6D28D9" opacity="0.85"/>
+    </g>
+    <text x="348" y="58" class="slg" fill="#C4B5FD">Obsidian vault</text>
+
+    <!-- Peripheral nodes -->
+    <circle cx="90" cy="80" r="14" fill="#F472B6" stroke="#F8FAFC" stroke-width="1.5"/>
+    <circle cx="350" cy="210" r="12" fill="#34D399" stroke="#F8FAFC" stroke-width="1.5"/>
+    <circle cx="130" cy="290" r="12" fill="#FBBF24" stroke="#F8FAFC" stroke-width="1.5"/>
+    <circle cx="270" cy="310" r="11" fill="#60A5FA" stroke="#F8FAFC" stroke-width="1.5"/>
+    <circle cx="50" cy="200" r="9" fill="#A78BFA" stroke="#F8FAFC"/>
+    <circle cx="380" cy="128" r="9" fill="#F87171" stroke="#F8FAFC"/>
+    <circle cx="30" cy="140" r="7" fill="#E2E8F0" stroke="#94A3B8"/>
+  </g>
+
+  <!-- Footer -->
+  <rect x="0" y="560" width="1280" height="80" fill="#0B0F1E" opacity="0.6"/>
+  <text x="80" y="608" class="sbg">github.com/fernandoxavier02/skill-advisor</text>
+  <text x="1200" y="608" text-anchor="end" class="sbg" fill="#A78BFA">FX Studio AI</text>
+</svg>
