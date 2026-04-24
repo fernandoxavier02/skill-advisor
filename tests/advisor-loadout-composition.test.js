@@ -460,3 +460,31 @@ describe('T5: swapAtPosition — local positional substitution', () => {
     assert.throws(() => swapAtPosition(original, 0, { role: 'nope' }), /invocation/i);
   });
 });
+
+// T6: fixture-index invariant — every CANONICAL_FLOWS invocation exists in fixture
+describe('T6: fixture-index invariant', () => {
+  const { CANONICAL_FLOWS } = require('../lib/constants');
+
+  it('every invocation in CANONICAL_FLOWS is present in fixture index', () => {
+    const fixtureInvocations = new Set(FIXTURE_INDEX.map(e => e.invocation));
+    const missing = [];
+    for (const [owner, flow] of Object.entries(CANONICAL_FLOWS)) {
+      for (const invocation of flow) {
+        if (!fixtureInvocations.has(invocation)) {
+          missing.push(`${owner} → ${invocation}`);
+        }
+      }
+    }
+    assert.deepEqual(missing, [], `Missing invocations in fixture: ${missing.join(', ')}`);
+  });
+
+  it('every fixture skill tagged as a pipeline owner has its flow member available', () => {
+    // For each owner present in fixture, CANONICAL_FLOWS[owner] must be fully resolvable
+    const fixtureOwners = new Set(
+      FIXTURE_INDEX.filter(e => e.pipeline_owner != null).map(e => e.pipeline_owner),
+    );
+    for (const owner of fixtureOwners) {
+      assert.ok(CANONICAL_FLOWS[owner], `Owner "${owner}" appears in fixture but CANONICAL_FLOWS lacks it`);
+    }
+  });
+});
