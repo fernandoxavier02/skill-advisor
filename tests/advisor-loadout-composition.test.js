@@ -581,3 +581,75 @@ describe('T2: task_complexity + size bounds', () => {
     assert.equal(result.valid, true, `expected valid, got: ${result.errors.join(', ')}`);
   });
 });
+
+// T10: fingerprint-match routing produces the canonical flow
+describe('T10: fingerprint-match routing', () => {
+  const { validateRouterOutput } = require('../lib/schemas');
+  const { collapseToCanonicalFlow } = require('../lib/loadout');
+  const { CANONICAL_FLOWS } = require('../lib/constants');
+
+  // Fixture router outputs: each simulates what the Sonnet-based router
+  // would emit when it recognizes a task maps onto a pipelined plugin
+  // end-to-end. The loadout is materialized from CANONICAL_FLOWS so the
+  // fixture stays in sync with the constants (no byte-rotting snapshots).
+  const routerOutputForOwner = (owner, taskDescription, complexity = 'complex') => ({
+    clarification_needed: false,
+    task_complexity: complexity,
+    matched_fingerprint: owner,
+    reasoning: `Task "${taskDescription}" matches ${owner} fingerprint — emitting canonical flow.`,
+    loadout: collapseToCanonicalFlow(owner, FIXTURE_INDEX),
+    excluded: [],
+    estimated_context_tokens: 20000,
+    risk: 'medium',
+  });
+
+  const fixtures = [
+    { owner: 'kiro', task: 'create a spec for the auth refactor with approval gates' },
+    { owner: 'superpowers', task: 'design and implement a new feature end-to-end with brainstorm + plan + verify' },
+    { owner: 'pipeline-orchestrator', task: 'bug fix with root cause analysis and adversarial review' },
+  ];
+
+  for (const { owner, task } of fixtures) {
+    it(`${owner}: matched_fingerprint equals owner for a matching task`, () => {
+      const out = routerOutputForOwner(owner, task);
+      assert.equal(out.matched_fingerprint, owner);
+    });
+
+    it(`${owner}: loadout.map(invocation) deep-equals CANONICAL_FLOWS[owner]`, () => {
+      const out = routerOutputForOwner(owner, task);
+      const invocations = out.loadout.map(e => e.invocation);
+      assert.deepEqual(invocations, CANONICAL_FLOWS[owner].slice());
+    });
+
+    it(`${owner}: every entry carries pipeline_owner="${owner}"`, () => {
+      const out = routerOutputForOwner(owner, task);
+      for (const entry of out.loadout) {
+        assert.equal(entry.pipeline_owner, owner);
+      }
+    });
+
+    it(`${owner}: passes validateRouterOutput (same-owner, size dictated by flow)`, () => {
+      const out = routerOutputForOwner(owner, task);
+      const result = validateRouterOutput(out);
+      assert.equal(result.valid, true, `got errors: ${result.errors.join(', ')}`);
+    });
+  }
+
+  it('matched_fingerprint: null is valid when router falls through to standalone composition', () => {
+    const out = {
+      clarification_needed: false,
+      task_complexity: 'medium',
+      matched_fingerprint: null,
+      reasoning: 'no fingerprint matched — compose standalone',
+      loadout: [
+        { invocation: '/investigate', category: 'debugging', role: 'diag', confidence: 0.9, reason: 'r', depends_on: [], pipeline_owner: null },
+        { invocation: '/fix', category: 'debugging', role: 'fix', confidence: 0.85, reason: 'r', depends_on: [0], pipeline_owner: null },
+        { invocation: '/review', category: 'quality', role: 'review', confidence: 0.8, reason: 'r', depends_on: [1], pipeline_owner: null },
+      ],
+      excluded: [],
+      estimated_context_tokens: 8000,
+      risk: 'low',
+    };
+    assert.equal(validateRouterOutput(out).valid, true);
+  });
+});
