@@ -42,7 +42,7 @@
 
   <!-- LEFT block -->
   <g transform="translate(80,120)">
-    <text class="sebr">Claude Code plugin · v0.3.4</text>
+    <text class="sebr">Claude Code plugin · v0.4.1</text>
     <text y="112" class="sti">Skill Advisor</text>
     <text y="180" class="sta">One task. The right skills. Never mixed.</text>
 
@@ -69,7 +69,7 @@
 
     <!-- Stats row -->
     <g transform="translate(0,388)">
-      <text class="slg">86 skills indexed  ·  500 tests passing  ·  zero network  ·  MIT licensed</text>
+      <text class="slg">86 skills indexed  ·  662 tests passing  ·  zero network  ·  MIT licensed</text>
     </g>
   </g>
 

@@ -44,7 +44,7 @@
 
   <!-- LEFT — text block -->
   <g transform="translate(64,70)">
-    <text class="eyebrow">Claude Code plugin · v0.3.4</text>
+    <text class="eyebrow">Claude Code plugin · v0.4.1</text>
     <text y="72" class="title">Skill Advisor</text>
     <text y="120" class="tag">One task. The right skills. Never mixed.</text>
 
@@ -65,7 +65,7 @@
 
     <!-- Small stats row -->
     <g transform="translate(0,226)">
-      <text class="legend">86 skills indexed  ·  500 tests passing  ·  sub-50ms hook  ·  local-first, zero network</text>
+      <text class="legend">86 skills indexed  ·  662 tests passing  ·  sub-50ms hook  ·  local-first, zero network</text>
     </g>
   </g>
 

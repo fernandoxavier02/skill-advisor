@@ -10,9 +10,9 @@
 
 <p align="center">
   <a href="#installation"><img src="https://img.shields.io/badge/platform-Claude_Code-7C3AED?style=flat-square&logo=anthropic&logoColor=white" alt="Platform" /></a>
-  <a href="https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.4"><img src="https://img.shields.io/badge/version-0.3.4-blue?style=flat-square" alt="Version" /></a>
+  <a href="https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.1"><img src="https://img.shields.io/badge/version-0.4.1-blue?style=flat-square" alt="Version" /></a>
   <a href="#how-it-works"><img src="https://img.shields.io/badge/skills_indexed-86-brightgreen?style=flat-square" alt="Skills Indexed" /></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-500_passing-brightgreen?style=flat-square" alt="Tests" /></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-662_passing-brightgreen?style=flat-square" alt="Tests" /></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
 </p>
@@ -67,6 +67,12 @@ Three steps. No monolithic gate. No cross-plugin contamination.
 | **Task-complexity-aware sizing** | Router classifies `simple / medium / complex` and sizes standalone loadouts to 1-2 / 3 / 4-5 skills. No more 4-step ceremony for a one-line fix. | 0.3.2 |
 | **Fingerprint-match routing** | Each pipelined plugin has a functional fingerprint (`best_for`, `typical_tasks`, `not_for`, `complexity_match`). The router recognizes when a task fits a plugin end-to-end and recommends the canonical flow unprompted. | 0.3.2 |
 | **Prompt-injection sanitizer** | `lib/escaping.js` implements the BEGIN/END marker contract, backtick redaction, control-char stripping, and field length caps from Rule 12. No more prose-only defense. | 0.3.3 |
+| **First-run setup wizard** | `/advisor-setup` slash command + SessionStart hook drive a 6-step wizard: build index, embeddings, owners curation, vault opt-in, threshold tuning, full smoke. State persisted in `~/.claude/advisor/setup.json`, idempotent on re-run. | 0.3.5 |
+| **Extensible pipeline-owners** | User-curated `~/.claude/advisor/pipeline-owners-user.json` extends the hardcoded base. Append-only — user owners colliding with base are filtered with a stderr warning. | 0.3.5 |
+| **Heuristic plugin detection** | `lib/detect-owners.js` scans installed plugins through 5 heuristics (H1 explicit metadata · H2 sequential naming · H3 spec+impl+validate triad · H4 named pipeline/orchestrator skill · H5 shared-prefix cluster). Threshold to flag: confidence ≥ 0.5. | 0.3.5 |
+| **Vault bounded context** | `lib/vault-config.js` validates an Obsidian vault path (exists, is dir, has `.obsidian/` or `.md`). Resolution cascade: `SKILL_ADVISOR_VAULT_PATH` env beats `setup.json vault_config.path`. | 0.4.0 |
+| **Threshold tuning** | `lib/threshold-config.js` with presets `strict=0.7 / balanced=0.5 / chatty=0.3`. Hook reads cascade: `ADVISOR_THRESHOLD` env beats wizard-persisted value beats compiled default. | 0.4.0 |
+| **Full smoke runner** | `lib/smoke-runner.js` validates all artifacts + loads `constants.js` + traverses lite index with canned tasks. Returns typed `SmokeTestResult { passed, checks[], reason }`. | 0.4.0 |
 | **Hook nudge** | Sub-50ms scan of every user prompt surfaces underused high-signal skills via `advisor-nudge.cjs`. Zero network, local-only. | 0.1+ |
 | **Semantic search** | 384-dim embeddings over skill cards via `@huggingface/transformers`. Weighted with keyword + graph traversal. | 0.2+ |
 
@@ -250,6 +256,7 @@ Example tasks that route differently:
 |---|---|
 | `/advisor <task>` | Main entry — route, gate, execute |
 | `/advisor --template <name>` | Load a saved workflow template and skip routing |
+| `/advisor-setup` | First-run wizard — 6 steps: index, embeddings, owners, vault, threshold, smoke. Idempotent on re-run |
 | `/advisor-index` | Rebuild the keyword + semantic + graph indexes |
 | `/advisor-catalog` | List all indexed skills grouped by plugin |
 | `/advisor-config` | Toggle hook, adjust thresholds, enable debug |
@@ -324,7 +331,7 @@ Test runner: Node.js built-in `--test` pattern `tests/*.test.js`. No external te
 
 See [CHANGELOG.md](CHANGELOG.md) for the full timeline.
 
-Latest: **[v0.3.4](https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.4)** (2026-04-24) — manifest sync fix. Prior releases (0.3.1 → 0.3.3) added the per-step picker, pipeline-owner isolation, complexity-aware sizing, fingerprint routing, and the `lib/escaping.js` sanitizer.
+Latest: **[v0.4.1](https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.1)** (2026-04-25) — wizard wired through to v0.4.0 libs (Vault, Threshold, SmokeRunner). Prior milestones: v0.4.0 added the three Approach B bounded contexts; v0.3.5 shipped the first-run wizard + extensible pipeline-owners + heuristic plugin detection; v0.3.1–0.3.4 added the per-step picker, pipeline-owner isolation, complexity-aware sizing, fingerprint routing, and the `lib/escaping.js` sanitizer.
 
 ---
 
