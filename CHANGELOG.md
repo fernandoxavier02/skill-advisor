@@ -4,6 +4,21 @@ All notable changes to the **skill-advisor** plugin are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.5] — 2026-04-24
+
+### Added
+- **First-run setup wizard** via new `/advisor-setup` slash command. Four steps: build keyword+lite index, download+build semantic embeddings (~23 MB on first run), detect orchestrated plugins and curate PIPELINE_OWNERS one-by-one, ultra-light smoke check. Idempotent on re-run — completed steps are skipped unless the advisor version changed. See `commands/advisor-setup.md`.
+- **SessionStart hook** (`hooks/session-start.cjs`) that detects first install or version upgrade and emits a one-line nudge telling the user to run `/advisor-setup`. Fail-soft: any filesystem or parse error results in silent exit 0. Budget <80 ms cold.
+- **Heuristic plugin detector** (`lib/detect-owners.js`) with 5 heuristics in order of signal strength: H1 explicit `pipeline: true` metadata (short-circuits to confidence 1.0), H2 sequential naming (3+ workflow tokens or `phase-N` pattern, weight 0.4), H3 spec+impl+validate triad (weight 0.3), H4 explicit `pipeline` or `orchestrator` skill name (weight 0.3), H5 shared-prefix cluster of 4+ skills (weight 0.3). Threshold to flag: 0.5.
+- **Extensible pipeline-owners** via `~/.claude/advisor/pipeline-owners-user.json`. The wizard writes user confirmations here; `lib/constants.js` merges user additions with the hardcoded base at module-load time. Merge is append-only — user owners colliding with the base are filtered with a stderr warning.
+- **Setup state helpers** (`lib/setup-state.js`) for read/write of `~/.claude/advisor/setup.json` with schema versioning, idempotent step marking, version-drift detection, and fail-soft reads.
+
+### Changed
+- **Refactor `lib/constants.js`** to split hardcoded base (`_BASE_PIPELINE_OWNERS`, `_BASE_CANONICAL_FLOWS`, `_BASE_PIPELINE_FINGERPRINTS`) from merged exports. Existing consumers see no behavior change when no user config file exists.
+
+### Tests
+- +33 new tests across `tests/user-config.test.js` (12), `tests/constants-merge.test.js` (11), `tests/detect-owners.test.js` (18), `tests/setup-state.test.js` (15). Full suite: 587 passing, zero regression.
+
 ## [0.3.4] — 2026-04-24
 
 ### Fixed
@@ -43,6 +58,7 @@ Historical releases prior to the changelog initialization. Consult `git log --on
 
 ---
 
+[0.3.5]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.5
 [0.3.4]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.4
 [0.3.3]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.3
 [0.3.2]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.2
