@@ -28,8 +28,20 @@ const ADVISOR_CACHE = path.join(HOME, '.claude', 'advisor', 'cache');
 const NAME_WEIGHT = SW.NAME_WEIGHT;
 const DESC_WEIGHT = SW.DESC_WEIGHT;
 
-const rawThreshold = parseFloat(process.env.ADVISOR_THRESHOLD || String(TH.DEFAULT_SCORE));
-const THRESHOLD = Number.isFinite(rawThreshold) && rawThreshold >= 0 && rawThreshold <= 1 ? rawThreshold : TH.DEFAULT_SCORE;
+// Threshold cascade: ADVISOR_THRESHOLD env > setup.json threshold_config.value > TH.DEFAULT_SCORE
+// See lib/threshold-config.js for the resolver. Fail-soft — any failure
+// in the cascade falls through to the compiled default.
+let THRESHOLD = TH.DEFAULT_SCORE;
+try {
+  const { resolveEffectiveThreshold } = require('../lib/threshold-config');
+  const envNum = process.env.ADVISOR_THRESHOLD ? parseFloat(process.env.ADVISOR_THRESHOLD) : undefined;
+  THRESHOLD = resolveEffectiveThreshold({
+    envValue: envNum,
+    defaultValue: TH.DEFAULT_SCORE,
+  });
+} catch {
+  // threshold-config not present (older install) — keep compiled default
+}
 const ENABLED = (process.env.ADVISOR_ENABLED || '').toLowerCase();
 const STALENESS_DAYS = TH.STALENESS_DAYS;
 
