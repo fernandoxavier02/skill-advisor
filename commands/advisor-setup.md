@@ -103,6 +103,88 @@ via `AskUserQuestion`.
 
 ---
 
+## Step 1.5 — Vault opt-in (Obsidian)
+
+Print an explanation:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ Step 1.5 — Bind an Obsidian vault (optional)                   │
+│                                                                │
+│ The advisor's graph layer reads wikilinks from your vault and  │
+│ uses them as recommendation signal. Without a vault, the       │
+│ semantic + keyword layers still work — graph just contributes  │
+│ zero. You can enable this later by re-running /advisor-setup.  │
+└────────────────────────────────────────────────────────────────┘
+```
+
+Ask via `AskUserQuestion`:
+
+```yaml
+AskUserQuestion(
+  questions: [{
+    question: "Configurar um vault Obsidian agora?",
+    header: "Vault",
+    multiSelect: false,
+    options: [
+      { label: "Sim, fornecer caminho",
+        description: "Você digita o caminho. Wizard valida (path existe, é diretório, parece vault)." },
+      { label: "Pular (Recomendado se não usa Obsidian)",
+        description: "Graph layer fica desabilitado. Semantic + keyword continuam funcionando." }
+    ]
+  }]
+)
+```
+
+If **Sim**: ask the user for the path via a follow-up `AskUserQuestion` with a single text option (Other free-text). Then validate via `lib/vault-config.js`:
+
+```bash
+node -e "
+const { makeVaultConfig, VaultValidationError } = require(process.env.CLAUDE_PLUGIN_ROOT + '/lib/vault-config.js');
+const candidate = process.env.VAULT_CANDIDATE_PATH;
+try {
+  const cfg = makeVaultConfig(candidate);
+  console.log(JSON.stringify({ ok: true, path: cfg.path }));
+} catch (err) {
+  console.log(JSON.stringify({ ok: false, reason: err.reason || 'unknown', message: err.message }));
+}
+"
+```
+
+Pass the user-typed path via `VAULT_CANDIDATE_PATH` env var. On `{ ok: true }`, persist to setup state:
+
+```bash
+node -e "
+const s = require(process.env.CLAUDE_PLUGIN_ROOT + '/lib/setup-state.js');
+let st = s.readSetupState();
+st.vault_config = { path: process.env.VAULT_CANDIDATE_PATH, indexed_at: null, graph_edges_count: 0 };
+st = s.markStepCompleted(st, 'vault');
+s.writeSetupState(st);
+"
+```
+
+Optionally, rebuild the graph if the user wants:
+
+```bash
+cd \"$CLAUDE_PLUGIN_ROOT\" && SKILL_ADVISOR_VAULT_PATH=\"$VAULT_CANDIDATE_PATH\" node lib/build-graph.js
+```
+
+On `{ ok: false }`, show the `reason` (`not_found` / `not_a_directory` / `not_a_vault`) and re-prompt up to 2 times. After the 3rd failure, fall through to "Skip" with a stderr note.
+
+If **Pular**: mark step complete with empty config:
+
+```bash
+node -e "
+const s = require(process.env.CLAUDE_PLUGIN_ROOT + '/lib/setup-state.js');
+let st = s.readSetupState();
+st.vault_config = { path: null, indexed_at: null, graph_edges_count: 0 };
+st = s.markStepCompleted(st, 'vault');
+s.writeSetupState(st);
+"
+```
+
+---
+
 ## Step 2 — Detect orchestrated plugins (read-only)
 
 Load the full index (built in Step 1) and the detect-owners library:
@@ -273,60 +355,101 @@ s.writeSetupState(st);
 
 ---
 
-## Step 4 — Smoke check (ultra-light)
+## Step 3.5 — Threshold tuning (hook nudge sensitivity)
 
-Validate that the artifacts from Step 1 exist and parse:
+Print explanation:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ Step 3.5 — Hook nudge threshold                                │
+│                                                                │
+│ Quanto maior o threshold, menos nudges (e cada um com mais     │
+│ confiança). Quanto menor, mais nudges. Default compilado: 0.20.│
+└────────────────────────────────────────────────────────────────┘
+```
+
+Ask via `AskUserQuestion`:
+
+```yaml
+AskUserQuestion(
+  questions: [{
+    question: "Qual sensibilidade pro hook de nudge?",
+    header: "Threshold",
+    multiSelect: false,
+    options: [
+      { label: "Balanced 0.5 (Recomendado)",
+        description: "Middle ground — nudge quando confidence ≥ 50%." },
+      { label: "Strict 0.7",
+        description: "Menos nudges, só os de alta confiança." },
+      { label: "Chatty 0.3",
+        description: "Mais nudges, aceita ruído extra." },
+      { label: "Manter default (0.20)",
+        description: "Sem ThresholdConfig — hook usa o default compilado." }
+    ]
+  }]
+)
+```
+
+For preset answers:
 
 ```bash
 node -e "
-const fs = require('fs');
-const path = require('path');
-
-const root = process.env.CLAUDE_PLUGIN_ROOT;
-const checks = [
-  { name: 'advisor-index-full.json', path: path.join(root, 'lib', 'advisor-index-full.json') },
-  { name: 'advisor-index-lite.json', path: path.join(root, 'lib', 'advisor-index-lite.json') },
-];
-
-const results = [];
-for (const c of checks) {
-  if (!fs.existsSync(c.path)) {
-    results.push({ name: c.name, ok: false, error: 'missing' });
-    continue;
-  }
-  try {
-    const raw = fs.readFileSync(c.path, 'utf8');
-    JSON.parse(raw);
-    results.push({ name: c.name, ok: true, bytes: raw.length });
-  } catch (err) {
-    results.push({ name: c.name, ok: false, error: err.message });
-  }
+const { makeThresholdConfig } = require(process.env.CLAUDE_PLUGIN_ROOT + '/lib/threshold-config.js');
+const s = require(process.env.CLAUDE_PLUGIN_ROOT + '/lib/setup-state.js');
+const preset = process.env.THRESHOLD_PRESET; // 'strict'|'balanced'|'chatty' or empty for keep-default
+let st = s.readSetupState();
+if (preset) {
+  const tc = makeThresholdConfig(preset);
+  st.threshold_config = { value: tc.value, preset: tc.preset };
 }
-
-// Embeddings is optional (user may have skipped).
-const embPath = path.join(root, 'lib', 'advisor-embeddings.json');
-if (fs.existsSync(embPath)) {
-  try {
-    const raw = fs.readFileSync(embPath, 'utf8');
-    JSON.parse(raw);
-    results.push({ name: 'advisor-embeddings.json', ok: true, bytes: raw.length });
-  } catch (err) {
-    results.push({ name: 'advisor-embeddings.json', ok: false, error: err.message });
-  }
-} else {
-  results.push({ name: 'advisor-embeddings.json', ok: null, error: 'not built (skipped)' });
-}
-
-console.log(JSON.stringify(results, null, 2));
+st = s.markStepCompleted(st, 'threshold');
+s.writeSetupState(st);
+console.log(JSON.stringify(st.threshold_config || null));
 "
 ```
 
-Show the user a clean summary:
-- ✅ for each `ok: true`
-- ❌ for each `ok: false` (with error)
-- ⚠ for `ok: null` (skipped step)
+Set `THRESHOLD_PRESET` to `strict`, `balanced`, `chatty`, or empty for "keep default". The hook (`advisor-nudge.cjs`) reads the persisted `threshold_config.value` on every prompt via the resolution cascade; no further wiring needed.
 
-If any ❌ appears, ask via `AskUserQuestion` whether to retry Step 1 or finish anyway.
+---
+
+## Step 4 — Full smoke (lib/smoke-runner.js)
+
+Run the full smoke runner — exercises all artifacts plus the constants merge plus a token-traversal of the lite index:
+
+```bash
+node -e "
+const { runSmoke } = require(process.env.CLAUDE_PLUGIN_ROOT + '/lib/smoke-runner.js');
+const r = runSmoke({ pluginRoot: process.env.CLAUDE_PLUGIN_ROOT });
+console.log(JSON.stringify(r, null, 2));
+"
+```
+
+The runner returns a `SmokeTestResult`:
+
+```json
+{
+  "passed": true | false,
+  "checks": [
+    { "name": "full_index", "ok": true, "entry_count": 86, "bytes": 44612 },
+    { "name": "lite_index", "ok": true, "entry_count": 86 },
+    { "name": "embeddings", "ok": true, "optional": true, "bytes": 694682 },
+    { "name": "constants_load", "ok": true, "owner_count": 5 },
+    { "name": "token_smoke", "ok": true, "matched_task": "fix typo in line 47 of auth.ts" }
+  ],
+  "duration_ms": 12,
+  "reason": null
+}
+```
+
+Display the summary to the user:
+- ✅ each `ok: true` check (show entry_count or owner_count when present)
+- ❌ each `ok: false` non-optional check (show `reason`)
+- ⚠ optional checks that failed (e.g., embeddings missing)
+
+If `passed: false`, ask via `AskUserQuestion`:
+- "Retry Step 1 (rebuild index/embeddings)"
+- "Open the failing reason explanation and abort"
+- "Finish anyway (advisor will run degraded)"
 
 Otherwise mark `smoke` step complete and write `completed_at = <now>`:
 

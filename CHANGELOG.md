@@ -4,6 +4,34 @@ All notable changes to the **skill-advisor** plugin are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] — 2026-04-25
+
+### Changed
+- **`/advisor-setup` wizard wired through to v0.4.0 libraries.** The
+  command markdown now drives Vault opt-in (Step 1.5), Threshold preset
+  picker (Step 3.5), and SmokeRunner (Step 4). Previous v0.4.0 release
+  shipped the libraries but the wizard still ran the v0.3.5 ultra-light
+  smoke; this completes the wiring.
+
+### Added — wizard steps
+- **Step 1.5 — Vault** prompts the user to bind an Obsidian vault
+  (Sim com path / Pular). Validates the typed path via
+  `lib/vault-config.js makeVaultConfig`, persists `vault_config` to
+  `~/.claude/advisor/setup.json`. Up to 3 retry attempts on validation
+  failure. Optional `node lib/build-graph.js` rebuild on success.
+- **Step 3.5 — Threshold** offers `Balanced 0.5 (Recomendado)` /
+  `Strict 0.7` / `Chatty 0.3` / `Manter default (0.20)`. Persists via
+  `makeThresholdConfig(preset)`. Hook reads the cascade automatically.
+- **Step 4 — Full smoke** replaces the v0.3.5 inline parse-only check
+  with a single call to `lib/smoke-runner.js runSmoke()`. Reports
+  per-check `ok` + reason; user can retry Step 1, abort, or finish
+  degraded if a non-optional check fails.
+
+### Notes
+- No code changes — markdown only. Suite remains 662/662.
+- KNOWN_STEPS now drives 6 steps end to end:
+  `index → embeddings → owners → vault → threshold → smoke`.
+
 ## [0.4.0] — 2026-04-24
 
 ### Added — Approach B (Vault + Threshold + Smoke)
@@ -103,6 +131,7 @@ Historical releases prior to the changelog initialization. Consult `git log --on
 
 ---
 
+[0.4.1]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.1
 [0.4.0]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.0
 [0.3.5]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.5
 [0.3.4]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.4
