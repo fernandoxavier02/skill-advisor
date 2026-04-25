@@ -4,6 +4,51 @@ All notable changes to the **skill-advisor** plugin are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-04-24
+
+### Added — Approach B (Vault + Threshold + Smoke)
+
+- **Vault bounded context** (`lib/vault-config.js`). DDD value object
+  `VaultConfig { path, indexed_at, graph_edges_count }` with aggregate
+  invariants: path non-empty, exists, is a directory, looks like a vault
+  (`.obsidian/` OR at least one `.md`). Typed `VaultValidationError` with
+  `reason` tag (`invalid_type | not_found | not_a_directory | not_a_vault`).
+  Resolution cascade: `SKILL_ADVISOR_VAULT_PATH` env beats
+  `setup.json vault_config.path`. 5 BDD scenarios.
+- **Threshold bounded context** (`lib/threshold-config.js`). DDD value
+  object `ThresholdConfig { value, preset }` with presets
+  `strict=0.7 / balanced=0.5 / chatty=0.3`. Resolution cascade:
+  `ADVISOR_THRESHOLD` env beats setup.json wizard-persisted value beats
+  `THRESHOLDS.DEFAULT_SCORE`. Hook `advisor-nudge.cjs` updated to use
+  the cascade via `resolveEffectiveThreshold`. 5 BDD scenarios.
+- **SmokeTest bounded context** (`lib/smoke-runner.js`). Upgrade over
+  v0.3.5's ultra-light smoke: parses full + lite indexes, validates
+  embeddings if present (optional), loads `lib/constants.js` to exercise
+  the user-config merge, traverses the lite index with canned task
+  keywords. Returns typed `SmokeTestResult { passed, checks[],
+  loadout_size, duration_ms, matched_fingerprint, reason }`. 4 BDD
+  scenarios.
+- **KNOWN_STEPS expanded** in `lib/setup-state.js` to include `vault`
+  and `threshold` alongside the existing `index`, `embeddings`,
+  `owners`, `smoke`.
+
+### Tests
+- +49 new tests across `tests/vault-config.test.js` (21),
+  `tests/threshold-config.test.js` (20), `tests/smoke-runner.test.js`
+  (14 — some nested).
+- +14 BDD scenarios across `tests/features/vault-config.feature.js`,
+  `tests/features/threshold-config.feature.js`,
+  `tests/features/smoke-runner.feature.js`.
+- Full suite: 662/662 passing (was 587). Zero regression.
+
+### Notes
+- The advisor-nudge hook change is **fail-soft**: if
+  `lib/threshold-config.js` is missing (downgraded install), the hook
+  falls back to the original env-or-default behavior.
+- The `/advisor-setup` command markdown still describes the v0.3.5
+  ultra-light smoke. Updating the wizard to drive the new vault /
+  threshold / smoke steps is part of the v0.4.1 follow-up.
+
 ## [0.3.5] — 2026-04-24
 
 ### Added
@@ -58,6 +103,7 @@ Historical releases prior to the changelog initialization. Consult `git log --on
 
 ---
 
+[0.4.0]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.0
 [0.3.5]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.5
 [0.3.4]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.4
 [0.3.3]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.3
