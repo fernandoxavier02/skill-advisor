@@ -4,6 +4,44 @@ All notable changes to the **skill-advisor** plugin are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] — 2026-04-26
+
+### Changed (UX disambiguation)
+
+- **Renamed skill `advisor-skill` → `pipeline-suggest`.** The lightweight
+  auto-trigger skill is now invoked via `/skill-advisor:pipeline-suggest`.
+  Rationale: users could not reliably distinguish the skill from the
+  `/skill-advisor:advisor` command — both shared the "advisor" prefix and
+  the previous name was generic ("advisor-skill"). The new name signals
+  the actual function (a quick pipeline suggester) without colliding with
+  pipeline-orchestrator's `/pipeline` command.
+- **Updated SKILL.md description** with an explicit "When to use this vs
+  `/skill-advisor:advisor`" comparison table so users can pick the right
+  entry point without reading source.
+
+### Added
+
+- **Regression test `tests/skill-rename-pipeline-suggest.test.js`** (6 cases):
+  asserts the new skill directory exists, frontmatter `name` matches the
+  directory, description points to the heavier sibling command, the old
+  directory was fully removed, and no tracked file references the old
+  name (with CHANGELOG and the test file itself in an explicit allowlist).
+  Test count: 648 → 654.
+
+### Migration
+
+If you previously referenced `/skill-advisor:advisor-skill` in scripts,
+prompts, or documentation, replace with `/skill-advisor:pipeline-suggest`.
+The `/skill-advisor:advisor` command is unchanged.
+
+### Backward compatibility
+
+Breaking only for callers that hardcoded the literal string
+`/skill-advisor:advisor-skill`. The plugin name (`skill-advisor`), the
+command (`/skill-advisor:advisor`), the agents (`advisor-router`,
+`advisor-gate`), and all library APIs are untouched. Marketplace ref
+bumped to `v0.4.2` so users get the rename through `claude plugin update`.
+
 ## [0.4.1] — 2026-04-25
 
 ### Changed

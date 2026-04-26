@@ -115,7 +115,7 @@ Four vault directories feed into the graph:
 - `commands/*.md` — 6 slash commands (advisor, advisor-catalog, advisor-config, advisor-feedback, advisor-index, advisor-stats)
 - `agents/advisor-router.md` — Sonnet subagent for task classification + loadout building
 - `agents/advisor-gate.md` — Sonnet subagent that runs the two-moment approval gate (Moment 1: loadout / Moment 2: spec generation). Uses `AskUserQuestion` for all user input and returns a structured JSON contract consumed by `commands/advisor.md` Step 6
-- `skills/advisor-skill/SKILL.md` — auto-trigger skill for tool guidance
+- `skills/pipeline-suggest/SKILL.md` — auto-trigger skill for lightweight, prose-based loadout suggestion (sibling of the heavier `/advisor` command which spawns router+gate)
 
 ## Conventions
 
