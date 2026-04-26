@@ -335,10 +335,34 @@ Latest: **[v0.4.1](https://github.com/fernandoxavier02/skill-advisor/releases/ta
 
 ---
 
+## Built by FX Studio AI
+
+<p align="center">
+  <a href="https://github.com/fernandoxavier02" target="_blank" rel="noopener">
+    <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="64" height="64" style="border-radius: 12px;" />
+  </a>
+</p>
+
+<p align="center">
+  <strong>FX Studio AI</strong> — building Claude Code plugins that scale from solo developers to engineering teams.
+</p>
+
+<p align="center">
+  <a href="https://github.com/fernandoxavier02"><img src="https://img.shields.io/badge/maintained_by-FX_Studio_AI-7C3AED?style=flat-square&logo=github&logoColor=white" alt="Maintained by FX Studio AI" /></a>
+  <a href="https://github.com/fernandoxavier02/Pipeline-Orchestrator"><img src="https://img.shields.io/badge/marketplace-FX--studio--AI-A78BFA?style=flat-square" alt="FX Studio AI marketplace" /></a>
+</p>
+
+Other plugins in the FX Studio AI marketplace: **pipeline-orchestrator**, **cc-toolkit**, **engineering-context**, **tts-minimax**.
+
+---
+
 ## License
 
 MIT © [FX Studio AI](https://github.com/fernandoxavier02). See [LICENSE](LICENSE).
 
 <p align="center">
-  <sub>Built for Claude Code. Powered by semantic search, graph traversal, and a stubborn belief that the right tool matters.</sub>
+  <a href="https://github.com/fernandoxavier02">
+    <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="32" height="32" style="border-radius: 8px; vertical-align: middle;" />
+  </a>
+  <sub>Built for Claude Code by FX Studio AI. Powered by semantic search, graph traversal, and a stubborn belief that the right tool matters.</sub>
 </p>
