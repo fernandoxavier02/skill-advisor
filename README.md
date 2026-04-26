@@ -1,4 +1,14 @@
 <p align="center">
+  <a href="https://github.com/fernandoxavier02">
+    <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="120" height="120" style="border-radius: 24px;" />
+  </a>
+</p>
+
+<p align="center">
+  <sub><strong>An <a href="https://github.com/fernandoxavier02/Pipeline-Orchestrator">FX Studio AI</a> plugin for Claude Code</strong></sub>
+</p>
+
+<p align="center">
   <img src="assets/infographics/hero-banner.png" alt="Skill Advisor — one task, the right skills, never mixed" width="100%" />
 </p>
 
@@ -10,12 +20,20 @@
 
 <p align="center">
   <a href="#installation"><img src="https://img.shields.io/badge/platform-Claude_Code-7C3AED?style=flat-square&logo=anthropic&logoColor=white" alt="Platform" /></a>
-  <a href="https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.1"><img src="https://img.shields.io/badge/version-0.4.1-blue?style=flat-square" alt="Version" /></a>
+  <a href="https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.2"><img src="https://img.shields.io/badge/version-0.4.2-blue?style=flat-square" alt="Version" /></a>
   <a href="#how-it-works"><img src="https://img.shields.io/badge/skills_indexed-86-brightgreen?style=flat-square" alt="Skills Indexed" /></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-662_passing-brightgreen?style=flat-square" alt="Tests" /></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-654_passing-brightgreen?style=flat-square" alt="Tests" /></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
 </p>
+
+> ### What's new in v0.4.2 (2026-04-26)
+>
+> - **`/skill-advisor:advisor-skill` renamed to `/skill-advisor:pipeline-suggest`** for UX disambiguation. The lightweight quick-trigger skill now has a name that signals its actual function (a quick pipeline suggester) and stops colliding with the full `/skill-advisor:advisor` command.
+> - **New regression fence test** (`tests/skill-rename-pipeline-suggest.test.js`, 6 cases) makes it impossible to silently regress the rename — any tracked file referencing the old name fails CI.
+> - **Two clearly-delimited entry points:**
+>   - `/skill-advisor:pipeline-suggest` — quick prose dry-run, single confirmation
+>   - `/skill-advisor:advisor` — full router → gate flow with **per-step `AskUserQuestion` picker** (recommendation + alternatives at every phase)
 
 <p align="center">
   <a href="#tldr">TL;DR</a> ·
@@ -331,7 +349,7 @@ Test runner: Node.js built-in `--test` pattern `tests/*.test.js`. No external te
 
 See [CHANGELOG.md](CHANGELOG.md) for the full timeline.
 
-Latest: **[v0.4.1](https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.1)** (2026-04-25) — wizard wired through to v0.4.0 libs (Vault, Threshold, SmokeRunner). Prior milestones: v0.4.0 added the three Approach B bounded contexts; v0.3.5 shipped the first-run wizard + extensible pipeline-owners + heuristic plugin detection; v0.3.1–0.3.4 added the per-step picker, pipeline-owner isolation, complexity-aware sizing, fingerprint routing, and the `lib/escaping.js` sanitizer.
+Latest: **[v0.4.2](https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.2)** (2026-04-26) — UX disambiguation: lightweight skill renamed `advisor-skill → pipeline-suggest` with regression-fence test (654 tests passing). Prior milestones: v0.4.1 wired `/advisor-setup` through to v0.4.0 libs (Vault, Threshold, SmokeRunner); v0.4.0 added the three Approach B bounded contexts; v0.3.5 shipped the first-run wizard + extensible pipeline-owners + heuristic plugin detection; v0.3.1–0.3.4 added the per-step picker, pipeline-owner isolation, complexity-aware sizing, fingerprint routing, and the `lib/escaping.js` sanitizer.
 
 ---
 
