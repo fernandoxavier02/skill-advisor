@@ -326,12 +326,12 @@ If any check fails, STOP. Do NOT execute. Apply the **Re-spawn Retry Policy** be
 - Execute skills in the order documented in the spec (overrides `gate_output.loadout` sequencing if they diverge)
 - For each phase: invoke the skill using the exact `Invocation` field from the spec
 - Inject context from previous phases using `{fase_N.campo}` references resolved from prior outputs
-- After each skill completes, summarize output and ask: "Step N completo. Continuar? (sim/nao/ajustar)"
+- After each skill completes, print a short prose summary of the output, then **invoke `AskUserQuestion`** (NEVER prose prompts like "digite sim/nao" or "Responda: sim → ..."). Build the question with `header: "Continuar"` and exactly 3 options in this order: (1) `"Continuar (Recomendado)"` — proceed to next step; (2) `"Ajustar"` — modify scope, prompt, or skill before continuing; (3) `"Cancelar"` — stop the pipeline. The first option MUST carry `(Recomendado)` in the label and a `description` explaining the recommendation. The Claude Code `AskUserQuestion` tool automatically renders an arrow-key navigable menu and appends an "Other" free-text option — never add it manually.
 
 **If `gate_output.spec_path` is `null` (legacy mode — `moment2_decision == "skip"`):**
 - Execute `gate_output.loadout` in order using semi-automatic flow
 - For each skill: invoke via Skill tool with the original task + accumulated context
-- After each skill: summarize, ask "Continuar? (sim/nao/ajustar)"
+- After each skill: print a short summary, then **invoke `AskUserQuestion`** with the same 3-option contract above (`Continuar (Recomendado)` / `Ajustar` / `Cancelar`). Same rules: arrow-key menu only, never prose, recommendation as first option.
 
 ### 8. Feedback
 
