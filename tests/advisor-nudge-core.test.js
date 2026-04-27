@@ -122,8 +122,10 @@ describe('advisor-nudge-core: isolation (BDD 3)', () => {
   });
 
   it('Given a corrupt index file, When runNudge runs, Then it returns a graceful corruption message and earlyExit true', () => {
+    // Dedicated fixture (not borrowed from malformed-skill/SKILL.md, which is
+    // owned by frontmatter tests and could be edited into something parseable).
     const result = runNudge(baseOpts({
-      indexLitePath: path.resolve(__dirname, 'fixtures', 'malformed-skill', 'SKILL.md'),
+      indexLitePath: path.resolve(__dirname, 'fixtures', 'corrupt-index.json'),
     }));
     assert.equal(result.earlyExit, true);
     assert.equal(result.output.length, 1);
@@ -136,8 +138,70 @@ describe('advisor-nudge-core: signature contract', () => {
     assert.equal(typeof runNudge, 'function');
   });
 
-  it('Given opts.prompt undefined, When runNudge runs, Then earlyExit is true (no throw)', () => {
-    const result = runNudge(baseOpts({ prompt: undefined }));
+  it('Given opts.prompt undefined, When runNudge runs, Then earlyExit is true, no loaders invoked, output empty', () => {
+    const embeddingsLoader = mock.fn(() => null);
+    const graphLoader = mock.fn(() => null);
+    const hookDataLoader = mock.fn(() => null);
+    const discoveryStateLoader = mock.fn(() => ({}));
+    const result = runNudge(baseOpts({
+      prompt: undefined,
+      embeddingsLoader,
+      graphLoader,
+      hookDataLoader,
+      discoveryStateLoader,
+    }));
     assert.equal(result.earlyExit, true);
+    assert.deepEqual(result.output, []);
+    assert.equal(embeddingsLoader.mock.callCount(), 0);
+    assert.equal(graphLoader.mock.callCount(), 0);
+    assert.equal(hookDataLoader.mock.callCount(), 0);
+    assert.equal(discoveryStateLoader.mock.callCount(), 0);
+  });
+});
+
+describe('advisor-nudge-core: positive content (BDD 4)', () => {
+  it('Given a prompt matching the investigate skill, When runNudge runs against the sample fixture, Then top[0].id === global:investigate and output[0] matches the expected nudge format', () => {
+    // Prompt chosen so multiple tokens hit the investigate entry's name+description
+    // (investigate name=+3, root/cause/error all in desc=+2 each), pushing the
+    // fused score well above the 0.20 default threshold.
+    const result = runNudge(baseOpts({
+      prompt: 'investigate root cause error',
+    }));
+    assert.equal(result.earlyExit, false);
+    assert.ok(result.top.length > 0, 'expected at least one suggestion');
+    assert.equal(result.top[0].id, 'global:investigate');
+    assert.equal(result.output.length, 1);
+    // Locks the nudge format string — catches accidental rewording in future refactors.
+    assert.match(result.output[0], /^\[Advisor\] Considere \/advisor — detectei relevancia com: \/investigate \(\d+%\)/);
+  });
+});
+
+describe('advisor-nudge-core: staleness boundary (test-coverage 🔴)', () => {
+  // Pins the `>` strict-inequality semantics of the staleness check. A future
+  // refactor that flips this to `>=` would silently start treating boundary-old
+  // indexes as stale and would be caught by the second case below.
+  const STALENESS_DAYS = 7;
+  const ONE_DAY_MS = 86400000;
+  const fs = require('node:fs');
+
+  function indexMtimeMs() {
+    return fs.statSync(SAMPLE_INDEX).mtimeMs;
+  }
+
+  it('Given now exactly STALENESS_DAYS after mtime, When runNudge runs, Then the staleness gate does NOT fire (boundary inclusive)', () => {
+    const exactBoundary = indexMtimeMs() + STALENESS_DAYS * ONE_DAY_MS;
+    const result = runNudge(baseOpts({ now: () => exactBoundary }));
+    // At exact boundary, ageDays === STALENESS_DAYS, and `> STALENESS_DAYS` is false,
+    // so we should NOT see the staleness message.
+    assert.ok(!result.output.some(l => /desatualizado/.test(l)),
+      `expected no staleness line, got: ${JSON.stringify(result.output)}`);
+  });
+
+  it('Given now 1ms beyond STALENESS_DAYS after mtime, When runNudge runs, Then the staleness gate fires with the desatualizado message', () => {
+    const justBeyond = indexMtimeMs() + STALENESS_DAYS * ONE_DAY_MS + 1;
+    const result = runNudge(baseOpts({ now: () => justBeyond }));
+    assert.equal(result.earlyExit, true);
+    assert.equal(result.output.length, 1);
+    assert.match(result.output[0], /desatualizado/);
   });
 });
