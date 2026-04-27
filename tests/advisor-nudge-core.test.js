@@ -133,6 +133,80 @@ describe('advisor-nudge-core: isolation (BDD 3)', () => {
   });
 });
 
+describe('advisor-nudge-core: replay-hint sanitization (Slice 7.3 polish)', () => {
+  // Adversarial review pointed out the replay-hint sanitization (added late
+  // in Slice 2.3 polish) had no test asserting that malicious sequence members
+  // are stripped. A future refactor that simplifies the sequence join could
+  // silently reopen the prompt-injection window.
+  it('Given hookData.replay with malicious sequence members containing injection chars, When runNudge runs and the first member matches a top result, Then the emitted seqStr contains only allowlist chars (a-zA-Z0-9:/_-)', () => {
+    const hookData = {
+      replay: [{
+        // First member matches global:investigate (which will be in top after the
+        // strong prompt below); other members carry injection attempts.
+        sequence: ['investigate', '`rm -rf /`', '<script>alert(1)</script>', 'normal-skill'],
+        count: 5,
+      }],
+    };
+    const result = runNudge(baseOpts({
+      prompt: 'investigate root cause error',
+      hookDataLoader: () => hookData,
+      contextMod: false, // disable branch context boost for determinism
+    }));
+    // The replay line is the LAST output line if it fired.
+    const replayLine = result.output.find(l => l.includes('Pipeline anterior'));
+    if (replayLine) {
+      // Sanitization regex: /[^a-zA-Z0-9:/_-]/g. The forbidden chars must
+      // not appear in the output. Backticks, angle brackets, parens, spaces
+      // inside skill names are all stripped.
+      assert.ok(!/`/.test(replayLine), `backtick leaked: ${replayLine}`);
+      assert.ok(!/<|>/.test(replayLine), `angle brackets leaked: ${replayLine}`);
+      assert.ok(!/\(/.test(replayLine.split('(usado')[0]), `parens leaked in seq: ${replayLine}`);
+      // The legitimate first member should appear as-is.
+      assert.match(replayLine, /investigate/);
+    } else {
+      // If replay didn't fire (e.g., investigate not in top), at least
+      // confirm no malicious bytes leaked into ANY output line.
+      const all = result.output.join(' ');
+      assert.ok(!/`/.test(all), `backtick leaked across output: ${all}`);
+      assert.ok(!/<script/.test(all), `script tag leaked: ${all}`);
+    }
+  });
+
+  it('Given hookData.replay with non-finite count (NaN, Infinity, string), When runNudge fires the replay line, Then count is coerced to 0', () => {
+    for (const badCount of [NaN, Infinity, 'twenty', null, undefined, { x: 1 }]) {
+      const result = runNudge(baseOpts({
+        prompt: 'investigate root cause error',
+        hookDataLoader: () => ({ replay: [{ sequence: ['investigate'], count: badCount }] }),
+        contextMod: false,
+      }));
+      const replayLine = result.output.find(l => l.includes('Pipeline anterior'));
+      if (replayLine) {
+        assert.match(replayLine, /usado 0x/, `non-finite count not coerced for ${String(badCount)}: ${replayLine}`);
+      }
+    }
+  });
+});
+
+describe('advisor-nudge-core: contextMod=false sentinel (Slice 7.3 polish)', () => {
+  it('Given contextMod=false (explicit disable sentinel), When runNudge runs, Then the lazy-require of ./context is bypassed and no branch boost is applied', () => {
+    // We can't directly observe the require call, but we can observe that
+    // the result is identical regardless of ADVISOR_BRANCH env when
+    // contextMod=false. This proves the boost path was skipped.
+    const withBranch = runNudge(baseOpts({
+      prompt: 'investigate root cause error',
+      env: { ADVISOR_BRANCH: 'fix/bug' },
+      contextMod: false,
+    }));
+    const withoutBranch = runNudge(baseOpts({
+      prompt: 'investigate root cause error',
+      env: {},
+      contextMod: false,
+    }));
+    assert.deepEqual(withBranch.output, withoutBranch.output,
+      'contextMod=false must produce identical output regardless of ADVISOR_BRANCH');
+  });
+});
+
 describe('advisor-nudge-core: signature contract', () => {
   it('exports a runNudge function', () => {
     assert.equal(typeof runNudge, 'function');

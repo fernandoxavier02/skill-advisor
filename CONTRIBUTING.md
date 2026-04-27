@@ -62,3 +62,50 @@ If a change does not fit the discipline above (for example, a one-off
 chore that touches only documentation), say so explicitly in the commit
 message. The discipline applies to behavioral and architectural changes;
 it is not a barrier to typo fixes.
+
+## Architectural guards — known limitations
+
+The repository ships four architectural guards enforced by `npm run validate`:
+
+- **DI-1 (Module Load Purity)** — `tests/pipeline-config.test.js` patches
+  `fs.readFileSync`, `fs.statSync`, `fs.readdirSync` BEFORE requiring
+  `lib/constants.js` and asserts zero invocations during module load.
+- **DI-2 (Layered Dependency Direction)** — `tests/dependency-edges.test.js`
+  greps every `lib/<non-builder>.js` for `require('./build-*.js')`.
+- **DI-3 (Manifest Version Coherence)** — `tests/version-coherence.test.js`
+  cross-references `package.json` and `.claude-plugin/plugin.json` SemVer.
+- **Vault env single source** — `tests/vault-env-single-source.test.js`
+  greps `lib/paths.js` for direct env reads.
+
+**Known limitation of DI-1**: the guard tests for *user-initiated fs I/O
+purity* by patching the three fs functions named above. It does NOT test
+for *transitive require-chain purity*. A module may pass DI-1 by avoiding
+fs calls at module load, while still triggering a long chain of transitive
+requires that load other modules. As of 0.5.0, `lib/constants.js:144` does
+exactly this — it has a top-level `require('./pipeline-config.js')`. This
+was flagged by adversarial review as a structural violation of the "pure
+constants" boundary; it is parked for 0.5.1 hardening (either strengthen
+the guard with require-chain assertion, or move the require inside a
+lazy getter).
+
+If you add a new architectural guard or strengthen an existing one,
+document its scope and known limitations here so the next contributor
+understands what it does and does not catch.
+
+## Test environment conventions
+
+- `npm test` is self-contained: the script wraps `node --test` in a Node-eval
+  shim that sets `SKILL_ADVISOR_TEST=1` before spawning. This env flag
+  authorizes test-only reset hooks (`__resetCacheForTests`,
+  `__resetLegacyWarnedForTesting`) to clear module-scope latches between
+  scenarios. Production code paths that try to call these reset hooks
+  without the flag will throw — defense-in-depth.
+- `npm run test:perf` runs the perf-assertion suite separately (~60s),
+  setting `RUN_PERF=1` so the perf tests fire (they are skipped in
+  default `npm test`). The perf gate is platform-specific: it skips
+  the headroom check when `process.platform !== baseline.platform`.
+  CI Linux must re-capture the baseline on first green main run via
+  `node tests/_capture-perf-baseline.js` and commit the resulting
+  `tests/fixtures/perf-baseline.json`.
+- `PERF_STRETCH=1` opt-in env enables the p50 stretch-goal log line
+  in the perf suite. Off by default to keep CI logs lean.
