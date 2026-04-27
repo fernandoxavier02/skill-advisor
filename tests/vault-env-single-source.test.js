@@ -169,6 +169,39 @@ describe('vault-env-single-source: confluence (Property P9)', () => {
   });
 });
 
+describe('vault-env-single-source: empty-string semantics (POSIX)', () => {
+  it('Given canonical env set to empty string and legacy set to a value, When resolveVaultPathFromEnv runs, Then it returns the legacy value AND emits the deprecation warning (empty canonical ≡ unset)', () => {
+    process.env.SKILL_ADVISOR_VAULT_PATH = '';
+    process.env.SKILL_ADVISOR_VAULT = '/from/legacy';
+    const warnings = [];
+    const origWarn = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      const vc = freshVaultConfig();
+      assert.equal(vc.resolveVaultPathFromEnv(), '/from/legacy');
+      assert.equal(warnings.length, 1);
+    } finally {
+      console.warn = origWarn;
+    }
+  });
+
+  it('Given the test reset hook is invoked between two legacy-only resolutions, When both calls complete, Then the deprecation warning fires twice (latch cleared by hook)', () => {
+    process.env.SKILL_ADVISOR_VAULT = '/legacy';
+    const warnings = [];
+    const origWarn = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      const vc = freshVaultConfig();
+      vc.resolveVaultPathFromEnv();           // fires once
+      vc.__resetLegacyWarnedForTesting();     // clear the latch
+      vc.resolveVaultPathFromEnv();           // fires again
+      assert.equal(warnings.length, 2, `expected 2 warnings, got: ${warnings.join(' || ')}`);
+    } finally {
+      console.warn = origWarn;
+    }
+  });
+});
+
 describe('vault-env-single-source: paths.js no longer reads env directly', () => {
   it('Given lib/paths.js source, When grepped, Then it contains zero direct references to either vault env var name (only vault-config does)', () => {
     const fs = require('node:fs');
