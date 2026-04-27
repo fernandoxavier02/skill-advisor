@@ -4,8 +4,8 @@
   "description": "Intelligent toolchain orchestrator for Claude Code",
   "type": "commonjs",
   "scripts": {
-    "test": "node -e \"process.env.SKILL_ADVISOR_TEST='1'; require('child_process').spawnSync(process.execPath, ['--test', ...require('fs').readdirSync('tests').filter(f=>f.endsWith('.test.js')).map(f=>'tests/'+f), ...require('fs').readdirSync('tests/features').filter(f=>f.endsWith('.feature.js')).map(f=>'tests/features/'+f)], {stdio:'inherit', env:{...process.env}})\"",
-    "test:perf": "node -e \"process.env.RUN_PERF='1'; require('child_process').spawnSync(process.execPath, ['--test', 'tests/perf-assertions.test.js'], {stdio:'inherit', env:{...process.env}})\"",
+    "test": "node -e \"process.env.SKILL_ADVISOR_TEST='1'; const r=require('child_process').spawnSync(process.execPath, ['--test', ...require('fs').readdirSync('tests').filter(f=>f.endsWith('.test.js')).map(f=>'tests/'+f), ...require('fs').readdirSync('tests/features').filter(f=>f.endsWith('.feature.js')).map(f=>'tests/features/'+f)], {stdio:'inherit', env:{...process.env}}); process.exit(r.status==null?1:r.status)\"",
+    "test:perf": "node -e \"process.env.RUN_PERF='1'; const r=require('child_process').spawnSync(process.execPath, ['--test', 'tests/perf-assertions.test.js'], {stdio:'inherit', env:{...process.env}}); process.exit(r.status==null?1:r.status)\"",
     "index": "node lib/build-index.js",
     "validate": "npm test && npm run index && node lib/smoke-runner.js",
     "validate:perf": "npm run test:perf"
