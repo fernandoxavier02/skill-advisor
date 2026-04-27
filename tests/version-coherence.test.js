@@ -22,9 +22,20 @@ const PACKAGE_MANIFEST_REL = 'package.json';
 const SEMVER_RE = /^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/;
 
 function readJsonVersion(absPath) {
-  const raw = fs.readFileSync(absPath, 'utf8');
-  const parsed = JSON.parse(raw);
-  return parsed.version;
+  // Wrap fs/JSON failures so the assertion message names the manifest path
+  // rather than surfacing a raw ENOENT or "Unexpected token" — keeps CI
+  // triage readable when a manifest is deleted, renamed, or corrupted.
+  let raw;
+  try {
+    raw = fs.readFileSync(absPath, 'utf8');
+  } catch (err) {
+    assert.fail(`Cannot read manifest at ${absPath}: ${err.message}`);
+  }
+  try {
+    return JSON.parse(raw).version;
+  } catch (err) {
+    assert.fail(`Cannot parse JSON in ${absPath}: ${err.message}`);
+  }
 }
 
 test('Given manifest files have identical SemVer versions, When the guard runs, Then it passes', () => {

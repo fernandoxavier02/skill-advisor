@@ -37,11 +37,18 @@ describe('Pipeline_Config — module load purity', () => {
     // which Node's require chain loads transitively via its loader.
     const MODULE_FILE = MODULE_PATH;
 
+    // Patch both sync and async fs APIs by symmetry. Today the module
+    // is sync-only; tomorrow a refactor toward async fs at module load
+    // would silently bypass a sync-only patch and the purity test would
+    // become a false-green. Patching fs.promises.* defends against that.
     const originals = {
       readFileSync: fs.readFileSync,
       statSync: fs.statSync,
       readdirSync: fs.readdirSync,
       existsSync: fs.existsSync,
+      promisesReadFile: fs.promises.readFile,
+      promisesStat: fs.promises.stat,
+      promisesReaddir: fs.promises.readdir,
     };
     const domainCalls = [];
     const isLoaderCall = (p) => {
@@ -72,6 +79,18 @@ describe('Pipeline_Config — module load purity', () => {
       }
       return originals.existsSync(...args);
     };
+    fs.promises.readFile = (...args) => {
+      domainCalls.push(['promises.readFile', String(args[0])]);
+      return originals.promisesReadFile(...args);
+    };
+    fs.promises.stat = (...args) => {
+      domainCalls.push(['promises.stat', String(args[0])]);
+      return originals.promisesStat(...args);
+    };
+    fs.promises.readdir = (...args) => {
+      domainCalls.push(['promises.readdir', String(args[0])]);
+      return originals.promisesReaddir(...args);
+    };
 
     try {
       delete require.cache[MODULE_PATH];
@@ -88,7 +107,15 @@ describe('Pipeline_Config — module load purity', () => {
         `pipeline-config triggered ${domainCalls.length} domain fs call(s) at module load — must be zero. Calls: ${JSON.stringify(domainCalls)}`,
       );
     } finally {
-      Object.assign(fs, originals);
+      // Restore sync APIs.
+      fs.readFileSync = originals.readFileSync;
+      fs.statSync = originals.statSync;
+      fs.readdirSync = originals.readdirSync;
+      fs.existsSync = originals.existsSync;
+      // Restore promise APIs.
+      fs.promises.readFile = originals.promisesReadFile;
+      fs.promises.stat = originals.promisesStat;
+      fs.promises.readdir = originals.promisesReaddir;
     }
   });
 });

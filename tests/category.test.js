@@ -39,6 +39,37 @@ describe('inferCategory', () => {
     assert.equal(inferCategory('write a spec and architect the system'), 'planning');
   });
 
+  it('Given a description matching the implementation pattern, When inferCategory runs, Then it returns "implementation"', () => {
+    assert.equal(inferCategory('build the feature'), 'implementation');
+    assert.equal(inferCategory('implement the API endpoint'), 'implementation');
+  });
+
+  it('Given a description matching the documentation pattern, When inferCategory runs, Then it returns "documentation"', () => {
+    assert.equal(inferCategory('document the public API'), 'documentation');
+    assert.equal(inferCategory('write a README for the module'), 'documentation');
+  });
+
+  it('Given a description matching the data pattern, When inferCategory runs, Then it returns "data"', () => {
+    assert.equal(inferCategory('migrate the database schema'), 'data');
+    assert.equal(inferCategory('fetch records via the API'), 'data');
+    assert.equal(inferCategory('query the SQL store'), 'data');
+  });
+
+  it('Given a description that matches multiple categories, When inferCategory runs, Then the first matching category in CATEGORY_PATTERNS wins', () => {
+    // CATEGORY_PATTERNS iterates in insertion order. If "test debug" matches
+    // both `quality` (test) and `debugging` (debug), the category declared
+    // first in the map wins. This test locks the ordering invariant so a
+    // future reordering of CATEGORY_PATTERNS does not silently flip results.
+    const result = inferCategory('test debug');
+    const declaredOrder = Object.keys(CATEGORY_PATTERNS);
+    const qualityIdx = declaredOrder.indexOf('quality');
+    const debuggingIdx = declaredOrder.indexOf('debugging');
+    const expected = qualityIdx < debuggingIdx ? 'quality' : 'debugging';
+    assert.equal(result, expected,
+      `First-match-wins ordering broke: input "test debug" returned ${result} but ` +
+      `the earlier-declared category ("${expected}") should win.`);
+  });
+
   it('Given a description with no matching pattern, When inferCategory runs, Then it defaults to "utility"', () => {
     assert.equal(inferCategory('something random'), 'utility');
   });

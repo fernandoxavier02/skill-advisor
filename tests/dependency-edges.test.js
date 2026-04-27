@@ -7,6 +7,13 @@
 // Allowed exceptions: ZERO. If a real exception arises, edit this test
 // with a code-review-justified comment. Do not weaken to a warning.
 //
+// Regex scope: catches `require('./build-X')` and `require("./build-X")`
+// (single and double quotes). Misses backtick template literals, dynamic
+// requires (`require(varName)`), and `import('./build-X')` ESM dynamic
+// imports. Today the codebase has zero usages of those patterns, but a
+// future migration to ESM or a refactor introducing template-literal
+// requires would need this regex extended.
+//
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
