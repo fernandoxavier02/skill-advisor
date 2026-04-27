@@ -1,6 +1,6 @@
 ---
 name: pipeline-suggest
-description: Lightweight pipeline suggester — quick-trigger sibling of the `/skill-advisor:advisor` command. Recommends a skill/plugin/MCP/agent loadout for any task in prose, without spawning the full router→gate workflow. Activated when the user asks which tool to use, wants to compose multiple skills, or says "I don't know which skill to use". DOES NOT activate when the user explicitly invokes `/skill-advisor:advisor`, `/advisor`, or asks for an interactive step-by-step picker — those requests must be routed to the full router+gate command instead, never to this skill. For the full per-step interactive picker (with AskUserQuestion at each phase, recommendation + alternatives), invoke `/skill-advisor:advisor` instead.
+description: Lightweight prose-only loadout suggester. Auto-fires ONLY for short ad-hoc questions like "which tool fits this task" or "compose a quick stack for X" — single inline confirmation, no AskUserQuestion. Never fires when the user types `/skill-advisor:advisor`, `/advisor`, asks for an "interactive picker", "step-by-step", "walk me through", or "pick skills one by one" — those go to the full router+gate command. For the full per-step interactive picker (with AskUserQuestion at each phase, recommendation + alternatives), invoke `/skill-advisor:advisor` instead.
 ---
 
 # Pipeline Suggest — Quick Loadout (auto-trigger)

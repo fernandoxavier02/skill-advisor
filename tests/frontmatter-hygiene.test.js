@@ -35,12 +35,28 @@ function readFrontmatter(file) {
 }
 
 describe('frontmatter hygiene: pipeline-suggest negative trigger (Req 5.1)', () => {
-  it('Given the pipeline-suggest description, When parsed, Then it contains an explicit "does not activate" clause naming the advisor slash command', () => {
+  it('Given the pipeline-suggest description, When parsed, Then it contains an explicit negative trigger clause naming the advisor slash command', () => {
     const fm = readFrontmatter(PIPELINE_SUGGEST);
-    assert.match(fm, /does not activate|DOES NOT activate|must not activate|never activate/i,
+    assert.match(fm, /does not activate|DOES NOT activate|must not activate|never (activate|fires)/i,
       'pipeline-suggest description must declare WHEN it must NOT activate');
     assert.match(fm, /\/skill-advisor:advisor|\/advisor|interactive (step-by-step )?picker/i,
       'negative trigger clause must reference the advisor slash command or interactive picker');
+  });
+
+  it('Given the pipeline-suggest description, When parsed, Then it does NOT contain the ambiguous positive trigger "I don\'t know which skill to use" (Slice 5.2 polish)', () => {
+    const fm = readFrontmatter(PIPELINE_SUGGEST);
+    assert.ok(!/I don'?t know which skill to use/i.test(fm),
+      'this phrase semantically collides with /advisor requests; was removed in Slice 5.2 polish per reviewer guidance');
+  });
+
+  it('Given the pipeline-suggest description, When parsed, Then it lists at least 3 exclusion keywords in plain form (step-by-step, walk me through, pick skills one by one) so embedding similarity treats them as out-of-scope', () => {
+    const fm = readFrontmatter(PIPELINE_SUGGEST);
+    const exclusions = ['step-by-step', 'walk me through', 'pick skills one by one'];
+    let hits = 0;
+    for (const ex of exclusions) {
+      if (fm.toLowerCase().includes(ex.toLowerCase())) hits++;
+    }
+    assert.ok(hits >= 3, `expected at least 3 exclusion keywords, found ${hits}`);
   });
 });
 
