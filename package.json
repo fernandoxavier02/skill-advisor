@@ -5,7 +5,8 @@
   "type": "commonjs",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "index": "node lib/build-index.js"
+    "index": "node lib/build-index.js",
+    "validate": "npm test && npm run index && node lib/smoke-runner.js"
   },
   "engines": {
     "node": ">=18"
