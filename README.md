@@ -1,6 +1,9 @@
 <p align="center">
   <a href="https://github.com/fernandoxavier02">
-    <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="120" height="120" style="border-radius: 24px;" />
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/branding/05-mark-only-dark.png">
+      <img src="assets/branding/06-mark-only-light.png" alt="FX Studio AI" width="120" height="120" style="border-radius: 24px;" />
+    </picture>
   </a>
 </p>
 
@@ -367,7 +370,10 @@ Latest: **[v0.5.0](https://github.com/fernandoxavier02/skill-advisor/releases/ta
 
 <p align="center">
   <a href="https://github.com/fernandoxavier02" target="_blank" rel="noopener">
-    <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="64" height="64" style="border-radius: 12px;" />
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/branding/05-mark-only-dark.png">
+      <img src="assets/branding/06-mark-only-light.png" alt="FX Studio AI" width="64" height="64" style="border-radius: 12px;" />
+    </picture>
   </a>
 </p>
 
@@ -390,7 +396,10 @@ MIT © [FX Studio AI](https://github.com/fernandoxavier02). See [LICENSE](LICENS
 
 <p align="center">
   <a href="https://github.com/fernandoxavier02">
-    <img src="assets/fx-studio-ai-logo.jpg" alt="FX Studio AI" width="32" height="32" style="border-radius: 8px; vertical-align: middle;" />
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/branding/05-mark-only-dark.png">
+      <img src="assets/branding/06-mark-only-light.png" alt="FX Studio AI" width="32" height="32" style="border-radius: 8px; vertical-align: middle;" />
+    </picture>
   </a>
   <sub>Built for Claude Code by FX Studio AI. Powered by semantic search, graph traversal, and a stubborn belief that the right tool matters.</sub>
 </p>
