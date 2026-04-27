@@ -20,9 +20,13 @@ const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'smoke-test-'));
 before(() => {
   // Build a minimal-but-valid plugin root fixture
   fs.mkdirSync(path.join(TMP, 'lib'), { recursive: true });
-  // Copy real constants.js and user-config.js so validateConstantsLoad has something to load
+  // Copy real constants.js, pipeline-config.js, and user-config.js so
+  // validateConstantsLoad has the full transitive chain to load. Since
+  // Slice 1.2 of the refactor, constants.js re-exports pipeline data
+  // from pipeline-config.js, which lazily depends on user-config.js.
   const realRoot = path.resolve(__dirname, '..');
   fs.copyFileSync(path.join(realRoot, 'lib', 'constants.js'), path.join(TMP, 'lib', 'constants.js'));
+  fs.copyFileSync(path.join(realRoot, 'lib', 'pipeline-config.js'), path.join(TMP, 'lib', 'pipeline-config.js'));
   fs.copyFileSync(path.join(realRoot, 'lib', 'user-config.js'), path.join(TMP, 'lib', 'user-config.js'));
   // Minimal valid index files
   fs.writeFileSync(
@@ -165,9 +169,12 @@ describe('runSmoke', () => {
         path.join(broken, 'lib', 'advisor-index-lite.json'),
         JSON.stringify([])
       );
-      // And real constants for the constants_load check
+      // And real constants + pipeline-config + user-config for the
+      // constants_load check (constants.js delegates to pipeline-config
+      // since Slice 1.2).
       const realRoot = path.resolve(__dirname, '..');
       fs.copyFileSync(path.join(realRoot, 'lib', 'constants.js'), path.join(broken, 'lib', 'constants.js'));
+      fs.copyFileSync(path.join(realRoot, 'lib', 'pipeline-config.js'), path.join(broken, 'lib', 'pipeline-config.js'));
       fs.copyFileSync(path.join(realRoot, 'lib', 'user-config.js'), path.join(broken, 'lib', 'user-config.js'));
       const r = runSmoke({ pluginRoot: broken });
       assert.equal(r.passed, false);
