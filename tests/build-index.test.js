@@ -81,6 +81,30 @@ describe('inferCategory', () => {
   it('handles empty string', () => {
     assert.equal(inferCategory(''), 'utility');
   });
+
+  it('Given the legacy build-index.inferCategory re-export is invoked twice, When both calls return, Then console.warn is observed exactly once', () => {
+    // Spy on console.warn
+    const originalWarn = console.warn;
+    const warnings = [];
+    console.warn = (msg) => { warnings.push(msg); };
+
+    try {
+      // Force fresh require of build-index to reset _deprecationWarned
+      delete require.cache[require.resolve('../lib/build-index.js')];
+      delete require.cache[require.resolve('../lib/category.js')];
+      const bi = require('../lib/build-index.js');
+
+      bi.inferCategory('debug something');
+      bi.inferCategory('deploy something');
+      bi.inferCategory('test something');
+
+      const deprecationWarnings = warnings.filter(w => w && w.includes('deprecated'));
+      assert.equal(deprecationWarnings.length, 1,
+        `Expected exactly one deprecation warning across 3 calls, got ${deprecationWarnings.length}`);
+    } finally {
+      console.warn = originalWarn;
+    }
+  });
 });
 
 describe('scanSkills', () => {
