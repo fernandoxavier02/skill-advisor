@@ -102,6 +102,11 @@ describe('pipeline-suggest skill rename (v0.4.2)', () => {
     //   - this very test file references the old name in comments + assertions
     const ALLOWLIST = new Set([
       'CHANGELOG.md',
+      // README.md narrates the v0.4.2 rename for users migrating from v0.4.1
+      // (preserved when the v0.4.2 README commit was rebased into the v0.5.0
+      // branch). Same justification as CHANGELOG: documentation of historic
+      // names is intentional, not drift.
+      'README.md',
       path.relative(REPO_ROOT, __filename).replace(/\\/g, '/'),
     ]);
 
