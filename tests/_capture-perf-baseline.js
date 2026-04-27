@@ -85,7 +85,11 @@ function captureBaseline() {
 
   // Warm-up: stabilize FS cache, OS process pool, V8 startup heuristics.
   // Discarded — only sampled iterations enter the percentile computation.
+  // Both runners are warmed independently; they share the same index file
+  // (FS cache transfers), but warming each removes a defensible objection
+  // about asymmetric warmup state at sample-start.
   for (let i = 0; i < WARMUP_ITERATIONS; i++) runShort();
+  for (let i = 0; i < WARMUP_ITERATIONS; i++) runLong();
 
   const short80 = measureP50P95(runShort, SAMPLE_ITERATIONS);
   const long500 = measureP50P95(runLong, SAMPLE_ITERATIONS);

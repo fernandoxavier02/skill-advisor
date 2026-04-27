@@ -65,19 +65,24 @@ describe('Perf baseline fixture (Slice 3.1)', () => {
   });
 
   it('Given the captured prompts, When their lengths are inspected, Then they fall within ~80 and ~500 char windows', () => {
-    if (!fs.existsSync(FIXTURE_PATH)) return; // first test already explains absence
+    // No silent skip on missing fixture — `node --test` does not guarantee
+    // sibling `it` short-circuit on assertion failure, so the precondition
+    // must be re-asserted here. Identical message to the first test for
+    // single-source triage when both fail.
+    assert.ok(
+      fs.existsSync(FIXTURE_PATH),
+      `expected committed baseline fixture at ${FIXTURE_PATH}; regenerate via 'node tests/_capture-perf-baseline.js'`
+    );
     const baseline = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
-    if (typeof baseline.promptShortLength === 'number') {
-      assert.ok(
-        baseline.promptShortLength >= 70 && baseline.promptShortLength <= 90,
-        `promptShortLength=${baseline.promptShortLength} outside 70..90 window`
-      );
-    }
-    if (typeof baseline.promptLongLength === 'number') {
-      assert.ok(
-        baseline.promptLongLength >= 450 && baseline.promptLongLength <= 550,
-        `promptLongLength=${baseline.promptLongLength} outside 450..550 window`
-      );
-    }
+    assert.equal(typeof baseline.promptShortLength, 'number', 'promptShortLength must be present');
+    assert.ok(
+      baseline.promptShortLength >= 70 && baseline.promptShortLength <= 90,
+      `promptShortLength=${baseline.promptShortLength} outside 70..90 window`
+    );
+    assert.equal(typeof baseline.promptLongLength, 'number', 'promptLongLength must be present');
+    assert.ok(
+      baseline.promptLongLength >= 450 && baseline.promptLongLength <= 550,
+      `promptLongLength=${baseline.promptLongLength} outside 450..550 window`
+    );
   });
 });
