@@ -17,8 +17,12 @@ const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'smoke-feature-'));
 function makeValidPluginRoot(root) {
   fs.mkdirSync(path.join(root, 'lib'), { recursive: true });
   const realRoot = path.resolve(__dirname, '..', '..');
-  fs.copyFileSync(path.join(realRoot, 'lib', 'constants.js'), path.join(root, 'lib', 'constants.js'));
-  fs.copyFileSync(path.join(realRoot, 'lib', 'user-config.js'), path.join(root, 'lib', 'user-config.js'));
+  // Slice 1.2 split constants → cascade copy of every module constants
+  // pulls in transitively. Slice 5.5 reactivated the features tier and
+  // surfaced this pre-existing gap.
+  for (const name of ['constants.js', 'user-config.js', 'pipeline-config.js']) {
+    fs.copyFileSync(path.join(realRoot, 'lib', name), path.join(root, 'lib', name));
+  }
   fs.writeFileSync(
     path.join(root, 'lib', 'advisor-index-full.json'),
     JSON.stringify([{ id: 'x:auth-fix', name: 'auth-fix', description: 'fix auth errors' }])
@@ -38,14 +42,9 @@ before(() => {
   // Missing full_index but has lite — should fail
   fs.mkdirSync(path.join(MISSING_FULL_ROOT, 'lib'), { recursive: true });
   const realRoot = path.resolve(__dirname, '..', '..');
-  fs.copyFileSync(
-    path.join(realRoot, 'lib', 'constants.js'),
-    path.join(MISSING_FULL_ROOT, 'lib', 'constants.js')
-  );
-  fs.copyFileSync(
-    path.join(realRoot, 'lib', 'user-config.js'),
-    path.join(MISSING_FULL_ROOT, 'lib', 'user-config.js')
-  );
+  for (const name of ['constants.js', 'user-config.js', 'pipeline-config.js']) {
+    fs.copyFileSync(path.join(realRoot, 'lib', name), path.join(MISSING_FULL_ROOT, 'lib', name));
+  }
   fs.writeFileSync(
     path.join(MISSING_FULL_ROOT, 'lib', 'advisor-index-lite.json'),
     JSON.stringify([])
