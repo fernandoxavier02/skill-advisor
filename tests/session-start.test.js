@@ -110,4 +110,21 @@ describe('session-start hook (Req 8.1)', () => {
     assert.equal(r.status, 0);
     assert.match(r.stdout, /never completed|finish/i);
   });
+
+  it('Given package.json missing (currentVersion fallback path), When the hook runs against a state with advisor_version="0.5.0", Then exit code is 0 and a comparison with "unknown" does not crash (Slice 6.6 polish)', () => {
+    const root = makeFakePluginRoot({ advisorVersion: '0.5.0' });
+    fs.unlinkSync(path.join(root, 'package.json'));
+    const r = spawnHook({ pluginRoot: root });
+    assert.equal(r.status, 0, `stderr: ${r.stderr}`);
+    // currentVersion falls back to 'unknown' → needsFullRerun returns true
+    // (state.advisor_version "0.5.0" !== "unknown") so an upgrade nudge fires.
+    // The contract is "no crash" — exit 0 is the primary assertion.
+  });
+
+  it('Given package.json malformed JSON, When the hook runs, Then exit code is 0 (catch-all swallows the parse error)', () => {
+    const root = makeFakePluginRoot();
+    fs.writeFileSync(path.join(root, 'package.json'), '{ this is not json');
+    const r = spawnHook({ pluginRoot: root });
+    assert.equal(r.status, 0, `stderr: ${r.stderr}`);
+  });
 });

@@ -68,20 +68,44 @@ describe('swapAtPosition: typical inputs', () => {
   });
 });
 
-describe('swapAtPosition: boundary cases', () => {
-  it('Given a non-array loadout, When swapAtPosition runs, Then it throws TypeError', () => {
+describe('swapAtPosition: boundary cases (5-throws separation per Slice 6.6 polish)', () => {
+  it('Given a non-array loadout (null), When swapAtPosition runs, Then it throws TypeError', () => {
     assert.throws(() => swapAtPosition(null, 0, { invocation: '/x' }), /TypeError/);
+  });
+
+  it('Given a non-array loadout (plain object), When swapAtPosition runs, Then it throws TypeError', () => {
     assert.throws(() => swapAtPosition({}, 0, { invocation: '/x' }), /TypeError/);
   });
 
-  it('Given an out-of-bounds position, When swapAtPosition runs, Then it throws RangeError', () => {
+  it('Given a non-integer position (1.5), When swapAtPosition runs, Then it throws RangeError', () => {
+    assert.throws(() => swapAtPosition([{ invocation: '/a' }], 1.5, { invocation: '/b' }), /RangeError/);
+  });
+
+  it('Given an out-of-bounds position (5 for length 1), When swapAtPosition runs, Then it throws RangeError', () => {
     assert.throws(() => swapAtPosition([{ invocation: '/a' }], 5, { invocation: '/b' }), /RangeError/);
+  });
+
+  it('Given a negative position (-1), When swapAtPosition runs, Then it throws RangeError', () => {
     assert.throws(() => swapAtPosition([{ invocation: '/a' }], -1, { invocation: '/b' }), /RangeError/);
   });
 
-  it('Given a replacement without invocation, When swapAtPosition runs, Then it throws Error naming the missing field', () => {
+  it('Given replacement is not an object (null), When swapAtPosition runs, Then it throws TypeError', () => {
+    assert.throws(() => swapAtPosition([{ invocation: '/a' }], 0, null), /TypeError/);
+  });
+
+  it('Given replacement object without invocation, When swapAtPosition runs, Then it throws Error naming the missing field', () => {
     assert.throws(() => swapAtPosition([{ invocation: '/a' }], 0, {}), /invocation/);
+  });
+
+  it('Given replacement with empty invocation, When swapAtPosition runs, Then it throws Error naming the empty invocation', () => {
     assert.throws(() => swapAtPosition([{ invocation: '/a' }], 0, { invocation: '' }), /invocation/);
+  });
+
+  it('Given a successful swap, When the result is compared to the input, Then they are NOT the same reference (immutability)', () => {
+    const input = [{ invocation: '/a' }];
+    const out = swapAtPosition(input, 0, { invocation: '/b' });
+    assert.notStrictEqual(out, input, 'swap must return a new array');
+    assert.equal(input[0].invocation, '/a', 'input must not be mutated');
   });
 });
 

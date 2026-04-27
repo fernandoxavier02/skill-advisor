@@ -135,6 +135,71 @@ describe('build-graph: graceful no-frontmatter (Req 8.2)', () => {
   });
 });
 
+describe('build-graph: extractWikilinks pipe form (Slice 6.6 polish)', () => {
+  it('Given a body containing aliased wikilink [[name|display]], When extractWikilinks runs, Then the canonical name (left of |) is extracted, not the display alias', () => {
+    delete require.cache[require.resolve('../lib/build-graph')];
+    const { extractWikilinks } = require('../lib/build-graph');
+    const links = extractWikilinks('See [[debugging|debug]] and [[testing|qa]] for context.');
+    assert.deepEqual(links, ['debugging', 'testing']);
+  });
+
+  it('Given a body with mixed plain and aliased wikilinks, When extractWikilinks runs, Then both forms produce canonical lowercase names with no duplicates', () => {
+    const { extractWikilinks } = require('../lib/build-graph');
+    const links = extractWikilinks('[[Foo]] and [[Foo|alias-of-foo]] should dedupe.');
+    assert.deepEqual(links, ['foo']);
+  });
+});
+
+describe('build-graph: scanDir on missing directory (Slice 6.6 polish)', () => {
+  it('Given a non-existent directory path, When buildGraph runs (covering scanDir defensively), Then it returns a graph with empty nodes for that directory bucket and no throw', () => {
+    // We can exercise this by pointing the env to a vault dir whose
+    // subdirectories (concepts/, skills/, pipelines/) do NOT exist.
+    const ghostVault = fs.mkdtempSync(path.join(os.tmpdir(), 'ghost-vault-'));
+    // Note: we do NOT create concepts/skills/pipelines/ inside.
+    process.env.SKILL_ADVISOR_VAULT_PATH = ghostVault;
+    delete require.cache[require.resolve('../lib/vault-config')];
+    delete require.cache[require.resolve('../lib/paths')];
+    delete require.cache[require.resolve('../lib/build-graph')];
+    const { buildGraph: bg } = require('../lib/build-graph');
+    const g = bg();
+    assert.deepEqual(Object.keys(g.nodes), []);
+    assert.deepEqual(Object.keys(g.alias_index), []);
+    // Restore for the alias_index test below.
+    process.env.SKILL_ADVISOR_VAULT_PATH = VAULT_DIR;
+    delete require.cache[require.resolve('../lib/vault-config')];
+    delete require.cache[require.resolve('../lib/paths')];
+    delete require.cache[require.resolve('../lib/build-graph')];
+    ({ buildGraph } = require('../lib/build-graph'));
+  });
+});
+
+describe('build-graph: frontmatter-only file (Slice 6.6 polish)', () => {
+  it('Given a vault file with frontmatter but EMPTY body, When buildGraph runs, Then the node is included with empty wikilinks and no throw', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'fm-only-vault-'));
+    fs.mkdirSync(path.join(root, 'concepts'));
+    fs.mkdirSync(path.join(root, 'skills'));
+    fs.mkdirSync(path.join(root, 'pipelines'));
+    fs.writeFileSync(path.join(root, 'concepts', 'stub.md'), `---
+aliases: [stub-alias]
+---
+`);
+    process.env.SKILL_ADVISOR_VAULT_PATH = root;
+    delete require.cache[require.resolve('../lib/vault-config')];
+    delete require.cache[require.resolve('../lib/paths')];
+    delete require.cache[require.resolve('../lib/build-graph')];
+    const { buildGraph: bg } = require('../lib/build-graph');
+    const g = bg();
+    assert.ok(g.nodes['concept:stub']);
+    assert.deepEqual(g.nodes['concept:stub'].edges, []);
+    // Restore main fixture binding.
+    process.env.SKILL_ADVISOR_VAULT_PATH = VAULT_DIR;
+    delete require.cache[require.resolve('../lib/vault-config')];
+    delete require.cache[require.resolve('../lib/paths')];
+    delete require.cache[require.resolve('../lib/build-graph')];
+    ({ buildGraph } = require('../lib/build-graph'));
+  });
+});
+
 describe('build-graph: alias_index (Req 8.2)', () => {
   it('Given aliases declared in frontmatter, When buildGraph runs, Then both original and accent-normalized forms are in alias_index pointing to the same nodeId', () => {
     const g = buildGraph();
