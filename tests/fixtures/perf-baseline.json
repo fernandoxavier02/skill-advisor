@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-04-27T14:36:41.519Z",
+  "methodology": "subprocess_spawnSync_per_iteration",
+  "runtime": {
+    "node_version": "v22.22.2",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "environment": {
+    "index_entry_count": 1,
+    "embeddings_available": false,
+    "graph_available": true
+  },
+  "samples": [
+    {
+      "label": "short_80char",
+      "prompt_length": 80,
+      "iterations": 100,
+      "warmup_iterations": 8,
+      "p50_ms": 35.158,
+      "p95_ms": 39.587,
+      "mean_ms": 35.568
+    },
+    {
+      "label": "long_500char",
+      "prompt_length": 475,
+      "iterations": 100,
+      "warmup_iterations": 8,
+      "p50_ms": 37.592,
+      "p95_ms": 42.635,
+      "mean_ms": 38.253
+    }
+  ]
+}
