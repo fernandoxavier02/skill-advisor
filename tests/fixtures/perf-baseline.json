@@ -1,0 +1,17 @@
+{
+  "short80": {
+    "p50": 76.4538,
+    "p95": 79.3363,
+    "mean": 76.63970100000002
+  },
+  "long500": {
+    "p50": 76.4787,
+    "p95": 79.8267,
+    "mean": 76.88375099999999
+  },
+  "capturedAt": "2026-04-27T15:14:37.740Z",
+  "advisorVersion": "0.5.0",
+  "promptShortLength": 78,
+  "promptLongLength": 478,
+  "note": "Pre-Phase-2 baseline. Hot-path advisor-nudge.cjs not yet refactored. Captured with WARMUP_ITERATIONS=10, SAMPLE_ITERATIONS=100. See spec slice 3.1 (Requirement 4.2). Slice 3.7 locks Headroom ≤ 1.10x against this baseline."
+}
