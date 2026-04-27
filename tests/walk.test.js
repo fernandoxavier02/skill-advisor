@@ -119,6 +119,47 @@ describe('walk: skipDirs override', () => {
   });
 });
 
+describe('walk: cross-run determinism (Property P8)', () => {
+  it('Given the same fixture and identical opts, When walkDir is invoked twice, Then both calls return deeply equal arrays (confluence)', () => {
+    const r1 = walkDir(ROOT);
+    const r2 = walkDir(ROOT);
+    assert.deepEqual(r1, r2);
+  });
+
+  it('Given two different opt orderings (skipHidden true vs default), When walkDir runs, Then results agree on the visible-files subset', () => {
+    const explicit = walkDir(ROOT, { skipHidden: true });
+    const defaulted = walkDir(ROOT);
+    assert.deepEqual(explicit, defaulted);
+  });
+});
+
+describe('walk: circular symlink safety (bounded by maxDepth)', () => {
+  // Symlink creation may fail on Windows without admin/developer mode.
+  // Skip the test if symlinkSync throws EPERM rather than failing the suite.
+  const linkRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'walk-symlink-test-'));
+  fs.mkdirSync(path.join(linkRoot, 'real'), { recursive: true });
+  fs.writeFileSync(path.join(linkRoot, 'real', 'file.js'), 'x');
+
+  let symlinkOK = true;
+  try {
+    fs.symlinkSync(linkRoot, path.join(linkRoot, 'real', 'loop'), 'dir');
+  } catch (err) {
+    symlinkOK = false;
+    // eslint-disable-next-line no-console
+    console.log(`[walk-test] SKIP circular-symlink test: symlinkSync failed (${err.code}) — likely Windows without admin. This is fine, the assertion is informational.`);
+  }
+
+  it('Given a circular symlink (dir/loop → root), When walkDir runs, Then it terminates in finite time bounded by maxDepth', { skip: !symlinkOK }, () => {
+    const start = Date.now();
+    const result = walkDir(linkRoot, { maxDepth: 3 });
+    const elapsed = Date.now() - start;
+    assert.ok(elapsed < 2000, `walkDir took ${elapsed}ms — circular symlink not bounded`);
+    // file.js is reachable through real/ AND through real/loop/real/, but the
+    // dedupe step collapses duplicates after path.resolve normalization.
+    assert.ok(result.length > 0);
+  });
+});
+
 describe('walk: failure modes', () => {
   it('Given a non-existent directory, When walkDir runs, Then it returns an empty array (no throw)', () => {
     const ghost = path.join(ROOT, '__missing__');
