@@ -199,6 +199,16 @@ describe('advisor-nudge-core: threshold env override (Slice 2.3)', () => {
     // invoked (the gate didn't short-circuit them).
     assert.equal(result.earlyExit, false);
   });
+
+  it('Given threshold=0 (kill-switch) and a 1-char prompt, When runNudge runs, Then the length gate is fully disabled (any non-empty prompt passes through)', () => {
+    const result = runNudge(baseOpts({
+      prompt: 'a',
+      threshold: 0,
+    }));
+    // threshold=0 means "any length passes" — the early-exit gate must not fire
+    // on prompt length. Slash-prefix gate still applies in other tests.
+    assert.equal(result.earlyExit, false);
+  });
 });
 
 describe('advisor-nudge-core: staleness boundary (test-coverage 🔴)', () => {

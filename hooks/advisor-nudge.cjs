@@ -62,6 +62,8 @@ const loadGraph = withMtimeCache(path.join(VAULT_GRAPH, 'adjacency.json'),
   }, 'MODULE_LOAD', 'Graph search module not available'));
 
 function resolvePromptLengthThreshold() {
+  // n=0 is honored as an intentional kill-switch (disable the gate entirely);
+  // useful for local debugging. Garbage / negative / NaN falls back to default.
   const n = parseInt(process.env.ADVISOR_PROMPT_LENGTH || '', 10);
   return Number.isFinite(n) && n >= 0 ? n : DEFAULT_PROMPT_LENGTH_THRESHOLD;
 }

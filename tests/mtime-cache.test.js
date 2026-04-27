@@ -81,6 +81,71 @@ describe('mtime-cache: invalidation', () => {
   });
 });
 
+describe('mtime-cache: cached null/undefined (test-coverage 🟠)', () => {
+  it('Given a loader that returns null, When called twice on the same file, Then loader runs exactly once and both calls return null', () => {
+    const file = tmpFile('null.json', '{}');
+    const loader = mock.fn(() => null);
+    const memo = withMtimeCache(file, loader);
+    assert.equal(memo(), null);
+    assert.equal(memo(), null);
+    assert.equal(loader.mock.callCount(), 1);
+  });
+
+  it('Given a loader that returns undefined, When called twice, Then loader runs once and both calls return undefined', () => {
+    const file = tmpFile('undef.json', '{}');
+    const loader = mock.fn(() => undefined);
+    const memo = withMtimeCache(file, loader);
+    assert.equal(memo(), undefined);
+    assert.equal(memo(), undefined);
+    assert.equal(loader.mock.callCount(), 1);
+  });
+});
+
+describe('mtime-cache: delete-then-recreate cycle (test-coverage 🟠)', () => {
+  it('Given a cached file, When deleted then recreated with new content, Then loader runs again on the post-recreation call (new value served, no stale)', () => {
+    const file = tmpFile('cycle.json', '{"v":1}');
+    let n = 0;
+    const loader = mock.fn(() => ({ data: ++n }));
+    const memo = withMtimeCache(file, loader);
+    const r1 = memo();           // cold
+    assert.equal(loader.mock.callCount(), 1);
+
+    fs.unlinkSync(file);
+    const r2 = memo();           // file missing → bypass cache, loader runs
+    assert.equal(loader.mock.callCount(), 2);
+
+    // Recreate with future mtime to guarantee mtime-cache invalidation.
+    fs.writeFileSync(file, '{"v":2}');
+    const future = new Date(Date.now() + 5000);
+    fs.utimesSync(file, future, future);
+    const r3 = memo();           // post-recreation
+    assert.equal(loader.mock.callCount(), 3);
+
+    assert.notDeepEqual(r1, r3);
+    assert.notDeepEqual(r2, r3);
+  });
+});
+
+describe('mtime-cache: same-tick rewrite (cache hardening 🟠)', () => {
+  it('Given two writes producing the same mtime but different sizes, When the wrapper is called twice, Then the second call detects the change via size and reinvokes', () => {
+    const file = tmpFile('same-tick.json', '{"a":1}');
+    let n = 0;
+    const loader = mock.fn(() => ({ data: ++n }));
+    const memo = withMtimeCache(file, loader);
+    const r1 = memo();
+    assert.equal(loader.mock.callCount(), 1);
+
+    // Force an mtime collision by writing different content but stamping the
+    // same mtime as the first write.
+    const sig = fs.statSync(file);
+    fs.writeFileSync(file, '{"a":1,"b":2,"c":3,"d":4}'); // larger
+    fs.utimesSync(file, sig.atime, sig.mtime);
+    const r2 = memo();
+    assert.equal(loader.mock.callCount(), 2, 'size-based key must catch same-mtime rewrite');
+    assert.notDeepEqual(r1, r2);
+  });
+});
+
 describe('mtime-cache: failure modes', () => {
   it('Given a path that does not exist, When the wrapper is called twice, Then the loader is invoked twice (no caching when stat fails) and no throw', () => {
     const ghost = path.join(TMP, '__ghost__.json');
