@@ -1,0 +1,23 @@
+[
+  {
+    "id": "global:investigate",
+    "name": "investigate",
+    "description": "Systematic debugging with root cause investigation and error analysis",
+    "invocation": "/investigate",
+    "category": "debugging"
+  },
+  {
+    "id": "global:ship",
+    "name": "ship",
+    "description": "Ship workflow detect merge base run tests deploy",
+    "invocation": "/ship",
+    "category": "deployment"
+  },
+  {
+    "id": "global:review",
+    "name": "review",
+    "description": "Pre-landing PR review analyzes diff against base branch",
+    "invocation": "/review",
+    "category": "quality"
+  }
+]

@@ -1,387 +1,85 @@
 #!/usr/bin/env node
-/**
- * advisor-nudge.cjs — Lightweight UserPromptSubmit hook.
- *
- * Reads the lite index from disk, keyword-matches against the user prompt,
- * and writes a 1-line nudge to stdout if confidence is above threshold.
- *
- * Constraints:
- *   - Ephemeral process (no in-memory cache)
- *   - Must complete in <50ms on Windows
- *   - Reads advisor-index-lite.json (<100KB)
- *   - Pure Node.js, no LLM calls, no network
- */
+// advisor-nudge.cjs — UserPromptSubmit shim. I/O only; logic lives in lib/advisor-nudge-core.js.
+// Ephemeral process, no async, no in-memory cache, <50ms warm.
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { debugLog } = require(path.resolve(__dirname, '..', 'lib', 'errors'));
-const { SEARCH_WEIGHTS: SW, THRESHOLDS: TH, FUSION_WEIGHTS: FW, DISCOVERY_PARAMS } = require('../lib/constants');
-const { tokenize, STOPWORDS, SYNONYMS } = require('../lib/text');
+const { THRESHOLDS: TH } = require('../lib/constants');
+const { tokenize, STOPWORDS } = require('../lib/text');
+const { runNudge, scoreEntry, NAME_WEIGHT, DESC_WEIGHT } = require('../lib/advisor-nudge-core');
 
-// ── V2 paths (D1/D2) ────────────────────────────────────────────
 const HOME = os.homedir() || process.env.HOME || process.env.USERPROFILE || '/tmp';
 const ADVISOR_CACHE = path.join(HOME, '.claude', 'advisor', 'cache');
+const PROMPT_LENGTH_THRESHOLD = 5;
+const LIB_DIR = path.resolve(__dirname, '..', 'lib');
 
-// ── Config ───────────────────────────────────────────────────────
-
-const NAME_WEIGHT = SW.NAME_WEIGHT;
-const DESC_WEIGHT = SW.DESC_WEIGHT;
-
-// Threshold cascade: ADVISOR_THRESHOLD env > setup.json threshold_config.value > TH.DEFAULT_SCORE
-// See lib/threshold-config.js for the resolver. Fail-soft — any failure
-// in the cascade falls through to the compiled default.
-let THRESHOLD = TH.DEFAULT_SCORE;
-try {
-  const { resolveEffectiveThreshold } = require('../lib/threshold-config');
-  const envNum = process.env.ADVISOR_THRESHOLD ? parseFloat(process.env.ADVISOR_THRESHOLD) : undefined;
-  THRESHOLD = resolveEffectiveThreshold({
-    envValue: envNum,
-    defaultValue: TH.DEFAULT_SCORE,
-  });
-} catch {
-  // threshold-config not present (older install) — keep compiled default
-}
-const ENABLED = (process.env.ADVISOR_ENABLED || '').toLowerCase();
-const STALENESS_DAYS = TH.STALENESS_DAYS;
-
-// ── Path resolution ──────────────────────────────────────────────
+const safe = (fn, tag, msg) => { try { return fn(); } catch (err) { debugLog(tag, msg, { cause: err.message }); return null; } };
+const readJson = p => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
 
 function getIndexLitePath() {
-  const pluginLib = path.resolve(__dirname, '..', 'lib', 'advisor-index-lite.json');
-  try {
-    fs.accessSync(pluginLib, fs.constants.R_OK);
-    return pluginLib;
-  } catch (err) {
+  const pluginLib = path.join(LIB_DIR, 'advisor-index-lite.json');
+  try { fs.accessSync(pluginLib, fs.constants.R_OK); return pluginLib; } catch (err) {
     debugLog('FS_READ', 'accessSync failed for plugin lib path', { path: pluginLib, cause: err.message });
-    try {
-      const { getIndexPath } = require(path.resolve(__dirname, '..', 'lib', 'paths'));
-      return getIndexPath('lite');
-    } catch (err2) {
-      debugLog('MODULE_LOAD', 'Failed to load paths module', { cause: err2.message });
-      return pluginLib;
-    }
+    return safe(() => require(path.join(LIB_DIR, 'paths')).getIndexPath('lite'), 'MODULE_LOAD', 'Failed to load paths module') || pluginLib;
   }
 }
-
-// ── Scoring ──────────────────────────────────────────────────────
-
-function scoreEntry(promptTokens, entry) {
-  if (promptTokens.length === 0) return 0;
-  const descTokens = entry.description ? new Set(tokenize(entry.description)) : new Set();
-  const nameTokens = new Set(tokenize(entry.name));
-
-  let matches = 0;
-  const total = promptTokens.length;
-
-  for (const token of promptTokens) {
-    if (nameTokens.has(token)) matches += NAME_WEIGHT;
-    else if (descTokens.has(token)) matches += DESC_WEIGHT;
-  }
-
-  return total > 0 ? matches / (total * NAME_WEIGHT) : 0;
-}
-
-// ── Semantic search (pre-computed embeddings) ────────────────────
-
-let semantic = null;
-try {
-  semantic = require(path.resolve(__dirname, '..', 'lib', 'semantic'));
-} catch (err) {
-  debugLog('MODULE_LOAD', 'Semantic module not available', { cause: err.message });
-}
-
-let graphMod = null;
-try {
-  graphMod = require(path.resolve(__dirname, '..', 'lib', 'graph-search'));
-} catch (err) {
-  debugLog('MODULE_LOAD', 'Graph search module not available', { cause: err.message });
-}
-
-let contextMod = null;
-try {
-  contextMod = require(path.resolve(__dirname, '..', 'lib', 'context'));
-} catch (err) {
-  debugLog('MODULE_LOAD', 'Context module not available', { cause: err.message });
-}
-
-// ── Prompt source ────────────────────────────────────────────────
-// Claude Code passes UserPromptSubmit hook payload as JSON via stdin.
-// We read synchronously (fs.readFileSync on fd 0) to preserve the
-// "no async" constraint of this hook. CLAUDE_USER_PROMPT env var is
-// preserved as a fallback for tests and manual invocation.
 
 function readPromptSync() {
   const envPrompt = process.env.CLAUDE_USER_PROMPT;
   if (envPrompt !== undefined && envPrompt !== '') return envPrompt;
-
   try {
-    const input = fs.readFileSync(0, 'utf8');
-    if (!input) return '';
-    const trimmed = input.trim();
-    if (trimmed.startsWith('{')) {
-      try {
-        const data = JSON.parse(trimmed);
-        return typeof data.prompt === 'string' ? data.prompt : '';
-      } catch (err) {
-        debugLog('PARSE_JSON', 'Stdin JSON parse failed, falling back to raw', { cause: err.message });
-        return trimmed;
-      }
-    }
-    return trimmed;
-  } catch (err) {
-    debugLog('FS_READ', 'Stdin unavailable', { cause: err.message });
-    return '';
-  }
+    const trimmed = (fs.readFileSync(0, 'utf8') || '').trim();
+    if (!trimmed || !trimmed.startsWith('{')) return trimmed;
+    try { const d = JSON.parse(trimmed); return typeof d.prompt === 'string' ? d.prompt : ''; }
+    catch (err) { debugLog('PARSE_JSON', 'Stdin JSON parse failed, falling back to raw', { cause: err.message }); return trimmed; }
+  } catch (err) { debugLog('FS_READ', 'Stdin unavailable', { cause: err.message }); return ''; }
 }
 
-// ── Main ─────────────────────────────────────────────────────────
+function isEnabled() {
+  const flag = (process.env.ADVISOR_ENABLED || '').toLowerCase();
+  if (flag === 'true') return true;
+  if (flag === 'false') return false;
+  const cfg = readJson(path.join(LIB_DIR, 'advisor-config.json'));
+  if (!cfg) debugLog('FS_READ', 'Config file missing or malformed — hook disabled');
+  return cfg ? cfg.enabled === true : false;
+}
+
+const loadEmbeddings = () => safe(() => { const s = require(path.join(LIB_DIR, 'semantic')); return s.loadEmbeddings(LIB_DIR) ? s : null; }, 'MODULE_LOAD', 'Semantic module not available');
+
+const loadGraph = () => safe(() => {
+  const g = require(path.join(LIB_DIR, 'graph-search'));
+  const data = g.loadGraph(path.resolve(__dirname, '..', 'vault-graph'));
+  return { search: (tokens, n) => g.graphSearch(tokens, data, n) };
+}, 'MODULE_LOAD', 'Graph search module not available');
+
+function resolveScoreThreshold() {
+  try {
+    const { resolveEffectiveThreshold } = require('../lib/threshold-config');
+    const envNum = process.env.ADVISOR_THRESHOLD ? parseFloat(process.env.ADVISOR_THRESHOLD) : undefined;
+    return resolveEffectiveThreshold({ envValue: envNum, defaultValue: TH.DEFAULT_SCORE });
+  } catch { return TH.DEFAULT_SCORE; }
+}
 
 function main(promptOverride) {
-  // Env var override: explicit true/false takes precedence
-  if (ENABLED === 'false') return;
-  if (ENABLED !== 'true') {
-    // No env override — read config file (disabled by default)
-    try {
-      const configPath = path.resolve(__dirname, '..', 'lib', 'advisor-config.json');
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      if (config.enabled !== true) return;
-    } catch (err) {
-      debugLog('FS_READ', 'Config file missing or malformed — hook disabled', { cause: err.message });
-      return; // missing or malformed config = disabled
-    }
-  }
-
-  const prompt = typeof promptOverride === 'string' ? promptOverride : readPromptSync();
-  if (prompt.trim().startsWith('/')) return;
-  if (prompt.trim().length < 5) return;
-
-  const indexPath = getIndexLitePath();
-
-  // Two FS calls: stat first (mtime), then read. Minimizes TOCTOU window.
-  let raw, mtimeMs;
-  try {
-    mtimeMs = fs.statSync(indexPath).mtimeMs;
-    raw = fs.readFileSync(indexPath, 'utf8');
-  } catch {
-    console.log('[Advisor] Index nao encontrado. Rode /advisor-index para criar.');
-    return;
-  }
-
-  // Check staleness
-  const ageDays = (Date.now() - mtimeMs) / (1000 * 60 * 60 * 24);
-  if (ageDays > STALENESS_DAYS) {
-    console.log(`[Advisor] Index desatualizado (${Math.floor(ageDays)}d). Rode /advisor-index para atualizar.`);
-    return;
-  }
-
-  // Parse index
-  let index;
-  try {
-    index = JSON.parse(raw);
-  } catch {
-    console.log('[Advisor] Index corrompido. Rode /advisor-index para regenerar.');
-    return;
-  }
-
-  if (!Array.isArray(index) || index.length === 0) return;
-
-  const promptTokens = tokenize(prompt);
-  if (promptTokens.length === 0) return;
-
-  // ── Signal Fusion (F0): combine semantic + keyword + graph ───
-  const libDir = path.resolve(__dirname, '..', 'lib');
-  const indexById = new Map(index.map(e => [e.id, e]));
-
-  // Collect per-skill scores from each signal layer
-  const semanticScores = new Map(); // id → score
-  const keywordScores = new Map();
-  const graphScores = new Map();
-
-  // Layer 1: Semantic search (pre-computed embeddings)
-  if (semantic) {
-    const loaded = semantic.loadEmbeddings(libDir);
-    if (loaded && semantic.isReady()) {
-      const results = semantic.semanticSearch(promptTokens, SW.MAX_SEMANTIC_RESULTS);
-      for (const r of results) {
-        if (indexById.has(r.id)) semanticScores.set(r.id, r.score);
-      }
-    }
-  }
-
-  // Layer 2: Keyword matching (always available, cap at 20 to limit iteration)
-  let kwCount = 0;
-  for (const entry of index) {
-    const score = scoreEntry(promptTokens, entry);
-    if (score >= THRESHOLD) {
-      keywordScores.set(entry.id, score);
-      if (++kwCount >= 20) break;
-    }
-  }
-
-  // Layer 3: Graph search (optional — only if vault graph loaded)
-  // Graph node IDs use "skill:" prefix while index uses "global:", "project:", etc.
-  // Build a reverse lookup: bare name → index id
-  const nameToIndexId = new Map();
-  for (const [id] of indexById) {
-    const colonIdx = id.indexOf(':');
-    if (colonIdx >= 0) nameToIndexId.set(id.slice(colonIdx + 1), id);
-  }
-
-  if (graphMod) {
-    try {
-      const graphDir = path.resolve(__dirname, '..', 'vault-graph');
-      const graph = graphMod.loadGraph(graphDir);
-      const results = graphMod.graphSearch(promptTokens, graph, SW.MAX_SEMANTIC_RESULTS);
-      for (const r of results) {
-        if (!r.nodeId.startsWith('skill:')) continue;
-        const bareName = r.nodeId.slice(6); // strip "skill:" prefix
-        const indexId = nameToIndexId.get(bareName);
-        if (indexId) {
-          // Clamp to 1.0 — graph scores can exceed 1.0 with convergence+category boosts
-          graphScores.set(indexId, Math.min(r.score, 1.0));
-        }
-      }
-    } catch (err) {
-      debugLog('GRAPH_LOAD', 'Graph not available for fusion', { cause: err.message });
-    }
-  }
-
-  // Fuse scores: weighted average of available signals
-  const allIds = new Set([...semanticScores.keys(), ...keywordScores.keys(), ...graphScores.keys()]);
-  let scored = [];
-
-  for (const id of allIds) {
-    const entry = indexById.get(id);
-    if (!entry) continue;
-
-    const sem = semanticScores.get(id) || 0;
-    const kw = keywordScores.get(id) || 0;
-    const gr = graphScores.get(id) || 0;
-
-    // Weighted average with only non-zero signals contributing
-    let totalWeight = 0;
-    let totalScore = 0;
-    if (sem > 0) { totalScore += sem * FW.SEMANTIC; totalWeight += FW.SEMANTIC; }
-    if (kw > 0) { totalScore += kw * FW.KEYWORD; totalWeight += FW.KEYWORD; }
-    if (gr > 0) { totalScore += gr * FW.GRAPH; totalWeight += FW.GRAPH; }
-
-    const fusedScore = totalWeight > 0 ? totalScore / totalWeight : 0;
-    if (fusedScore >= THRESHOLD) {
-      scored.push({ ...entry, score: fusedScore });
-    }
-  }
-
-  if (scored.length === 0) return;
-
-  // ── V2: Load hook-data bundle (D3) ──────────────────────────────
-  let hookData = null;
-  try {
-    const bundlePath = path.join(ADVISOR_CACHE, 'advisor-hook-data.json');
-    hookData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
-  } catch {
-    debugLog('FS_READ', 'Hook data bundle not found, v2 features disabled');
-  }
-
-  // ── V2: Affinity boost ──────────────────────────────────────────
-  if (hookData && Array.isArray(hookData.affinity)) {
-    const affinityMap = new Map();
-    for (const a of hookData.affinity) {
-      affinityMap.set(a.skillId, a.affinityScore);
-    }
-    // Strip namespace prefix from scored entries to match affinity skillIds
-    for (const entry of scored) {
-      const colonIdx = entry.id ? entry.id.indexOf(':') : -1;
-      const bareName = colonIdx >= 0 ? entry.id.slice(colonIdx + 1) : entry.name;
-      const affinity = affinityMap.get(bareName) || affinityMap.get(entry.name);
-      if (affinity) {
-        entry.score = Math.min(1.0, entry.score + affinity * 0.2); // +20% of affinity
-      }
-    }
-  }
-
-  // ── V2: Context boost (F2 — branch category) ───────────────────
-  if (contextMod) {
-    try {
-      const branchName = process.env.ADVISOR_BRANCH || '';
-      const branchCategory = contextMod.getBranchCategory(branchName);
-      if (branchCategory) {
-        for (const entry of scored) {
-          if (entry.category === branchCategory) {
-            entry.score = Math.min(1.0, entry.score + 0.1); // +10% category match
-          }
-        }
-      }
-    } catch (err) {
-      debugLog('CONTEXT', 'Branch context boost failed', { cause: err.message });
-    }
-  }
-
-  // Re-sort after boosts
-  scored.sort((a, b) => b.score - a.score);
-  const top = scored.slice(0, SW.MAX_DISPLAY_RESULTS);
-
-  // Sanitize output: allowlist for invocation field (prevents prompt injection from third-party plugins)
-  const matches = top
-    .map(e => {
-      const raw = String(e.invocation || '');
-      const inv = raw.replace(/[^a-zA-Z0-9:/_-]/g, '').slice(0, 60);
-      if (!inv) return null;
-      return `${inv} (${(e.score * 100).toFixed(0)}%)`;
-    })
-    .filter(Boolean)
-    .join(', ');
-
-  console.log(`[Advisor] Considere /advisor — detectei relevancia com: ${matches}`);
-
-  // ── V2: Discovery nudge (F1.4) ─────────────────────────────────
-  // Hook is read-only (D4). lastNudgeTs is written by /advisor command.
-  // Cooldown is approximate: nudge appears → user runs /advisor → command writes timestamp.
-  if (hookData && Array.isArray(hookData.discovery) && hookData.discovery.length > 0) {
-    try {
-      const seenPath = path.join(ADVISOR_CACHE, 'advisor-discovery-seen.json');
-      let seen = {};
-      try { seen = JSON.parse(fs.readFileSync(seenPath, 'utf8')); } catch { /* first run — no seen file */ }
-
-      const lastNudge = seen.lastNudgeTs ? new Date(seen.lastNudgeTs).getTime() : 0;
-      if (Date.now() - lastNudge > DISCOVERY_PARAMS.NUDGE_COOLDOWN_MS) {
-        const seenSkills = (seen.seen && typeof seen.seen === 'object') ? seen.seen : {};
-        for (const candidate of hookData.discovery) {
-          if (seenSkills[candidate.skillId]) continue;
-          const inv = String(candidate.invocation || '').replace(/[^a-zA-Z0-9:/_-]/g, '').slice(0, 60);
-          if (inv) {
-            console.log(`[Advisor] Voce sabia? ${inv} tem alta relevancia mas nunca foi usado. Experimente!`);
-          }
-          break; // max 1 discovery nudge per invocation
-        }
-      }
-    } catch (err) {
-      debugLog('DISCOVERY', 'Discovery nudge failed', { cause: err.message });
-    }
-  }
-
-  // ── V2: Replay hint (F3.2) ─────────────────────────────────────
-  if (hookData && Array.isArray(hookData.replay) && hookData.replay.length > 0) {
-    // Build set of bare names from top results for structured comparison
-    const topBareNames = new Set(top.map(e => {
-      const ci = e.id ? e.id.indexOf(':') : -1;
-      return ci >= 0 ? e.id.slice(ci + 1) : e.name;
-    }));
-
-    for (const candidate of hookData.replay) {
-      if (!candidate || !Array.isArray(candidate.sequence) || candidate.sequence.length === 0) continue;
-      const firstSkill = candidate.sequence[0];
-      if (topBareNames.has(firstSkill)) {
-        const seqStr = candidate.sequence.join(' \u2192 ');
-        console.log(`[Advisor] Pipeline anterior: ${seqStr} (usado ${candidate.count}x). Rode /advisor para replay.`);
-        break;
-      }
-    }
-  }
+  if (!isEnabled()) return;
+  const result = runNudge({
+    prompt: typeof promptOverride === 'string' ? promptOverride : readPromptSync(),
+    indexLitePath: getIndexLitePath(),
+    embeddingsLoader: loadEmbeddings,
+    graphLoader: loadGraph,
+    hookDataLoader: () => readJson(path.join(ADVISOR_CACHE, 'advisor-hook-data.json')),
+    discoveryStateLoader: () => readJson(path.join(ADVISOR_CACHE, 'advisor-discovery-seen.json')) || {},
+    threshold: PROMPT_LENGTH_THRESHOLD,
+    scoreThreshold: resolveScoreThreshold(),
+    env: { ADVISOR_BRANCH: process.env.ADVISOR_BRANCH || '' },
+    now: Date.now,
+  });
+  for (const line of result.output) console.log(line);
 }
 
-if (require.main === module) {
-  main();
-}
+if (require.main === module) main();
 
 module.exports = { tokenize, scoreEntry, readPromptSync, STOPWORDS, NAME_WEIGHT, DESC_WEIGHT };
