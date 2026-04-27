@@ -43,6 +43,7 @@
  */
 
 const { spawnSync } = require('node:child_process');
+const os = require('node:os');
 const path = require('node:path');
 const fs = require('node:fs');
 const { measureP50P95 } = require('./_perf-harness');
@@ -101,15 +102,19 @@ function captureBaseline() {
     long500,
     capturedAt: new Date().toISOString(),
     advisorVersion,
+    platform: process.platform,
+    nodeVersion: process.version,
+    cpuModel: os.cpus()[0] && os.cpus()[0].model,
     promptShortLength: PROMPT_SHORT.length,
     promptLongLength: PROMPT_LONG.length,
     note:
-      'Pre-Phase-2 baseline. Hot-path advisor-nudge.cjs not yet refactored. ' +
       'Captured with WARMUP_ITERATIONS=' +
       WARMUP_ITERATIONS +
       ', SAMPLE_ITERATIONS=' +
       SAMPLE_ITERATIONS +
-      '. See spec slice 3.1 (Requirement 4.2). Slice 3.7 locks Headroom ≤ 1.10x against this baseline.',
+      '. See spec slice 3.1 (Requirement 4.2). Slice 3.7 locks Headroom ≤ 1.10x against this baseline. ' +
+      'Headroom test in tests/perf-assertions.test.js skips on platform mismatch — ' +
+      'CI Linux must re-run this script on its first green run and commit the resulting fixture.',
   };
 
   fs.mkdirSync(path.dirname(FIXTURE_PATH), { recursive: true });

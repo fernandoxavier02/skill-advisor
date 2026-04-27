@@ -1,17 +1,20 @@
 {
   "short80": {
-    "p50": 76.212,
-    "p95": 79.9853,
-    "mean": 76.710638
+    "p50": 102.5931,
+    "p95": 164.1027,
+    "mean": 113.13643600000003
   },
   "long500": {
-    "p50": 77.2807,
-    "p95": 85.8031,
-    "mean": 78.31414600000005
+    "p50": 119.6943,
+    "p95": 144.5159,
+    "mean": 120.09374200000003
   },
-  "capturedAt": "2026-04-27T15:38:06.712Z",
+  "capturedAt": "2026-04-27T16:36:03.335Z",
   "advisorVersion": "0.5.0",
+  "platform": "win32",
+  "nodeVersion": "v24.6.0",
+  "cpuModel": "Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz",
   "promptShortLength": 78,
   "promptLongLength": 478,
-  "note": "Pre-Phase-2 baseline. Hot-path advisor-nudge.cjs not yet refactored. Captured with WARMUP_ITERATIONS=10, SAMPLE_ITERATIONS=100. See spec slice 3.1 (Requirement 4.2). Slice 3.7 locks Headroom ≤ 1.10x against this baseline."
+  "note": "Captured with WARMUP_ITERATIONS=10, SAMPLE_ITERATIONS=100. See spec slice 3.1 (Requirement 4.2). Slice 3.7 locks Headroom ≤ 1.10x against this baseline. Headroom test in tests/perf-assertions.test.js skips on platform mismatch — CI Linux must re-run this script on its first green run and commit the resulting fixture."
 }
