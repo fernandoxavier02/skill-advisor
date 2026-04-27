@@ -10,11 +10,14 @@ const { debugLog } = require(path.resolve(__dirname, '..', 'lib', 'errors'));
 const { THRESHOLDS: TH } = require('../lib/constants');
 const { tokenize, STOPWORDS } = require('../lib/text');
 const { runNudge, scoreEntry, NAME_WEIGHT, DESC_WEIGHT } = require('../lib/advisor-nudge-core');
+const { withMtimeCache } = require('../lib/mtime-cache');
 
 const HOME = os.homedir() || process.env.HOME || process.env.USERPROFILE || '/tmp';
 const ADVISOR_CACHE = path.join(HOME, '.claude', 'advisor', 'cache');
-const PROMPT_LENGTH_THRESHOLD = 5;
+// Slice 2.3: prompt-length default 12 per Req 4.3; ADVISOR_PROMPT_LENGTH overrides.
+const DEFAULT_PROMPT_LENGTH_THRESHOLD = 12;
 const LIB_DIR = path.resolve(__dirname, '..', 'lib');
+const VAULT_GRAPH = path.resolve(__dirname, '..', 'vault-graph');
 
 const safe = (fn, tag, msg) => { try { return fn(); } catch (err) { debugLog(tag, msg, { cause: err.message }); return null; } };
 const readJson = p => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
@@ -47,13 +50,21 @@ function isEnabled() {
   return cfg ? cfg.enabled === true : false;
 }
 
-const loadEmbeddings = () => safe(() => { const s = require(path.join(LIB_DIR, 'semantic')); return s.loadEmbeddings(LIB_DIR) ? s : null; }, 'MODULE_LOAD', 'Semantic module not available');
+// Slice 2.3: heavy loaders wrapped in mtime-keyed memoization (no-op for the
+// ephemeral hook spawn, useful for long-lived core consumers and tests).
+const loadEmbeddings = withMtimeCache(path.join(LIB_DIR, 'advisor-embeddings.json'),
+  () => safe(() => { const s = require(path.join(LIB_DIR, 'semantic')); return s.loadEmbeddings(LIB_DIR) ? s : null; }, 'MODULE_LOAD', 'Semantic module not available'));
+const loadGraph = withMtimeCache(path.join(VAULT_GRAPH, 'adjacency.json'),
+  () => safe(() => {
+    const g = require(path.join(LIB_DIR, 'graph-search'));
+    const data = g.loadGraph(VAULT_GRAPH);
+    return { search: (tokens, n) => g.graphSearch(tokens, data, n) };
+  }, 'MODULE_LOAD', 'Graph search module not available'));
 
-const loadGraph = () => safe(() => {
-  const g = require(path.join(LIB_DIR, 'graph-search'));
-  const data = g.loadGraph(path.resolve(__dirname, '..', 'vault-graph'));
-  return { search: (tokens, n) => g.graphSearch(tokens, data, n) };
-}, 'MODULE_LOAD', 'Graph search module not available');
+function resolvePromptLengthThreshold() {
+  const n = parseInt(process.env.ADVISOR_PROMPT_LENGTH || '', 10);
+  return Number.isFinite(n) && n >= 0 ? n : DEFAULT_PROMPT_LENGTH_THRESHOLD;
+}
 
 function resolveScoreThreshold() {
   try {
@@ -72,7 +83,7 @@ function main(promptOverride) {
     graphLoader: loadGraph,
     hookDataLoader: () => readJson(path.join(ADVISOR_CACHE, 'advisor-hook-data.json')),
     discoveryStateLoader: () => readJson(path.join(ADVISOR_CACHE, 'advisor-discovery-seen.json')) || {},
-    threshold: PROMPT_LENGTH_THRESHOLD,
+    threshold: resolvePromptLengthThreshold(),
     scoreThreshold: resolveScoreThreshold(),
     env: { ADVISOR_BRANCH: process.env.ADVISOR_BRANCH || '' },
     now: Date.now,

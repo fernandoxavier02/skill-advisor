@@ -176,6 +176,31 @@ describe('advisor-nudge-core: positive content (BDD 4)', () => {
   });
 });
 
+describe('advisor-nudge-core: threshold env override (Slice 2.3)', () => {
+  // The shim is responsible for resolving ADVISOR_PROMPT_LENGTH and passing it
+  // to runNudge as `threshold`. The core itself only needs to honor the param.
+  // This test locks the contract: an explicit threshold value beats any default.
+
+  it('Given threshold=20 and a 19-char prompt, When runNudge runs, Then earlyExit fires (override beats core default of 12)', () => {
+    const result = runNudge(baseOpts({
+      prompt: 'investigate root b',  // 18 chars (with trailing trim)
+      threshold: 20,
+    }));
+    assert.equal(result.earlyExit, true);
+  });
+
+  it('Given threshold=3 and a 5-char prompt, When runNudge runs, Then earlyExit does NOT fire on the length gate (override allows shorter prompts)', () => {
+    const result = runNudge(baseOpts({
+      prompt: 'debug',  // 5 chars
+      threshold: 3,
+    }));
+    // The length gate did NOT fire. The result may still be earlyExit:false
+    // with empty output if no skill matches, but the loaders MUST have been
+    // invoked (the gate didn't short-circuit them).
+    assert.equal(result.earlyExit, false);
+  });
+});
+
 describe('advisor-nudge-core: staleness boundary (test-coverage 🔴)', () => {
   // Pins the `>` strict-inequality semantics of the staleness check. A future
   // refactor that flips this to `>=` would silently start treating boundary-old
