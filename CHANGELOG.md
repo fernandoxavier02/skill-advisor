@@ -4,6 +4,74 @@ All notable changes to the **skill-advisor** plugin are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-04-27
+
+### Architectural refactor (10-finding audit response)
+
+Closes the 10-finding architectural audit from 2026-04-26. Quality bar lifted from 7.5 → 9+/10 with zero functional regression. 31-task spec executed in 6 phases through 18 commits on `refactor/skill-advisor-0.5.0`.
+
+### Added — Architectural guards (CI-enforced via `npm run validate`)
+
+- **DI-1 (Module Load Purity).** `tests/pipeline-config.test.js` patches `fs.readFileSync/statSync/readdirSync` BEFORE requiring `lib/constants.js` and asserts zero invocations during module load. Catches any future regression that adds I/O to constants. _Req 2.1-2.5_.
+- **DI-2 (Layered Dependency Direction).** `tests/dependency-edges.test.js` greps every `lib/<non-builder>.js` for `require('./build-*.js')`. Domain code may not import builders. Hardcoded zero exceptions. _Req 3.1-3.4_.
+- **DI-3 (Manifest Version Coherence).** `tests/version-coherence.test.js` cross-references `package.json` and `.claude-plugin/plugin.json` SemVer fields and fails with both file paths + divergent values when they differ. _Req 1.1-1.4_.
+- **DI-9 (Vault Env Single Source).** `tests/vault-env-single-source.test.js` greps `lib/paths.js` for direct env reads — must be zero (vault-config is the only authorized reader). _Req 7.1-7.3_.
+
+### Added — Hot-path refactor (Phase 2)
+
+- **`lib/advisor-nudge-core.js`** (~280 lines) — pure scoring/fusion/affinity/context/discovery/replay logic extracted from the hook. Determinism contract: same opts + fixed `now()` → deeply equal `SuggestionResult`. Loaders are injected (no I/O without explicit caller cooperation). Sanitization regex `/[^a-zA-Z0-9:/_-]/g` preserved bit-for-bit at all 3 call sites (main nudge + discovery nudge + replay sequence — last one hardened in Slice 2.3 review polish). _Req 4.1, 4.5, 4.6_.
+- **`hooks/advisor-nudge.cjs`** reduced **387 → 85 lines** (-78%). Pure I/O shim: stdin parse → loader construction → `runNudge()` → stdout emission → exit 0. _Req 4.1_.
+- **`lib/mtime-cache.js`** — module-scoped mtime+size keyed loader memoization. Defeats stale-cache class on coarse filesystems (FAT32, sub-ms CI rebuilds) by including `size` alongside `mtimeMs`. Test reset hook gated by `SKILL_ADVISOR_TEST=1`. _Req 4.4_.
+- **Prompt-length env override** `ADVISOR_PROMPT_LENGTH=N`. Default raised 5 → 12 chars per spec contract. Threshold=0 honored as kill-switch (debug aid). _Req 4.3_.
+- **Performance gate** (`tests/perf-assertions.test.js`) — ceiling absolute `p95 ≤ 250ms` + headroom relative `current ≤ baseline.p95 × 1.15` (skipped on platform mismatch — Linux CI must re-capture baseline on first green run; capture script writes `platform`/`nodeVersion`/`cpuModel` provenance). Split from `npm test` via `RUN_PERF=1` gate; runs as `npm run test:perf` (~60s). Default `npm test` stays at ~2s for TDD iteration. _Req 4.2_.
+
+### Added — Consolidation (Phase 3)
+
+- **`lib/walk.js`** — unified filesystem walker `walkDir(dir, {matcher, maxDepth, maxEntries, skipDirs, skipHidden})`. Returns deduped+sorted absolute paths. Replaces private walkers in build-index and build-catalog (-76 lines, +21 net). Exposed behavioral discovery: legacy build-index walker counted entries-visited, terminating early on big plugin trees. New walker counts only matches → index growth 163 → 546 entries (silently dropped skills now visible). Lite index size 45.6KB → 162.7KB (exceeds 100KB warning, informational). _Req 6.1-6.3_.
+- **`lib/vault-config.js` cascade.** Canonical `SKILL_ADVISOR_VAULT_PATH` wins over legacy `SKILL_ADVISOR_VAULT`. Legacy alone emits one-time `console.warn` naming canonical + removal release **0.6.0**. `lib/paths.js` no longer reads either env directly. _Req 7.1-7.3_.
+
+### Added — Coverage closure (Phase 5)
+
+- **5 new test files** + features tier reactivated. Test count grew 654 → **808** (+154, +24%). Suite still <2s for default `npm test`.
+- `tests/session-start.test.js` (8 scenarios) — covers all 4 SessionStart hook branches plus package.json missing/malformed fallback.
+- `tests/build-graph.test.js` (10 scenarios) — synthetic vault fixture with concrete numeric assertions on node count, type breakdown, bidirectional concept-concept symmetry, alias_index PT-BR accent normalization, `extractWikilinks` pipe-form `[[name|alias]]` extraction.
+- `tests/build-embeddings.test.js` (7 scenarios) — module load purity + VOCAB_WORDS bilingual invariants. Model-injection failure path deferred to 0.5.1 (dynamic import has no DI seam).
+- `tests/loadout-direct.test.js` (16 scenarios) — every export of `lib/loadout.js` with typical + boundary, `swapAtPosition` 8 separate throw assertions + immutability check.
+- `tests/perf-assertions.test.js` (5 scenarios, RUN_PERF=1) — perf gate lock.
+- Features tier (`tests/features/*.feature.js`) reactivated in default `npm test` glob; 2 new BDD wrappers (`walker-confluence.feature.js`, `advisor-nudge-early-exit.feature.js`).
+
+### Changed — Discoverability hygiene (Phase 4)
+
+- **`skills/pipeline-suggest/SKILL.md` description rewritten.** Removed ambiguous positive trigger ("I don't know which skill to use"). Added specific positives ("which tool fits this task", "compose a quick stack for X") and front-loaded exclusions in plain form (`/skill-advisor:advisor`, `/advisor`, "interactive picker", "step-by-step", "walk me through", "pick skills one by one"). Embedding-similarity rationale: SUMS keywords, doesn't subtract negations — listing exclusions plain-text reduces semantic collision. _Req 5.1_.
+- **`commands/advisor-setup.md`** — added missing `name: advisor-setup` frontmatter field. _Req 5.2_.
+- **`commands/advisor-stats.md`** — description expanded with all 4 spec-required trigger phrases ("como tenho usado", "quais skills mais uso", "show usage trends", "session analytics"). _Req 5.3_.
+
+### Deprecated
+
+- **`SKILL_ADVISOR_VAULT` env var.** Legacy, replaced by `SKILL_ADVISOR_VAULT_PATH`. Emits one-time `console.warn` when set alone. **Removal target: 0.6.0**.
+- **`require('./build-index').inferCategory`** re-export. Replaced by `lib/category.js inferCategory`. Emits one-time `console.warn` per process. **Removal target: 0.6.0**.
+
+### BREAKING (behavioral)
+
+- **Default prompt-length threshold raised 5 → 12.** Prompts of 5-11 characters that previously surfaced advisor nudges now early-exit silently. Restore old behavior with `ADVISOR_PROMPT_LENGTH=5` in your shell env. Spec rationale: hot-path performance (Req 4.3 specified default 12).
+
+### Migration
+
+No code-level migration required for typical users. If you have:
+- A custom `SKILL_ADVISOR_VAULT=/path` in shell rc → rename to `SKILL_ADVISOR_VAULT_PATH`. Same value, no warning.
+- Custom callers of `build-index.inferCategory` → switch to `require('./lib/category').inferCategory`. Same signature.
+- Heavy reliance on advisor nudges for very short prompts (5-11 chars) → set `ADVISOR_PROMPT_LENGTH=5`.
+
+### Tests
+
+- 808 tests, 215 suites, suite time <2s (perf gate excluded; runs separately via `npm run test:perf`).
+- 4 architectural guards (DI-1, DI-2, DI-3, vault env single source) all green simultaneously.
+- Performance gate green: short80 p95 = 170.86ms (ceiling 250ms, baseline×1.15 = 188.7ms — both within); long500 p95 = 157.46ms (within both gates).
+
+### Backward compatibility
+
+The plugin name (`skill-advisor`), command (`/skill-advisor:advisor`), agents, and library APIs are untouched. The hook's external contract (UserPromptSubmit JSON stdin → stdout nudge → exit 0) is preserved bit-for-bit. Two deprecation warnings fire one-time per process for legacy env / legacy import; both have explicit 0.6.0 removal targets.
+
 ## [0.4.2] — 2026-04-26
 
 ### Changed (UX disambiguation)
@@ -169,6 +237,8 @@ Historical releases prior to the changelog initialization. Consult `git log --on
 
 ---
 
+[0.5.0]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.5.0
+[0.4.2]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.2
 [0.4.1]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.1
 [0.4.0]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.4.0
 [0.3.5]: https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.3.5
