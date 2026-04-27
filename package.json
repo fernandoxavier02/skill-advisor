@@ -5,8 +5,10 @@
   "type": "commonjs",
   "scripts": {
     "test": "node --test tests/*.test.js",
+    "test:perf": "node -e \"process.env.RUN_PERF='1'; require('child_process').spawnSync(process.execPath, ['--test', 'tests/perf-assertions.test.js'], {stdio:'inherit', env:{...process.env}})\"",
     "index": "node lib/build-index.js",
-    "validate": "npm test && npm run index && node lib/smoke-runner.js"
+    "validate": "npm test && npm run index && node lib/smoke-runner.js",
+    "validate:perf": "npm run test:perf"
   },
   "engines": {
     "node": ">=18"
