@@ -1,4 +1,5 @@
 ---
+name: advisor-setup
 description: First-run setup wizard — build index, download embeddings, curate pipeline-owners for installed plugins.
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: advisor-stats
-description: Show session analytics and skill usage heat map. Displays usage patterns, category distribution, and trend data over 7d/30d/90d windows.
+description: Show session analytics and skill usage heat map. Triggers include "como tenho usado", "quais skills mais uso", "show usage trends", "session analytics". Displays usage patterns, category distribution, and trend data over 7d/30d/90d windows.
 ---
 
 # /advisor-stats — Session Analytics & Heat Map
