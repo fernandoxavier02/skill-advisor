@@ -4,6 +4,22 @@ All notable changes to the **skill-advisor** plugin are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] — 2026-04-29
+
+### Changed
+
+- **`@huggingface/transformers`** bumped from `^4.0.1` to `^4.1.0`. Backwards-compatible. Affects only the embedding-generation tooling (`lib/build-embeddings.js`); runtime semantic search (`lib/semantic.js`) consumes pre-computed vectors and is unaffected.
+
+### Docs
+
+- README brought forward with the v0.5.0 architectural overhaul highlights (hot-path extraction, 4 CI guards, walker unification, mtime+size cache).
+
+### Verification
+
+- DI-3 manifest version coherence guard passes (`package.json` and `.claude-plugin/plugin.json` both at `0.5.1`).
+
+---
+
 ## [0.5.0] — 2026-04-27
 
 ### Architectural refactor (10-finding audit response)
