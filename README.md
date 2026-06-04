@@ -1,16 +1,3 @@
-<!-- ARCHIVED BANNER -->
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&color=ff9800&height=80&text=📦%20ARCHIVED&fontSize=28&fontColor=ffffff&width=400"/>
-</p>
-<p align="center"><b>This repository has been archived.</b><br/>
-My public portfolio has been restructured to focus on <a href="https://github.com/fernandoxavier02">Finance + AI showcases</a>.<br/>
-<a href="https://github.com/fernandoxavier02/ifrs15-revenue-intelligence-showcase">IFRS 15</a> ·
-<a href="https://github.com/fernandoxavier02/ifrs16-lease-intelligence-showcase">IFRS 16</a> ·
-<a href="https://github.com/fernandoxavier02/controllership-reconciliation-showcase">Reconciliation</a> ·
-<a href="https://github.com/fernandoxavier02/brazilian-tax-reform-oracle-showcase">Tax Oracle</a>
-</p>
-<hr/>
-
 <p align="center">
   <a href="https://github.com/fernandoxavier02">
     <picture>
