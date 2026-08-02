@@ -23,16 +23,15 @@
 
 <p align="center">
   <a href="#installation"><img src="https://img.shields.io/badge/platform-Claude_Code-7C3AED?style=flat-square&logo=anthropic&logoColor=white" alt="Platform" /></a>
-  <a href="https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.5.0"><img src="https://img.shields.io/badge/version-0.5.0-blue?style=flat-square" alt="Version" /></a>
-  <a href="#how-it-works"><img src="https://img.shields.io/badge/skills_indexed-86-brightgreen?style=flat-square" alt="Skills Indexed" /></a>
+  <img src="https://img.shields.io/badge/version-0.5.1-blue?style=flat-square" alt="Version 0.5.1" />
   <a href="tests/"><img src="https://img.shields.io/badge/tests-812_passing-brightgreen?style=flat-square" alt="Tests" /></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
 </p>
 
-> ### What's new in v0.5.0 (2026-04-27)
+> ### Current implementation (v0.5.1)
 >
-> Architectural overhaul closing a 10-finding audit. **Quality bar lifted from 7.5 → 9+/10 with zero functional regression.**
+> The public implementation is a local-first routing and orchestration prototype. The evidence below describes code and tests in this repository; it does not claim client adoption or production outcomes.
 >
 > - **Hot-path hook 387 → 85 lines.** Scoring/fusion/discovery/replay logic extracted into the pure module `lib/advisor-nudge-core.js`. Hook is now a true I/O shim. Determinism is provable: same opts + fixed `now()` → deeply equal `SuggestionResult`.
 > - **4 architectural guards CI-enforced** on every push and PR: **DI-1** (constants module load is fs-pure), **DI-2** (no domain code imports from builders), **DI-3** (`package.json` and `.claude-plugin/plugin.json` agree on SemVer), **vault env single source** (`paths.js` no longer reads env directly).
@@ -40,7 +39,7 @@
 > - **Unified filesystem walker** (`lib/walk.js`) replaces two private walkers in build-index/build-catalog. Side effect: index now visible at 546 entries (up from 163) — the legacy walker was silently dropping skills past its visit-count cap.
 > - **Vault env single source.** `SKILL_ADVISOR_VAULT_PATH` is now canonical; legacy `SKILL_ADVISOR_VAULT` works with a one-time deprecation warning, removal in 0.6.0.
 > - **Performance gate** (`npm run test:perf`) — ceiling p95 ≤ 250ms + headroom 1.15× baseline, 300 spawns × 2 fixtures, ~60s. Default `npm test` stays at ~2.3s for fast TDD iteration.
-> - **812 tests** (+24% from 654). Full perf gate green: short80 p95 ≈ 170ms, long500 p95 ≈ 157ms.
+> - **812 tests** are included in the default Node.js test suite. The optional performance gate is available through `npm run test:perf`.
 >
 > **BREAKING (restorable).** Default prompt-length threshold raised 5 → 12. Prompts of 5–11 characters that previously surfaced advisor nudges now silently early-exit. Restore the old behavior with `ADVISOR_PROMPT_LENGTH=5` in your shell env.
 >
@@ -60,10 +59,6 @@
 
 <p align="center">
   You have 200+ skills installed. You use 10. Skill Advisor finds the other 190 — and knows which ones not to mix.
-</p>
-
-<p align="center">
-  <img src="assets/infographics/hero-stats.svg" alt="86 skills indexed, 500 tests passing, 5 orchestrated plugins isolated, sub-50ms hook latency" width="100%" />
 </p>
 
 ---
@@ -317,8 +312,8 @@ skill-advisor/
 │   ├── graph-search.js      # BFS 2-hop traversal
 │   ├── schemas.js           # Router output + gate output validators
 │   ├── loadout.js           # swapAtPosition + collapseToCanonicalFlow
-│   └── escaping.js          # Prompt-injection sanitizer (Rule 12)
-└── tests/                   # 500 tests — `npm test`
+│   └── escaping.js          # Prompt-injection sanitizer
+└── tests/                   # Node.js test suite — `npm test`
 ```
 
 ### Data flow
@@ -339,7 +334,7 @@ External fields (`task_description`, `codebase_context`, `loadout_json`, skill e
 
 ```bash
 npm install
-npm test          # 500 tests via node --test
+npm test          # Node.js built-in test runner
 npm run index     # rebuild keyword + lite indexes
 node lib/build-embeddings.js     # rebuild semantic embeddings (~2-5 min first run)
 node lib/build-graph.js          # rebuild Obsidian vault graph
@@ -362,7 +357,7 @@ Test runner: Node.js built-in `--test` pattern `tests/*.test.js`. No external te
 
 See [CHANGELOG.md](CHANGELOG.md) for the full timeline.
 
-Latest: **[v0.5.0](https://github.com/fernandoxavier02/skill-advisor/releases/tag/v0.5.0)** (2026-04-27) — architectural overhaul closing a 10-finding audit. Hot-path hook 387 → 85 lines via `lib/advisor-nudge-core` extraction; 4 CI-enforced architectural guards (DI-1 module purity, DI-2 layered direction, DI-3 manifest version coherence, vault env single source); module-scoped mtime+size cache for embeddings/graph; unified filesystem walker; 812 tests (+24% from 654); BREAKING (restorable): default prompt-length threshold 5 → 12. Prior milestones: **v0.4.2** UX disambiguation (skill renamed `advisor-skill → pipeline-suggest`); v0.4.1 wired `/advisor-setup` through to v0.4.0 libs (Vault, Threshold, SmokeRunner); v0.4.0 added the three Approach B bounded contexts; v0.3.5 shipped the first-run wizard + extensible pipeline-owners + heuristic plugin detection; v0.3.1–0.3.4 added the per-step picker, pipeline-owner isolation, complexity-aware sizing, fingerprint routing, and the `lib/escaping.js` sanitizer.
+Current package: **v0.5.1** (2026-04-29). See [CHANGELOG.md](CHANGELOG.md) for the version history. The current release line includes the hot-path extraction, architectural guards, mtime+size cache, unified filesystem walker, bilingual routing, and 812 automated tests.
 
 ---
 
