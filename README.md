@@ -38,8 +38,8 @@
 > - **Module-scoped `mtime + size` keyed cache** (`lib/mtime-cache.js`) memoizes embeddings/graph loaders for long-lived consumers; defeats stale-cache class on coarse filesystems (FAT32, sub-ms CI rebuilds).
 > - **Unified filesystem walker** (`lib/walk.js`) replaces two private walkers in build-index/build-catalog. Side effect: index now visible at 546 entries (up from 163) — the legacy walker was silently dropping skills past its visit-count cap.
 > - **Vault env single source.** `SKILL_ADVISOR_VAULT_PATH` is now canonical; legacy `SKILL_ADVISOR_VAULT` works with a one-time deprecation warning, removal in 0.6.0.
-> - **Performance gate** (`npm run test:perf`) — ceiling p95 ≤ 250ms + headroom 1.15× baseline, 300 spawns × 2 fixtures, ~60s. Default `npm test` stays at ~2.3s for fast TDD iteration.
-> - **812 tests** are included in the default Node.js test suite. The optional performance gate is available through `npm run test:perf`.
+> - **Performance gate** (`node tests/perf.js`) — ceiling p95 ≤ 250ms + headroom 1.15× baseline, 300 spawns × 2 fixtures, ~60s. Default `node --test tests/*.test.js` stays at ~2.3s for fast TDD iteration.
+> - **812 tests** are included in the default Node.js test suite. The optional performance gate is available through `node tests/perf.js`.
 >
 > **BREAKING (restorable).** Default prompt-length threshold raised 5 → 12. Prompts of 5–11 characters that previously surfaced advisor nudges now silently early-exit. Restore the old behavior with `ADVISOR_PROMPT_LENGTH=5` in your shell env.
 >
