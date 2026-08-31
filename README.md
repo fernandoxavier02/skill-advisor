@@ -248,8 +248,7 @@ Or direct from source:
 ```bash
 git clone https://github.com/fernandoxavier02/skill-advisor.git
 cd skill-advisor
-npm install
-npm run index   # scan installed skills/plugins and build the index
+node lib/build-index.js   # scan installed skills/plugins and build the index
 ```
 
 ### First use
@@ -333,9 +332,10 @@ External fields (`task_description`, `codebase_context`, `loadout_json`, skill e
 ## Development
 
 ```bash
-npm install
-npm test          # Node.js built-in test runner
-npm run index     # rebuild keyword + lite indexes
+git clone https://github.com/fernandoxavier02/skill-advisor.git
+cd skill-advisor
+node --test tests/*.test.js      # Node.js built-in test runner
+node lib/build-index.js          # rebuild keyword + lite indexes
 node lib/build-embeddings.js     # rebuild semantic embeddings (~2-5 min first run)
 node lib/build-graph.js          # rebuild Obsidian vault graph
 ```
@@ -347,7 +347,7 @@ Test runner: Node.js built-in `--test` pattern `tests/*.test.js`. No external te
 1. Fork the repo
 2. Create a feature branch — naming convention `feat/<description>` or `fix/<description>`
 3. Add tests for any new behavior (see `tests/advisor-loadout-composition.test.js` for the pattern)
-4. Run `npm test` locally before opening PR
+4. Run `node --test tests/*.test.js` locally before opening PR
 5. Commit with [Conventional Commits](https://www.conventionalcommits.org/) format
 6. PR against `main`
 
